@@ -1,0 +1,5 @@
+package Project
+
+object PlayerShip {
+  
+}
