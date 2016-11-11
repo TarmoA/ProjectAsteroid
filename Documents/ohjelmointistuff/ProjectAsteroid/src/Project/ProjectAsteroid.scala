@@ -1,5 +1,8 @@
 package Project
+import scala.swing._
 
-object ProjectAsteroid extends App{
-  
+object ProjectAsteroid extends SimpleSwingApplication {
+  def top = new MainFrame {
+    
+  }
 }
