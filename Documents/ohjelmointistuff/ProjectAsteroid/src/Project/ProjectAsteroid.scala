@@ -6,5 +6,6 @@ object ProjectAsteroid extends SimpleSwingApplication {
     title = "ProjectAsteroid" //kommentti
     
     //kirjottele kunnolla
+    //atte testi
   }
 }
