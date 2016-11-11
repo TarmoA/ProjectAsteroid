@@ -5,6 +5,6 @@ object ProjectAsteroid extends SimpleSwingApplication {
   def top = new MainFrame {
     title = "ProjectAsteroid" //kommentti
     
-    //ASdas
+    //kirjottele kunnolla
   }
 }
