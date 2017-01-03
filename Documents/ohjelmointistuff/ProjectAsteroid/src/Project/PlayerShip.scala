@@ -1,29 +1,36 @@
 package Project
+import scala.collection.mutable.Map
+import scalafx.application.JFXApp
+import scalafx.application.JFXApp.PrimaryStage
+import scalafx.scene._
+import scalafx.scene.paint.Color._
+import scalafx.scene.image.Image
+import scalafx.scene.input._
+import scalafx.scene.input.KeyEvent
+import scalafx.scene.input.KeyCode._
+import scalafx.event.ActionEvent._
+import scalafx.scene.control._
+import scalafx.Includes._
+import scalafx.animation.AnimationTimer
 
-import scala.swing._
-import java.awt.Color
-import processing.core._
 
-/**
- * Oman aluksen tiedot
- */
-object PlayerShip extends PApplet {
+
+
+
+
+object PlayerShip extends SpaceShip(new Image("file:Images/PlayerShip.png",50,50,false,false)) {
+  val speed = 100.0 // pixels per second
+  x = 50
+  y = 50
   
-  private var xKor: Int = 1000
-  private var yKor: Int = 350
-  val speed: Int = 5
-  val direction: Int = -1 //vain x akselilla
-  val lives = Difficulty.setDifficulty()
-  val ship: PImage = loadImage("X.png") //kuva 80x80
+  var health = 100
   
-  def move(): Unit = {
-    this.xKor = this.xKor + ( this.direction )
-    //(this.xKor, this.yKor)
+  def playDeathAnimation = {
+    
   }
-  def getx(): Int = {
-    this.xKor
-  }
-  def gety(): Int = {
-    this.yKor
-  }
+  
+
+  
+  
+
 }
