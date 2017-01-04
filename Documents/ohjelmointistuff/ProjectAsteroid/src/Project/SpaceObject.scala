@@ -46,4 +46,9 @@ abstract class SpaceShip(img: Image) extends SpaceObject(img) {
   
   def playDeathAnimation: Unit
 }
+abstract class EnemyShip(img: Image) extends SpaceShip(img) {
+  
+  def move(delta: Double): Unit
+  
+}
 

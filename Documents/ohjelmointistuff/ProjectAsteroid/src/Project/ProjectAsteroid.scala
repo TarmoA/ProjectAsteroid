@@ -24,9 +24,9 @@ object ProjectAsteroid extends JFXApp {
     scene = new Scene {
       val player = PlayerShip
       content = player
-      var enemies = Buffer[SpaceShip]()
+      var enemies = Buffer[EnemyShip]()
       var playerBullets = Buffer[PlayerBullet]()
-      var enemiBullets = Buffer[EnemyBullet]()
+      var enemyBullets = Buffer[EnemyBullet]()
       
       
       // 1e9 = 1000000000 ns = 1 s
@@ -70,7 +70,7 @@ object ProjectAsteroid extends JFXApp {
         
         val deadEnemies = enemies.filter(!_.isAlive)
         enemies.foreach((a: SpaceShip) => if (deadEnemies.contains(a))enemies.remove(enemies.indexOf(a)))
-        }
+      }
       
       
    /*   def playerShoot = {
@@ -96,18 +96,29 @@ object ProjectAsteroid extends JFXApp {
       
       
       
-      def playerMove(delta: Double) = {
-       // if (Keys.pressed.count(_ == true)<=2) {
-          if (Keys.pressed("right")) player.x = player.x.value + player.speed*delta
-          if (Keys.pressed("left")) player.x = player.x.value - player.speed*delta
-          if (Keys.pressed("down")) player.y = player.y.value + player.speed*delta
-          if (Keys.pressed("up")) player.y = player.y.value - player.speed*delta
-         
-          
-          
-         // println(val random = new Random(400)player.x.value + " " + player.y.value)
-       // }
+      
+      
+      def checkForActions(delta: Double, action: String): Boolean = {
+      
+        if (action == "move") {
+        
+        if (Keys.pressed("right")) player.move("right", delta)
+        if (Keys.pressed("left")) player.move("left", delta)
+        if (Keys.pressed("down")) player.move("down", delta)
+        if (Keys.pressed("up")) player.move("up", delta)
+        true
+        }
+        
+        if (action == "shoot") {
+        if (Keys.pressed("shoot")) {
+            var bullet = new PlayerBullet(player.x.value, player.y.value)
+            content += bullet
+            playerBullets += bullet
+            true
+            } else false
+        } else false
       }
+      
       
     
       
@@ -146,39 +157,36 @@ object ProjectAsteroid extends JFXApp {
       
       object GameTimer {
            // 1e9 = 1000000000 ns = 1 s
+        val timePerShot = 0.25
         var oldTime: Long = 0L
-        
-        val timer = AnimationTimer(t =>{
+        var lastShot: Long = 0L
+        val mainTimer = AnimationTimer(t =>{
           if (oldTime > 0) {
             val delta = (t - oldTime)/1e9
-            playerMove(delta)
+            val shotDelta = (t-lastShot)/1e9
+            checkForActions(delta, "move")
             checkCollisions
+            enemies.foreach(_.move(delta))
+            playerBullets.foreach(_.move(delta))
+            enemyBullets.foreach(_.move(delta))
+            
+            if (lastShot == 0 || shotDelta >= timePerShot) {
+            if(checkForActions(delta,"shoot")) lastShot = t
+            }
             
           }
           oldTime = t
         })
         
-        val timePerShot = 0.25 //sekuntia
-        var lastShot: Long = 0L
-        val shotTimer = AnimationTimer(t =>{
-          val delta = (t-lastShot)/1e9
-          if (lastShot == 0 || delta >= timePerShot) {
-            if (Keys.pressed("shoot")) {
-            var bullet = new PlayerBullet(player.x.value, player.y.value)
-            content += bullet
-            playerBullets += bullet
-            lastShot = t
-            }
-          }
-        })
+         //sekuntia
+        
+       
         
         def start = {
-          timer.start
-          shotTimer.start
+          mainTimer.start
         }
         def stop = {
-          timer.stop
-          shotTimer.stop
+          mainTimer.stop
         }
         
       }
