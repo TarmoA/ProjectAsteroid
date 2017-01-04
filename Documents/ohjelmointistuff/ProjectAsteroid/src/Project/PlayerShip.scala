@@ -29,6 +29,14 @@ object PlayerShip extends SpaceShip(new Image("file:Images/PlayerShip.png",50,50
     
   }
   
+  def move(dir: String, delta: Double) = {
+    
+    if (dir =="right") x = x.value + speed*delta
+    if (dir =="left") x = x.value - speed*delta
+    if (dir =="down") y = y.value + speed*delta
+    if (dir =="up") y = y.value - speed*delta
+  }
+  
 
   
   

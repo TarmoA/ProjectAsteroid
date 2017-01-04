@@ -19,6 +19,8 @@ abstract class Bullet(img: Image) extends SpaceObject(img) {
      } finally isAlive = false
   }
   
+  def move(delta: Double): Unit
+  
 }
 
 class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/Bullet.png")) {
@@ -26,28 +28,20 @@ class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/B
   x = x0
   y = y0
   var oldTime: Long = 0L
-  val timer = AnimationTimer(t =>{
-    if (oldTime > 0) {
-      val delta = (t - oldTime)/1e9
-      x = x.value + speed * delta
-    }
-    oldTime = t
-  })
-  timer.start 
+  
+  def move(delta: Double) = {
+    x = x.value + speed * delta
+  }
+ 
 
 }
 class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/Bullet.png")) {
   val speed = 300.0 // pixels per second
   x = x0
   y = y0
-  var oldTime: Long = 0L
-  val timer = AnimationTimer(t =>{
-    if (oldTime > 0) {
-      val delta = (t - oldTime)/1e9
-      x = x.value + speed * delta
-    }
-    oldTime = t
-  })
-  timer.start 
+   
+  def move(delta: Double) = {
+    x = x.value - speed * delta
+  }
 
 }
