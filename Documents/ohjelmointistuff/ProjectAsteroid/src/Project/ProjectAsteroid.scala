@@ -29,17 +29,7 @@ object ProjectAsteroid extends JFXApp {
       var enemyBullets = Buffer[EnemyBullet]()
       
       
-      // 1e9 = 1000000000 ns = 1 s
-     /* var oldTime: Long = 0L
-      val timer = AnimationTimer(t =>{
-        if (oldTime > 0) {
-          val delta = (t - oldTime)/1e9
-          playerMove(delta) 
-          checkCollisions
-        }
-        oldTime = t
-      })
-      timer.start */
+     
      
       
       
@@ -59,9 +49,11 @@ object ProjectAsteroid extends JFXApp {
           val collidingBullets = playerBullets.filter(_.collidesWith(enemy))
           if (!collidingBullets.isEmpty) {
             collidingBullets.foreach((bullet: PlayerBullet) => {
-              bullet.destroy 
-              collidingBullets -= bullet
-              bulletsToDestroy += bullet// playerBullets.remove(playerBullets.indexOf(bullet))
+              if (content.contains(bullet)) {
+                bullet.destroy 
+                collidingBullets -= bullet
+                bulletsToDestroy += bullet// playerBullets.remove(playerBullets.indexOf(bullet))
+              }
             })
             enemy.damage(1)
           }
@@ -73,26 +65,7 @@ object ProjectAsteroid extends JFXApp {
       }
       
       
-   /*   def playerShoot = {
-        val timePerShot = 0.25 //sekuntia
-        var lastShot: Long = 0L
-        val timer = AnimationTimer(t =>{
-          val delta = (t-lastShot)/1e9
-          if (lastShot == 0 || delta >= timePerShot) {
-            if (Keys.pressed("shoot")) {
-            var bullet = new PlayerBullet(player.x.value, player.y.value)
-            content += bullet
-            playerBullets += bullet
-            lastShot = t
-            }
-            
-          }
-        })
-        timer.start
-      }
-      playerShoot
-      
-      */
+  
       
       
       
