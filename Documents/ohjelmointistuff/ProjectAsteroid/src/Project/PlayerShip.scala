@@ -23,7 +23,7 @@ object PlayerShip extends SpaceShip(new Image("file:Images/PlayerShip.png",50,50
   x = 50
   y = 50
   
-  var health = 100
+  var health = 10
   
   def playDeathAnimation = {
     

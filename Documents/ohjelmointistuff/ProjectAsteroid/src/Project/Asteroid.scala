@@ -25,14 +25,5 @@ class Asteroid(x0:Double, y0:Double) extends EnemyShip(new Image("file:Images/As
     x = x.value - speed*delta
   }
   
-  /*var oldTime: Long = 0L
-  val timer = AnimationTimer(t =>{
-    if (oldTime > 0) {
-      val delta = (t - oldTime)/1e9
-      x = x.value - speed*delta
-    }
-    oldTime = t
-  })
-  timer.start */
 
 }
