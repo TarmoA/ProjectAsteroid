@@ -31,10 +31,11 @@ object PlayerShip extends SpaceShip(new Image("file:Images/PlayerShip.png",50,50
   
   def move(dir: String, delta: Double) = {
     
-    if (dir =="right") x = x.value + speed*delta
-    if (dir =="left") x = x.value - speed*delta
-    if (dir =="down") y = y.value + speed*delta
-    if (dir =="up") y = y.value - speed*delta
+      
+    if (dir =="right" && x.value.toInt <= scene.value.width.toInt -50) x = x.value + speed*delta
+    if (dir =="left" && x.value.toInt >= 0) x = x.value - speed*delta
+    if (dir =="down" && y.value.toInt <= scene.value.height.toInt -50) y = y.value + speed*delta
+    if (dir =="up" && y.value.toInt >= 0) y = y.value - speed*delta
   }
   
 

@@ -151,7 +151,7 @@ object ProjectAsteroid extends JFXApp {
           oldTime = t
         })
         
-         //sekuntia
+
         
        
         
