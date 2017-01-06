@@ -23,10 +23,11 @@ abstract class Bullet(img: Image) extends SpaceObject(img) {
   
 }
 
-class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/Bullet.png")) {
+class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/blast_1.png", 25, 25, false, false)) {
   val speed = 300.0 // pixels per second
-  x = x0
-  y = y0
+  x = x0 + 35
+  y = y0 + 12.5 //TODO: tarmo kato toi ja säädä se niin että luodit lähtee keskeltä alusta jotenkin nätimmin x ja y koordinaatit
+  
   var oldTime: Long = 0L
   
   def move(delta: Double) = {

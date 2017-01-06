@@ -12,7 +12,7 @@ import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 
-class Asteroid(x0:Double, y0:Double) extends EnemyShip(new Image("file:Images/Asteroid.png")) {
+class Asteroid(x0:Double, y0:Double) extends EnemyShip(new Image("file:Images/asteroid.png", 50, 50, false, false)) {
   val speed = 100.0 // pixels per second
   x = x0
   y = y0

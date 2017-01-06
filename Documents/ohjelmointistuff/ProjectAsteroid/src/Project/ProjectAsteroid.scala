@@ -28,7 +28,7 @@ object ProjectAsteroid extends JFXApp {
       var playerBullets = Buffer[PlayerBullet]()
       var enemyBullets = Buffer[EnemyBullet]()
       
-      
+      fill = BLACK //asettaa taustan värin mustaksi
      
      
       

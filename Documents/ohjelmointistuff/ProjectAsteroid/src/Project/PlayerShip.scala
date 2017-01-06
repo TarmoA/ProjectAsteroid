@@ -18,8 +18,8 @@ import scalafx.animation.AnimationTimer
 
 
 
-object PlayerShip extends SpaceShip(new Image("file:Images/PlayerShip.png",50,50,false,false)) {
-  val speed = 100.0 // pixels per second
+object PlayerShip extends SpaceShip(new Image("file:Images/alus_0.png", 50, 50, false, false)) {
+  val speed = 150.0 // pixels per second
   x = 50
   y = 50
   
