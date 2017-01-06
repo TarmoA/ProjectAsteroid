@@ -16,7 +16,7 @@ import scalafx.animation.AnimationTimer
 /**
  * Player ship
  */
-object PlayerShip extends SpaceShip(new Image("file:Images/alus_0.png", 50, 50, false, false)) {
+object PlayerShip extends SpaceShip(new Image("file:Images/alus_1.png", 50, 50, false, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
   val speed = 150.0 // pixels per second
   x = 50
   y = 50
