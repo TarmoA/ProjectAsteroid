@@ -25,7 +25,9 @@ object ProjectAsteroid extends JFXApp {
     //width = 640 
     //height = 480
     
-    scene = new Scene(1280, 720) { //luo scenen ja asettaa sen mitaksi noi ja säätää pääikkunan koon niin että toi mahtuu sisään
+    scene = Menu
+    
+   /* object GameArea extends Scene(1280, 720) { //luo scenen ja asettaa sen mitaksi noi ja säätää pääikkunan koon niin että toi mahtuu sisään
       val player = PlayerShip
       content = player
       var enemies = Buffer[EnemyShip]()
@@ -232,7 +234,7 @@ object ProjectAsteroid extends JFXApp {
 //          }
         println("Detected threats: " + enemies.size)  // asteroidien tulkintaa varten
       }
-    }
+    }*/
   }
 }
 
