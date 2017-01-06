@@ -24,6 +24,7 @@ abstract class SpaceObject(img: Image) extends ImageView(img){
   var isAlive = true
   
   def destroy: Unit
+  
 }
 
 abstract class SpaceShip(img: Image) extends SpaceObject(img) {
