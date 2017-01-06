@@ -13,33 +13,40 @@ import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 
-
-
-
-
-
+/**
+ * Player ship
+ */
 object PlayerShip extends SpaceShip(new Image("file:Images/alus_0.png", 50, 50, false, false)) {
   val speed = 150.0 // pixels per second
   x = 50
   y = 50
   
-  var health = 10
+  var health = 10 //player health
   
   def playDeathAnimation = {
     
   }
   
-  def move(dir: String, delta: Double) = {
+  def move(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
     
-      
-    if (dir =="right" && x.value.toInt <= scene.value.width.toInt -50) x = x.value + speed*delta
-    if (dir =="left" && x.value.toInt >= 0) x = x.value - speed*delta
-    if (dir =="down" && y.value.toInt <= scene.value.height.toInt -50) y = y.value + speed*delta
-    if (dir =="up" && y.value.toInt >= 0) y = y.value - speed*delta
+    if (dir =="right") {
+      if (x.value + speed*delta <= scene.value.width.toInt - 50) x = x.value + speed*delta
+      else x = scene.value.width.toInt - 50
+    }
+    
+    if (dir =="left") {
+      if (x.value - speed*delta >= 0) x = x.value - speed*delta
+      else x = 0
+    }
+    
+    if (dir =="down") {
+      if (y.value + speed*delta <= scene.value.height.toInt - 50) y = y.value + speed*delta
+      else y = scene.height.toInt - 50
+    }
+    
+    if (dir =="up") {
+      if (y.value - speed*delta >= 0) y = y.value - speed*delta
+      else y = 0
+    }
   }
-  
-
-  
-  
-
 }
