@@ -19,7 +19,7 @@ abstract class SpaceObject(img: Image) extends ImageView(img){
   val speed: Double
   
   def collidesWith(another: SpaceObject) = {
-   this.intersects(another.boundsInLocal.value)
+     this.intersects(another.boundsInLocal.value)
   }
   var isAlive = true
   

@@ -30,6 +30,7 @@ object ProjectAsteroid extends JFXApp {
       var enemies = Buffer[EnemyShip]()
       var playerBullets = Buffer[PlayerBullet]()
       var enemyBullets = Buffer[EnemyBullet]()
+      var stars = Buffer[Star]()
       
       fill = BLACK //asettaa taustan värin mustaksi
       
@@ -98,7 +99,8 @@ object ProjectAsteroid extends JFXApp {
           if (e.code == DOWN)  pressed("down") = true
           if (e.code == UP)    pressed("up") = true
           if (e.code == X)     pressed("shoot") = true
-          if (e.code == Z) EnemySpawner.spawn
+          if (e.code == Z) EnemySpawner.spawn("asteroid")
+          if (e.code == C) EnemySpawner.spawn("star")  // Spawnaa Star-SpaceObjectin
 
          // if (e.code.isDigitKey) player.speed = e.code.name.toInt
           }
@@ -114,11 +116,18 @@ object ProjectAsteroid extends JFXApp {
       object EnemySpawner {
         val random = new Random(100)
         
-        def spawn = {
-           val enemy = new Asteroid(width.value.toInt-50, random.nextInt(height.value.toInt-50))
-           content += enemy
-           enemies += enemy
+        def spawn(enemyType: String) = {
+          if (enemyType == "asteroid") {
+            val enemy = new Asteroid(width.value.toInt, random.nextInt(height.value.toInt))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
+            content += enemy
+            enemies += enemy
           println("vihollinen")
+          }
+          if (enemyType == "star") {
+            val star = new Star(width.value.toInt, random.nextInt(height.value.toInt))
+            content += star
+            stars += star
+          }
         }
       }
       
@@ -136,6 +145,7 @@ object ProjectAsteroid extends JFXApp {
             enemies.foreach(_.move(delta))
             playerBullets.foreach(_.move(delta))
             enemyBullets.foreach(_.move(delta))
+            stars.foreach(_.move(delta))
             
             if (lastShot == 0 || shotDelta >= timePerShot) {
             if(checkForActions(delta,"shoot")) lastShot = t
