@@ -9,19 +9,22 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.input._
 import scalafx.scene.input.KeyEvent
 import scalafx.scene.input.KeyCode._
-import scalafx.event.ActionEvent._
+import scalafx.event.ActionEvent
 import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 import scala.util.Random
 
+/*
+ * Main program which runs game, gametimer and etc...
+ */
 object ProjectAsteroid extends JFXApp {
   stage = new JFXApp.PrimaryStage {
-    title.value = "asd"
-    width = 640 
-    height = 480
+    title = "ProjectAsteroid"
+    //width = 640 
+    //height = 480
     
-    scene = new Scene {
+    scene = new Scene(1280, 720) { //luo scenen ja asettaa sen mitaksi noi ja säätää pääikkunan koon niin että toi mahtuu sisään
       val player = PlayerShip
       content = player
       var enemies = Buffer[EnemyShip]()
@@ -29,8 +32,6 @@ object ProjectAsteroid extends JFXApp {
       var enemyBullets = Buffer[EnemyBullet]()
       
       fill = BLACK //asettaa taustan värin mustaksi
-     
-     
       
       
       def checkCollisions = {
@@ -65,11 +66,6 @@ object ProjectAsteroid extends JFXApp {
       }
       
       
-  
-      
-      
-      
-      
       
       def checkForActions(delta: Double, action: String): Boolean = {
       
@@ -92,8 +88,6 @@ object ProjectAsteroid extends JFXApp {
         } else false
       }
       
-      
-    
       
       object Keys {
         val pressed = Map[String,Boolean]( "right" -> false, "left" -> false, "up" -> false, "down" -> false, "shoot" -> false)
@@ -151,10 +145,6 @@ object ProjectAsteroid extends JFXApp {
           oldTime = t
         })
         
-
-        
-       
-        
         def start = {
           mainTimer.start
         }
@@ -163,6 +153,7 @@ object ProjectAsteroid extends JFXApp {
         }
         
       }
+      
       GameTimer.start
       
     }
