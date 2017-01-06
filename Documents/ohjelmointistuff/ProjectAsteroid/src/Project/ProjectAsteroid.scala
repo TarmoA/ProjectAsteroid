@@ -20,6 +20,7 @@ import scala.util.Random
  */
 object ProjectAsteroid extends JFXApp {
   stage = new JFXApp.PrimaryStage {
+    resizable = false
     title = "ProjectAsteroid"
     //width = 640 
     //height = 480
