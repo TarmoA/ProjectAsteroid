@@ -10,10 +10,6 @@ import scalafx.scene.paint.Color._
 import scalafx.event.ActionEvent
 import scalafx.geometry.Pos
 /*
-*import scalafx.scene.control.{Label, MenuBar, Menu, MenuItem, CheckMenuItem, RadioMenuItem, ToggleGroup}
-*/
-
-/*
 object Testi extends JFXApp{
  vv
   
