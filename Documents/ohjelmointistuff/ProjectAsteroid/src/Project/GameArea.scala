@@ -16,6 +16,8 @@ import scalafx.animation.AnimationTimer
 import scala.util.Random
 import scalafx.scene.text._
 import scalafx.scene.layout._
+import scalafx.stage._
+import scalafx.geometry.Pos
 
 class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja asettaa sen mitaksi noi ja säätää pääikkunan koon niin että toi mahtuu sisään
   val player = new PlayerShip(this)
