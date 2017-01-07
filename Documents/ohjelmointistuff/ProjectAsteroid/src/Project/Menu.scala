@@ -94,7 +94,6 @@ object Menu extends Scene(600, 300) {
    private var soundString: String = "On"
       fill = BLUE
       
-      
       //Buttons:
       val start = new Button("Start")
       start.setStyle("-fx-background-color: white")
@@ -160,7 +159,8 @@ object Menu extends Scene(600, 300) {
       }
       
       start.onAction = (e: ActionEvent) => {
-        ProjectAsteroid.stage.scene = new GameArea(isSoundOn)
+        val gameArea = new GameArea(isSoundOn)
+        ProjectAsteroid.stage.scene = gameArea
         ProjectAsteroid.stage.centerOnScreen
       }
       

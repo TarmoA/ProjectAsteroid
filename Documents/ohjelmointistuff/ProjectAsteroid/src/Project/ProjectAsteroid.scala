@@ -24,7 +24,7 @@ object ProjectAsteroid extends JFXApp {
     title = "ProjectAsteroid"
     //width = 640 
     //height = 480
-    
+    var GameArea: GameArea = _
     scene = Menu
     
    /* object GameArea extends Scene(1280, 720) { //luo scenen ja asettaa sen mitaksi noi ja säätää pääikkunan koon niin että toi mahtuu sisään

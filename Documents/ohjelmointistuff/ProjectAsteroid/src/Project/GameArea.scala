@@ -14,30 +14,50 @@ import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 import scala.util.Random
-
+import scalafx.scene.text._
+import scalafx.scene.layout._
 
 class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja asettaa sen mitaksi noi ja säätää pääikkunan koon niin että toi mahtuu sisään
-  val player = PlayerShip
+  val player = new PlayerShip(this)
   content = player
   var enemies = Buffer[EnemyShip]()
   var playerBullets = Buffer[PlayerBullet]()
   var enemyBullets = Buffer[EnemyBullet]()
   var stars = Buffer[Star]()
+  var score = 0
   
   fill = BLACK //asettaa taustan värin mustaksi
   
   
+  var scoreText = new Label{
+    font = new Font("Arial", 30)
+    textFill_= (WHITE)
+    text = "score: 0"
+  }
+  
+  var lifeText = new Label{
+    font = new Font("Arial", 30)
+    textFill_= (WHITE)
+    text = "life:" + player.health
+  }
+  val textBox = new VBox {
+    spacing = 2
+    content = List(scoreText,lifeText)
+  }
+  content += textBox
+  
   def checkCollisions = {
-   
+   // enemy-player collision
     val enemiesCollidingWithPlayer = enemies.filter(_.collidesWith(player))
     if (!enemiesCollidingWithPlayer.isEmpty) {
       player.damage(1)
+      lifeText.text = "life:" + player.health
       enemiesCollidingWithPlayer.foreach((enemy: SpaceShip) => {
         enemy.destroy
         enemies.remove(enemies.indexOf(enemy))
       })
     }
-    
+    //bullet-enemy collision
     var bulletsToDestroy = Buffer[Bullet]()
     enemies.foreach((enemy: SpaceShip) => {
       val collidingBullets = playerBullets.filter(_.collidesWith(enemy))
@@ -55,7 +75,13 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
     bulletsToDestroy.foreach((bullet: Bullet) => playerBullets.remove(playerBullets.indexOf(bullet)))
     
     val deadEnemies = enemies.filter(!_.isAlive)
-    enemies.foreach((a: SpaceShip) => if (deadEnemies.contains(a))enemies.remove(enemies.indexOf(a)))
+    enemies.foreach((a: SpaceShip) => {
+      if (deadEnemies.contains(a)){
+        enemies.remove(enemies.indexOf(a))
+        score += 1
+        scoreText.text = "score:" + score
+      }
+    })
   }
   
   
@@ -119,9 +145,21 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
         val star = new Star(width.value.toInt, random.nextInt(height.value.toInt))
         content += star
         stars += star
+        star.toBack
       }
+      
+      if (enemyType == "initStars") {
+        for (n <- 1 to 1000) {
+          val star = new Star(random.nextInt(width.value.toInt), random.nextInt(height.value.toInt))
+          content += star
+          stars += star
+          star.toBack
+        }
+      }
+      
     }
   }
+  EnemySpawner.spawn("initStars")
   
   object GameTimer {
        // 1e9 = 1000000000 ns = 1 s
@@ -129,6 +167,7 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
     var oldTime: Long = 0L
     var lastShot: Long = 0L
     var lastAsteroid: Double = 3
+    var scoreTime = 0.0
     val mainTimer = AnimationTimer(t =>{
       if (oldTime > 0) {
         val delta = (t - oldTime)/1e9
@@ -140,7 +179,13 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
         playerBullets.foreach(_.move(delta))
         enemyBullets.foreach(_.move(delta))
         stars.foreach(_.move(delta))
-        
+        scoreTime += delta
+        if (scoreTime >= 1) {
+          score += 1 
+          println(score)
+          scoreTime = 0
+          scoreText.text = "score:" + score
+        }
         // Spawnaa tähtiä
         EnemySpawner.spawn("star")
         
@@ -179,6 +224,7 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
   }
   
   GameTimer.start
+  
   
   // TODO: Luo ensimmäiset tähden kuvaan pelin alussa
   // ???
@@ -221,6 +267,7 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
 //            content -= star
 //            stars -= star
 //          }
-    println("Detected threats: " + enemies.size)  // asteroidien tulkintaa varten
+    //println("Detected threats: " + enemies.size)  // asteroidien tulkintaa varten
       }
 }
+
