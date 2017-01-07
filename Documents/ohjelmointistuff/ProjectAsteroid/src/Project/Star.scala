@@ -16,7 +16,6 @@ class Star(x0: Double, y0: Double) extends SpaceObject(new Image("file:Images/st
   val speed: Double = 50  // Pixels per second
   x = x0
   y = y0
-  
   def move(delta: Double) = {
     x = x.value - this.speed * delta
   }

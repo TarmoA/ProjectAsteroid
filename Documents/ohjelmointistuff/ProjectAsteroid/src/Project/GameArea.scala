@@ -14,11 +14,15 @@ import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 import scala.util.Random
+import scalafx.stage._
+import scalafx.geometry.Pos
 
 
 class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja asettaa sen mitaksi noi ja säätää pääikkunan koon niin että toi mahtuu sisään
   val player = PlayerShip
-  content = player
+  val playerHealth = new Label("Health: " + PlayerShip.health.toString) //shows player health
+  playerHealth.textFill_=(RED)
+  content = List(player, playerHealth)
   var enemies = Buffer[EnemyShip]()
   var playerBullets = Buffer[PlayerBullet]()
   var enemyBullets = Buffer[EnemyBullet]()
@@ -82,6 +86,18 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
   }
   
   
+  object PauseMenu {//pitäsi keskeyttää peli ja avata pause menu missä astetuksia ja kun jatkaa peli jatkaa siitä mihin jäi, ei toimi
+    GameTimer.stop
+    val pause = new Popup()
+    val continue = new Button("Continue")
+    content = List(continue)
+    println("paused")
+    continue.onAction = (e: ActionEvent) => {
+      //ProjectAsteroid.stage.scene = new GameArea(isSoundOn) //jos tämä niin toimii mutta resetoi pelin
+      GameTimer.start
+    }
+  }
+  
   object Keys {
     val pressed = Map[String,Boolean]( "right" -> false, "left" -> false, "up" -> false, "down" -> false, "shoot" -> false)
                             
@@ -93,6 +109,8 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
       if (e.code == X)     pressed("shoot") = true
       if (e.code == Z) EnemySpawner.spawn("asteroid")  // Spawnaa Asteroidin
       if (e.code == C) EnemySpawner.spawn("star")  // Spawnaa Star-SpaceObjectin
+      if (e.code == ESCAPE) sys.exit(0) //shuts down entire game
+      if (e.code == P) PauseMenu //TODO: avaa uuden pop-up ikkunan missä valintoja
 
      // if (e.code.isDigitKey) player.speed = e.code.name.toInt
       }
@@ -170,9 +188,11 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
     })
     
     def start = {
+      ProjectAsteroid.isPaused = false
       mainTimer.start
     }
     def stop = {
+      ProjectAsteroid.isPaused = true
       mainTimer.stop
     }
     
