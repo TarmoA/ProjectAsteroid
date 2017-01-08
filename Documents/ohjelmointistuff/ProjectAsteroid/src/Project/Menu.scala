@@ -13,8 +13,6 @@ import scalafx.geometry.Pos
 object Menu extends Scene(600, 300) {
   
    var soundString: String = "On"
-      fill = BLUE
-      
       //Buttons:
       val start = new Button("Start")
       start.setStyle("-fx-background-color: white")

@@ -7,6 +7,7 @@ object ProjectAsteroid extends JFXApp {
   var isSoundOn: Boolean = true
   stage = new JFXApp.PrimaryStage {
     resizable = false
+    centerOnScreen()
     title = "ProjectAsteroid"
     //width = 640 
     //height = 480

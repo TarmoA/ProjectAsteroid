@@ -18,7 +18,7 @@ import scalafx.scene.layout._
 import scalafx.stage._
 import scalafx.geometry.Pos
 
-class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja asettaa sen mitaksi noi ja säätää pääikkunan koon niin että toi mahtuu sisään
+class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
   val player = new PlayerShip(this)
   content = player
   var enemies = Buffer[EnemyShip]()
@@ -275,9 +275,6 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
   GameTimer.start
   
   
-  // TODO: Luo ensimmäiset tähden kuvaan pelin alussa
-  // ???
-  
   // Tämän tässä on tarkoitus poistaa Buffereista kaikki kuvan ulkopuolelle siirtyneet asiat:
   // enemies, playerBullets, enemyBullets, stars
   def removeOutOfBoundsObjects: Unit = {
@@ -319,4 +316,3 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
     //println("Detected threats: " + enemies.size)  // asteroidien tulkintaa varten
       }
 }
-
