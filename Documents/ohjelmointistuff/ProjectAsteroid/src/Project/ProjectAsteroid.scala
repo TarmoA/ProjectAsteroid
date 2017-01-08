@@ -3,6 +3,8 @@ package Project
 import scalafx.application.JFXApp
 
 object ProjectAsteroid extends JFXApp {
+  
+  var isSoundOn: Boolean = true
   stage = new JFXApp.PrimaryStage {
     resizable = false
     title = "ProjectAsteroid"

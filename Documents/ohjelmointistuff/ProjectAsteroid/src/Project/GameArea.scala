@@ -5,7 +5,6 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene._
 import scalafx.scene.paint.Color._
-import scalafx.scene.shape.Rectangle
 import scalafx.scene.input._
 import scalafx.scene.input.KeyEvent
 import scalafx.scene.input.KeyCode._
@@ -119,7 +118,7 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
       if (e.code == UP)    pressed("up") = true
       if (e.code == X)     pressed("shoot") = true
       if (e.code == ESCAPE) sys.exit(0)  // sulkee koko pelin
-      if (e.code == P) PauseMenu  // avaa pausemenun, ei toimi kunnolla
+      if (e.code == P)     PauseMenu  // avaa pausemenun, ei toimi kunnolla
 
      // if (e.code.isDigitKey) player.speed = e.code.name.toInt
       }
@@ -132,16 +131,53 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
     }
   }
   
-  object PauseMenu {//pitäsi keskeyttää peli ja avata pause menu missä astetuksia ja kun jatkaa peli jatkaa siitä mihin jäi, ei toimi
+  object PauseMenu {//pause valikko, jostain syystä ei pysty valitsemaan kuin kerran pelissä
     GameTimer.stop
-    val pause = new Popup()
+    //buttons:
     val continue = new Button("Continue")
-    content = List(continue)
+    continue.setMaxWidth(200)
+    val exit = new Button("Exit")
+    exit.setMaxWidth(200)
+    val sound = new Button("Sound")
+    sound.setMinWidth(100)
+    val soundLabel = new Label{
+      text = "Sound: " + Menu.soundString
+      font = new Font("Arial", 15)
+      textFill = (RED)
+    }
+    
+    val hbox = new HBox(20)
+    hbox.content = List(sound, soundLabel)
+    hbox.setAlignment(Pos.CENTER_LEFT)
+    val vbox = new VBox(20)
+    vbox.content = List(continue, hbox, exit)
+    vbox.setAlignment(Pos.CENTER)
+    vbox.layoutX =(width.toDouble / 2)
+    vbox.layoutY_=(height.toDouble / 2)
+    content += vbox
     println("paused")
+    
+    //events:
     continue.onAction = (e: ActionEvent) => {
-      //ProjectAsteroid.stage.scene = new GameArea(isSoundOn) //jos tämä niin toimii mutta resetoi pelin
+      if (content.contains(vbox)) content -= vbox
+      GameTimer.oldTime = 0L
       GameTimer.start
     }
+    
+    sound.onAction = (e: ActionEvent) => {
+      if (ProjectAsteroid.isSoundOn) {
+          ProjectAsteroid.isSoundOn = false
+          Menu.soundString = "Off"
+          soundLabel.setText("Sound: " + Menu.soundString)
+        }
+        else {
+          ProjectAsteroid.isSoundOn = true
+          Menu.soundString = "On"
+          soundLabel.setText("Sound: " + Menu.soundString)
+        }
+    }
+    
+    exit.onAction = (e: ActionEvent) => sys.exit(0)
   }
   
   object EnemySpawner {

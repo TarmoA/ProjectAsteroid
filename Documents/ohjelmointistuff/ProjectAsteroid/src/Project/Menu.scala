@@ -12,9 +12,7 @@ import scalafx.geometry.Pos
 
 object Menu extends Scene(600, 300) {
   
-  
-   private var isSoundOn: Boolean = true
-   private var soundString: String = "On"
+   var soundString: String = "On"
       fill = BLUE
       
       //Buttons:
@@ -69,20 +67,20 @@ object Menu extends Scene(600, 300) {
       
       //events:
       sound.onAction = (e:ActionEvent) => {
-        if (isSoundOn) {
-          isSoundOn = false
+        if (ProjectAsteroid.isSoundOn) {
+          ProjectAsteroid.isSoundOn = false
           soundString = "Off"
           soundtext.setText("Sound: " + soundString)
         }
         else {
-          isSoundOn = true
+          ProjectAsteroid.isSoundOn = true
           soundString = "On"
           soundtext.setText("Sound: " + soundString)
         }
       }
       
       start.onAction = (e: ActionEvent) => {
-        val gameArea = new GameArea(isSoundOn)
+        val gameArea = new GameArea(ProjectAsteroid.isSoundOn)
         ProjectAsteroid.stage.scene = gameArea
         ProjectAsteroid.stage.centerOnScreen
       }
