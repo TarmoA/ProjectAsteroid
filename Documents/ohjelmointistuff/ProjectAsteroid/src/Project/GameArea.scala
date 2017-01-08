@@ -31,16 +31,16 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
   fill = BLACK //asettaa taustan värin mustaksi
   
   
-  var scoreText = new Label{
-    font = new Font("Arial", 30)
-    textFill_= (WHITE)
-    text = "score: 0"
+  val scoreText = new Label{
+    font = new Font("Arial", 15)
+    textFill = (RED)
+    text = "Score: " + score
   }
   
-  var lifeText = new Label{
-    font = new Font("Arial", 30)
-    textFill_= (WHITE)
-    text = "life:" + player.health
+  val lifeText = new Label{
+    font = new Font("Arial", 15)
+    textFill = (RED)
+    text = "Life: " + player.health
   }
   val textBox = new VBox {
     spacing = 2
@@ -53,7 +53,7 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
     val enemiesCollidingWithPlayer = enemies.filter(_.collidesWith(player))
     if (!enemiesCollidingWithPlayer.isEmpty) {
       player.damage(1)
-      lifeText.text = "life:" + player.health
+      lifeText.text = "Life: " + player.health
       enemiesCollidingWithPlayer.foreach((enemy: SpaceShip) => {
         enemy.destroy
         enemies.remove(enemies.indexOf(enemy))
@@ -81,11 +81,10 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
       if (deadEnemies.contains(a)){
         enemies.remove(enemies.indexOf(a))
         score += 1
-        scoreText.text = "score:" + score
+        scoreText.text = "Score: " + score
       }
     })
   }
-  
   
   
   def checkForActions(delta: Double, action: String): Boolean = {
@@ -119,8 +118,8 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
       if (e.code == DOWN)  pressed("down") = true
       if (e.code == UP)    pressed("up") = true
       if (e.code == X)     pressed("shoot") = true
-      if (e.code == Z) EnemySpawner.spawn("asteroid")  // Spawnaa Asteroidin
-      if (e.code == C) EnemySpawner.spawn("star")  // Spawnaa Star-SpaceObjectin
+      if (e.code == ESCAPE) sys.exit(0)  // sulkee koko pelin
+      if (e.code == P) PauseMenu  // avaa pausemenun, ei toimi kunnolla
 
      // if (e.code.isDigitKey) player.speed = e.code.name.toInt
       }
@@ -132,7 +131,19 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
       if (e.code == X)     pressed("shoot") = false
     }
   }
- 
+  
+  object PauseMenu {//pitäsi keskeyttää peli ja avata pause menu missä astetuksia ja kun jatkaa peli jatkaa siitä mihin jäi, ei toimi
+    GameTimer.stop
+    val pause = new Popup()
+    val continue = new Button("Continue")
+    content = List(continue)
+    println("paused")
+    continue.onAction = (e: ActionEvent) => {
+      //ProjectAsteroid.stage.scene = new GameArea(isSoundOn) //jos tämä niin toimii mutta resetoi pelin
+      GameTimer.start
+    }
+  }
+  
   object EnemySpawner {
     val random = new Random(100)
     
@@ -184,9 +195,9 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) { //luo scenen ja as
         scoreTime += delta
         if (scoreTime >= 1) {
           score += 1 
-          println(score)
+          println("score: " + score)
           scoreTime = 0
-          scoreText.text = "score:" + score
+          scoreText.text = "Score: " + score
         }
         // Spawnaa tähtiä
         EnemySpawner.spawn("star")
