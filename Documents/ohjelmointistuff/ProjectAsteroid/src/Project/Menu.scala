@@ -15,6 +15,9 @@ import scalafx.stage.Modality
 import scalafx.geometry.Insets
 import scalafx.stage._
 
+/*
+ * Mainmenu, which is opened at the beginning and at the end if player hasn't closed the program
+ */
 object Menu extends Scene(1280, 720) {
   var soundString: String = "On"
   //Buttons:
@@ -55,15 +58,13 @@ object Menu extends Scene(1280, 720) {
     minWidth = (200); maxWidth = (200); prefWidth = (200)
   }
   
-  
   val vbox = new VBox(20) {
     content = List(name, start, soundContent, hiScore, exit)
     alignment = Pos.CENTER
     style = "-fx-background-color: black"
   }
   
-  root = vbox
-  
+  root = vbox //set scene content
   
   //events:
   sound.onAction = (e:ActionEvent) => {
@@ -87,9 +88,12 @@ object Menu extends Scene(1280, 720) {
   
   exit.onAction = (e:ActionEvent) => sys.exit(0)
 }
-
-class PauseMenu() {//pause valikko, toimii, mutta pystyy sulkemaan pääiikkunan ilman että ohjelma saammuu
+/*
+ * PauseMenu activates when p is pressed during game, and pauses game and opens pausemenu which gives player options to do
+ */
+class PauseMenu() {
   ProjectAsteroid.GameArea.GameTimer.stop
+  //buttons:
   val continue = new Button("Continue") {
     style = ("-fx-background-color: white")
     textFill = (BLACK)
@@ -105,9 +109,13 @@ class PauseMenu() {//pause valikko, toimii, mutta pystyy sulkemaan pääiikkunan
     textFill = BLACK
     prefWidth = 200
   }
+  
+  //Labels:
   val soundLabel = new Label("Sound: " + Menu.soundString) {
     textFill = WHITE
   }
+  
+  //Content:
   val soundContent = new HBox(22) {
     content = List(soundButton, soundLabel)
     alignment = Pos.CENTER_LEFT
@@ -121,8 +129,9 @@ class PauseMenu() {//pause valikko, toimii, mutta pystyy sulkemaan pääiikkunan
     layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 - 100
   }
   
-  ProjectAsteroid.GameArea.content += pauseMenuContent
+  ProjectAsteroid.GameArea.content += pauseMenuContent //adds pausemenu to gamearea's content
   
+  //events:
   continue.onAction = (e: ActionEvent) => {
     if (ProjectAsteroid.GameArea.content.contains(pauseMenuContent)) ProjectAsteroid.GameArea.content -= pauseMenuContent
     ProjectAsteroid.GameArea.GameTimer.oldTime = 0L
@@ -143,10 +152,11 @@ class PauseMenu() {//pause valikko, toimii, mutta pystyy sulkemaan pääiikkunan
   exit.onAction = (e: ActionEvent) => sys.exit(0)
 }
 
+/*
+ * when player dies DeathMenu is opened, different options are available to player
+ */
 class DeathMenu() {
-  val deathLabel = new Label("You are dead\nYour score: " + ProjectAsteroid.GameArea.score) {
-    textFill = WHITE
-  }
+  //Buttons:
   val saveScore = new Button("Save score") {
     style = "-fx-background-color: white"
     textFill = BLACK
@@ -167,6 +177,13 @@ class DeathMenu() {
     textFill = BLACK
     maxWidth = 200
   }
+  
+  //Label:
+  val deathLabel = new Label("Mission failure\nYour score: " + ProjectAsteroid.GameArea.score) {
+    textFill = WHITE
+  }
+  
+  //Content:
   val deathMenuContent = new VBox(20) {
     alignment = Pos.CENTER
     content = List(deathLabel, saveScore, restart, returnMenu, exit)
@@ -175,8 +192,9 @@ class DeathMenu() {
     layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 - 125
   }
   
-  ProjectAsteroid.GameArea.content += deathMenuContent
+  ProjectAsteroid.GameArea.content += deathMenuContent //adds DeathMenu to gamearea's content
   
+  //Events:
   saveScore.onAction = (e: ActionEvent) => {
     //TODO: asks name and saves highscore, then open mainmenu
   }

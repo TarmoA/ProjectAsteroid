@@ -19,12 +19,6 @@ object ProjectAsteroid extends JFXApp {
     scene = Menu
     
   }
-  //pitäisi saada niin että kun pääikkuna sulkeutuu niin koko ohjelma sammuu
-  //ProjectAsteroid.stage.setOnCloseRequest(EventHandler<WindowEvent>() {
-   // 
-   // Platform.exit())
-  //}
-  //stage.fireEvent(new WindowEvent(stage, WindowEvent.WindowCloseRequest))
   
 }
 
