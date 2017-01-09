@@ -28,6 +28,10 @@ object ProjectAsteroid extends JFXApp {
 
 /*TODO: jos pitää nuolinäppäintä pohjassa ja painaa p ja kun palaa nuolinäppäin on jäänyt pohjaan.
  * jos avaa jonkun pop-up ikkunan ja sulkee pääikkunan niin ohjelma ei sulkeudu, fiksaa niin että sulkeutuu
+ * Asteroidien läpinäkyvyys pois, tähdet näkyy läpi välillä
+ * tyhjeneekö bufferit oikein kun tuhoutuu ja menee pois alueelta?
+ * asteroidien sivuttais liike
+ * highscore osio
  */
 
 

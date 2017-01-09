@@ -165,9 +165,9 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
           minWidth = 200; prefWidth = 200; maxWidth = 200
         }
         val VBox = new VBox(20) {
-          alignment = (Pos.CENTER)
+          alignment = Pos.CENTER
           content = List(continue, soundContent, exit)
-          style = ("-fx-background-color: black")
+          style = "-fx-background-color: black"
         }
         root = VBox
         
@@ -203,7 +203,7 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
       title = "Death"
       
       scene = new Scene(600, 300) {
-        val deathLabel = new Label("You are deat") {
+        val deathLabel = new Label("You are dead\nYour score: " + score) { //you are dead vai you died?
           textFill = WHITE
         }
         val saveScore = new Button("Save score") {
@@ -233,9 +233,16 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
         }
         root = deathMenuContent
         
+        saveScore.onAction = (e: ActionEvent) => {
+          //TODO: asks name and saves highscore, then open mainmenu
+        }
+        restart.onAction = (e: ActionEvent) => {
+          //TODO: reset game and restart
+        }
         returnMenu.onAction = (e: ActionEvent) => {
           close()
           ProjectAsteroid.stage.scene = Menu
+          ProjectAsteroid.stage.centerOnScreen()
         }
         
         exit.onAction = (e: ActionEvent) => sys.exit(0)

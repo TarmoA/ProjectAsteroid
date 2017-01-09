@@ -13,7 +13,6 @@ import scalafx.stage.Modality
 import scalafx.geometry.Insets
 
 object Menu extends Scene(600, 300) {
-  
   var soundString: String = "On"
   //Buttons:
   val start = new Button("Start") {
@@ -50,7 +49,6 @@ object Menu extends Scene(600, 300) {
   val soundContent = new HBox(22) {
     content = List(sound, soundLabel)
     alignment = (Pos.CENTER_LEFT)
-    //fillHeight =(false)
     minWidth = (200); maxWidth = (200); prefWidth = (200)
   }
   
