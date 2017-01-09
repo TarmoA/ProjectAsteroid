@@ -82,7 +82,6 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
       if (deadEnemies.contains(a)){
         enemies.remove(enemies.indexOf(a))
         score += 1
-        scoreText.text = "Score: " + score
       }
     })
   }
@@ -120,7 +119,7 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
       if (e.code == UP)    pressed("up") = true
       if (e.code == X)     pressed("shoot") = true
       if (e.code == ESCAPE) sys.exit(0)  // sulkee koko pelin
-      if (e.code == P)     PauseMenu  // avaa pausemenun, ei toimi kunnolla
+      if (e.code == P)     pause()  // avaa pausemenun, ei toimi kunnolla
 
      // if (e.code.isDigitKey) player.speed = e.code.name.toInt
       }
@@ -133,123 +132,9 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
     }
   }
   
-  object PauseMenu {//pause valikko, toimii, mutta pystyy sulkemaan pääiikkunan ilman että ohjelma saammuu
-    GameTimer.stop
-    val pauseMenuStage = new Stage() {
-      initModality(Modality.WINDOW_MODAL)
-      centerOnScreen()
-      title = "PauseMenu"
-      
-      scene = new Scene(600, 300) { //scenen nimeä ei saa missään tapauaksessa muuttaa, hajottaa koko valikon jostain syystä
-        val continue = new Button("Continue") {
-          style = ("-fx-background-color: white")
-          textFill = (BLACK)
-          prefWidth = (200)
-        }
-        val soundButton = new Button("Sound") {
-          style = "-fx-background-color: white"
-          textFill = BLACK
-          prefWidth = 100
-        }
-        val exit = new Button("Exit") {
-          style = "-fx-background-color: white"
-          textFill = BLACK
-          prefWidth = 200
-        }
-        val soundLabel = new Label("Sound: " + Menu.soundString) {
-          textFill = WHITE
-        }
-        val soundContent = new HBox(22) {
-          content = List(soundButton, soundLabel)
-          alignment = Pos.CENTER_LEFT
-          minWidth = 200; prefWidth = 200; maxWidth = 200
-        }
-        val VBox = new VBox(20) {
-          alignment = Pos.CENTER
-          content = List(continue, soundContent, exit)
-          style = "-fx-background-color: black"
-        }
-        root = VBox
-        
-        continue.onAction = (e: ActionEvent) => {
-          close()
-          GameTimer.oldTime = 0L
-          GameTimer.start
-        }
-        soundButton.onAction = (e: ActionEvent) => {
-          if (ProjectAsteroid.isSoundOn) {
-            ProjectAsteroid.isSoundOn = false
-            Menu.soundString = "Off"
-            soundLabel.setText("Sound: " + Menu.soundString)
-          }
-          else {
-            ProjectAsteroid.isSoundOn = true
-            Menu.soundString = "On"
-            soundLabel.setText("Sound: " + Menu.soundString)
-          }
-        }
-        exit.onAction = (e: ActionEvent) => sys.exit(0)
-        
-      }
-      show()
-    }
-    pauseMenuStage.setAlwaysOnTop(true)
-  }
-  
-  object DeathMenu {
-    val deathMenuStage = new Stage() {
-      initModality(Modality.WINDOW_MODAL)
-      centerOnScreen()
-      title = "Death"
-      
-      scene = new Scene(600, 300) {
-        val deathLabel = new Label("You are dead\nYour score: " + score) { //you are dead vai you died?
-          textFill = WHITE
-        }
-        val saveScore = new Button("Save score") {
-          style = "-fx-background-color: white"
-          textFill = BLACK
-          maxWidth = 200
-        }
-        val restart = new Button("Restart") {
-          style = "-fx-background-color: white"
-          textFill = BLACK
-          maxWidth = 200
-        }
-        val returnMenu = new Button("Retun Menu") {
-          style = "-fx-background-color: white"
-          textFill = BLACK
-          maxWidth = 200
-        }
-        val exit = new Button("Exit") {
-          style = "-fx-background-color: white"
-          textFill = BLACK
-          maxWidth = 200
-        }
-        val deathMenuContent = new VBox(20) {
-          alignment = Pos.CENTER
-          content = List(deathLabel, saveScore, restart, returnMenu, exit)
-          style = "-fx-background-color: black"
-        }
-        root = deathMenuContent
-        
-        saveScore.onAction = (e: ActionEvent) => {
-          //TODO: asks name and saves highscore, then open mainmenu
-        }
-        restart.onAction = (e: ActionEvent) => {
-          //TODO: reset game and restart
-        }
-        returnMenu.onAction = (e: ActionEvent) => {
-          close()
-          ProjectAsteroid.stage.scene = Menu
-          ProjectAsteroid.stage.centerOnScreen()
-        }
-        
-        exit.onAction = (e: ActionEvent) => sys.exit(0)
-      }
-    show()
-    }
-    deathMenuStage.setAlwaysOnTop(true)
+  def pause() = {
+    Keys.pressed.transform((a:String,b:Boolean) => false)
+    new PauseMenu
   }
   
   object EnemySpawner {
@@ -305,7 +190,6 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
           score += 1 
           println("score: " + score)
           scoreTime = 0
-          scoreText.text = "Score: " + score
         }
         // Spawnaa tähtiä
         EnemySpawner.spawn("star")
@@ -331,6 +215,7 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
         
         }
         
+        scoreText.text = "Score: " + score
       }
       oldTime = t
     })

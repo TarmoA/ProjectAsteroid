@@ -9,11 +9,13 @@ object ProjectAsteroid extends JFXApp {
   //pistetään tänne kaikki muuttujat niin ei tarvitse sitten metsästää niitä myöhemmin.
   var isSoundOn: Boolean = true
   
+  var GameArea: GameArea = _
+  
   stage = new JFXApp.PrimaryStage {
     resizable = false
     centerOnScreen()
     title = "ProjectAsteroid"
-    var GameArea: GameArea = _
+    
     scene = Menu
     
   }
