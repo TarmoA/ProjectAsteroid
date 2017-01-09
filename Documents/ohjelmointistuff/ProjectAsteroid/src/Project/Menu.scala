@@ -9,79 +9,80 @@ import scalafx.scene.layout._
 import scalafx.scene.paint.Color._
 import scalafx.event.ActionEvent
 import scalafx.geometry.Pos
+import scalafx.stage.Modality
+import scalafx.geometry.Insets
 
 object Menu extends Scene(600, 300) {
   
-   var soundString: String = "On"
-      //Buttons:
-      val start = new Button("Start")
-      start.setStyle("-fx-background-color: white")
-      start.textFill_=(BLACK)
-      start.setMaxWidth(200)
+  var soundString: String = "On"
+  //Buttons:
+  val start = new Button("Start") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
+  val sound = new Button("Sound") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    minWidth = 100
+  }
       
-      val sound = new Button("Sound")
-      sound.setStyle("-fx-background-color: white")
-      sound.textFill_=(BLACK)
-      sound.setMinWidth(100)
-      
-      val hiScore = new Button("HighScore")
-      hiScore.setStyle("-fx-background-color: white")
-      hiScore.textFill_=(BLACK)
-      hiScore.setMaxWidth(200)
-      
-      val exit = new Button("Exit")
-      exit.setStyle("-fx-background-color: white")
-      exit.textFill_=(BLACK)
-      exit.setMaxWidth(200)
-      
-      //Labels:
-      val name = new Label("Project Asteroid")
-      name.font = new Font("Arial", 30)
-      name.textFill_=(WHITE)
-      
-      val soundtext = new Label("Sound: " + soundString)
-      soundtext.textFill_=(WHITE)
-      
-      
-      //content:
-      val soundContent = new HBox(22)
-      soundContent.content = List(sound, soundtext)
-      soundContent.setAlignment(Pos.CENTER_LEFT)
-      //soundContent.fillHeight_=(false)
-      soundContent.setMinWidth(200)
-      soundContent.setMaxWidth(200)
-      soundContent.setPrefWidth(200)
-      
-      
-      
-      val vbox = new VBox(20)
-      vbox.content = List(name, start, soundContent, hiScore, exit)
-      vbox.setAlignment(Pos.CENTER)
-      vbox.setStyle("-fx-background-color: black")
-      
-      
-      root = vbox
-      
-      
-      //events:
-      sound.onAction = (e:ActionEvent) => {
-        if (ProjectAsteroid.isSoundOn) {
-          ProjectAsteroid.isSoundOn = false
-          soundString = "Off"
-          soundtext.setText("Sound: " + soundString)
-        }
-        else {
-          ProjectAsteroid.isSoundOn = true
-          soundString = "On"
-          soundtext.setText("Sound: " + soundString)
-        }
-      }
-      
-      start.onAction = (e: ActionEvent) => {
-        val gameArea = new GameArea(ProjectAsteroid.isSoundOn)
-        ProjectAsteroid.stage.scene = gameArea
-        ProjectAsteroid.stage.centerOnScreen
-      }
-      
-      exit.onAction = (e:ActionEvent) => sys.exit(0)
+  val hiScore = new Button("HighScore, rikki") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
+  val exit = new Button("Exit") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
+  //Labels:
+  val name = new Label("Project Asteroid") {
+    font = new Font("Arial", 30)
+    textFill =(WHITE)
+  }
+  val soundLabel = new Label("Sound: " + soundString) {
+    textFill =(WHITE)
+  }
+  
+  //content:
+  val soundContent = new HBox(22) {
+    content = List(sound, soundLabel)
+    alignment = (Pos.CENTER_LEFT)
+    //fillHeight =(false)
+    minWidth = (200); maxWidth = (200); prefWidth = (200)
+  }
+  
+  
+  val vbox = new VBox(20) {
+    content = List(name, start, soundContent, hiScore, exit)
+    alignment = Pos.CENTER
+    style = "-fx-background-color: black"
+  }
+  
+  root = vbox
+  
+  
+  //events:
+  sound.onAction = (e:ActionEvent) => {
+    if (ProjectAsteroid.isSoundOn) {
+      ProjectAsteroid.isSoundOn = false
+      soundString = "Off"
+      soundLabel.setText("Sound: " + soundString)
     }
+    else {
+      ProjectAsteroid.isSoundOn = true
+      soundString = "On"
+      soundLabel.setText("Sound: " + soundString)
+    }
+  }
+  
+  start.onAction = (e: ActionEvent) => {
+    val gameArea = new GameArea(ProjectAsteroid.isSoundOn)
+    ProjectAsteroid.stage.scene = gameArea
+    ProjectAsteroid.stage.centerOnScreen
+  }
+  
+  exit.onAction = (e:ActionEvent) => sys.exit(0)
+}
