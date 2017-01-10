@@ -18,8 +18,9 @@ import scalafx.animation.AnimationTimer
  */
 class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 50, 50, false, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
   val speed = 250.0 // pixels per second
-  x = 50
-  y = 50
+  //TODO: Alustukseen sellainen kohta mikä asettaa aluksen y koordinaateiksi noin ruudun puolivälin
+  x = 25
+  y = 310
   
   var health = 1 //player health
   
