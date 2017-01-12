@@ -12,6 +12,7 @@ import scalafx.event.ActionEvent._
 import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
+import scalafx.scene.media._
 
 /**
  * Player ship
@@ -25,6 +26,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   var lastShot: Long = 0L
   
   
+  val shootSound = ProjectAsteroid.shootSound
   
   var health = 1 //player health
   
@@ -37,6 +39,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
     var bullet = new PlayerBullet(x.value, y.value)
       ProjectAsteroid.GameArea.content += bullet
       ProjectAsteroid.GameArea.playerBullets += bullet
+      if (ProjectAsteroid.isSoundOn)shootSound.play
       true
   }
   

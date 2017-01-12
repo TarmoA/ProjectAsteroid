@@ -14,6 +14,7 @@ import scalafx.geometry.Insets
 import scalafx.stage.Modality
 import scalafx.geometry.Insets
 import scalafx.stage._
+import scalafx.scene.media._
 
 /*
  * Mainmenu, which is opened at the beginning and at the end if player hasn't closed the program
@@ -67,8 +68,11 @@ object Menu extends Scene(1280, 720) {
   root = menuContent //set scene content
   
   //events:
+  
+  
   start.onAction = (e: ActionEvent) => {
     new DifficultyMenu() //opens new menu where player chooses level of difficulty or returns to mainmenu
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   
   sound.onAction = (e: ActionEvent) => {
@@ -82,10 +86,12 @@ object Menu extends Scene(1280, 720) {
       soundString = "On"
       soundLabel.setText("Sound: " + soundString)
     }
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   
   hiScore.onAction = (e: ActionEvent) => {
     //TODO:
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   exit.onAction = (e: ActionEvent) => sys.exit(0)
 }
@@ -143,18 +149,21 @@ class DifficultyMenu() {
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   normal.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 1)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   hard.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 2)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   impossible.onAction = (e: ActionEvent) => {
     //TODO: jos aikaa niin voi tehdä
@@ -162,9 +171,11 @@ class DifficultyMenu() {
     //ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     //ProjectAsteroid.stage.centerOnScreen
     //Menu.root = Menu.menuContent
+    //if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   backMenu.onAction = (e: ActionEvent) => {
     Menu.root = Menu.menuContent
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
 }
 
@@ -173,6 +184,7 @@ class DifficultyMenu() {
  */
 class PauseMenu() {
   ProjectAsteroid.GameArea.GameTimer.stop
+  if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   //buttons:
   val continue = new Button("Continue") {
     style = ("-fx-background-color: white")
@@ -216,6 +228,8 @@ class PauseMenu() {
     if (ProjectAsteroid.GameArea.content.contains(pauseMenuContent)) ProjectAsteroid.GameArea.content -= pauseMenuContent
     ProjectAsteroid.GameArea.GameTimer.oldTime = 0L
     ProjectAsteroid.GameArea.GameTimer.start
+    ProjectAsteroid.GameArea.paused = false
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   soundButton.onAction = (e: ActionEvent) => {
     if (ProjectAsteroid.isSoundOn) {
@@ -228,6 +242,7 @@ class PauseMenu() {
       Menu.soundString = "On"
       soundLabel.setText("Sound: " + Menu.soundString)
     }
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   exit.onAction = (e: ActionEvent) => sys.exit(0) //TODO: palaako päämenuun vai sulkeeko koko ohjelman?
 }
@@ -277,16 +292,19 @@ class DeathMenu() {
   //Events:
   saveScore.onAction = (e: ActionEvent) => {
     //TODO: asks name and saves highscore, then open mainmenu
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   restart.onAction = (e: ActionEvent) => {
     //TODO: varmista että toimii, lähinnäs saako haettua edellisen gamearena difficulty arvon
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, ProjectAsteroid.GameArea.difficulty)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   returnMenu.onAction = (e: ActionEvent) => {
     ProjectAsteroid.stage.scene = Menu
     ProjectAsteroid.stage.centerOnScreen()
+    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   
   exit.onAction = (e: ActionEvent) => sys.exit(0) //TODO: riittääkö että on palaa päämenuun nappi vai tarviiko tämänkin?

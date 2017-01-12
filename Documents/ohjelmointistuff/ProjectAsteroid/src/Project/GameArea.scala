@@ -129,7 +129,7 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
       if (e.code == UP)    pressed("up") = true
       if (e.code == X)     pressed("shoot") = true
       if (e.code == ESCAPE) sys.exit(0)  // sulkee koko pelin
-      if (e.code == P)     pause()  // avaa pausemenun, ei toimi kunnolla
+      if (e.code == P)     pause()  // avaa pausemenun
       if (e.code == Z) EnemySpawner.spawn("AlienShip")
 
      // if (e.code.isDigitKey) player.speed = e.code.name.toInt
@@ -143,9 +143,11 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
     }
   }
   
+  var paused = false
   def pause() = {
     Keys.pressed.transform((a:String,b:Boolean) => false)
-    new PauseMenu
+    if (!paused) new PauseMenu
+    paused = true
   }
   
   object EnemySpawner {

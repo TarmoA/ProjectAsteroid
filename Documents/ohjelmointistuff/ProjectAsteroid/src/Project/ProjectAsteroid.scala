@@ -4,10 +4,14 @@ import scalafx.application.JFXApp
 import scalafx.stage.WindowEvent
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.stage.Stage
+import scalafx.scene.media._
 
 object ProjectAsteroid extends JFXApp {
   //pistetään tänne kaikki muuttujat niin ei tarvitse sitten metsästää niitä myöhemmin.
   var isSoundOn: Boolean = true
+  val menuSound = new AudioClip("file:audio/menu.wav")
+  val shootSound = new AudioClip("file:audio/bullet1.wav")
+  val explSound = new AudioClip("file:audio/explosion.wav")
   
   var GameArea: GameArea = _
   

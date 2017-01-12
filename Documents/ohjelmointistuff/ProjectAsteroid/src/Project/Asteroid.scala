@@ -18,7 +18,7 @@ class Asteroid(x0:Double, y0:Double) extends EnemyShip(new Image("file:Images/as
   y = y0
   var health = 1
   def playDeathAnimation {
-    
+    if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
   }
   
   def move(delta: Double) = {
@@ -35,7 +35,7 @@ class AlienShip (x0:Double, y0:Double) extends ShootingEnemy(new Image("file:Ima
   var timePerShot = 2.0
   
   def playDeathAnimation {
-    
+     if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
   }
   
   def move(delta: Double) = {
