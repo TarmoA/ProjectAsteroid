@@ -36,7 +36,7 @@ class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/b
  
 
 }
-class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/Bullet.png")) {
+class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/blast_1.png", 25, 25, false, false)) {
   val speed = 300.0 // pixels per second
   x = x0
   y = y0

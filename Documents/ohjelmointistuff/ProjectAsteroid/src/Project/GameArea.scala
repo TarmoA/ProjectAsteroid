@@ -17,11 +17,13 @@ import scalafx.scene.text._
 import scalafx.scene.layout._
 import scalafx.stage._
 import scalafx.geometry.Pos
+import scala.reflect._
 
 class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720) {
   val player = new PlayerShip(this)
   content = player
   var enemies = Buffer[EnemyShip]()
+  var shootingEnemies = Buffer[ShootingEnemy]()
   var playerBullets = Buffer[PlayerBullet]()
   var enemyBullets = Buffer[EnemyBullet]()
   var stars = Buffer[Star]()
@@ -59,6 +61,17 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
         enemies.remove(enemies.indexOf(enemy))
       })
     }
+    // bullet-player collision
+    val bulletsCollidingWithPlayer = enemyBullets.filter(_.collidesWith(player))
+    if (!bulletsCollidingWithPlayer.isEmpty) {
+      player.damage(1)
+      lifeText.text = "Life: " + player.health
+      bulletsCollidingWithPlayer.foreach((bullet: EnemyBullet) => {
+        bullet.destroy
+        enemyBullets.remove(enemyBullets.indexOf(bullet))
+      })
+    }
+    
     //bullet-enemy collision
     var bulletsToDestroy = Buffer[Bullet]()
     enemies.foreach((enemy: SpaceShip) => {
@@ -98,13 +111,11 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
     }
     
     if (action == "shoot") {
-    if (Keys.pressed("shoot")) {
-        var bullet = new PlayerBullet(player.x.value, player.y.value)
-        content += bullet
-        playerBullets += bullet
-        true
+      if (Keys.pressed("shoot")) {
+          player.shoot
         } else false
-    } else false
+    } 
+    else false
   }
   
   
@@ -119,6 +130,7 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
       if (e.code == X)     pressed("shoot") = true
       if (e.code == ESCAPE) sys.exit(0)  // sulkee koko pelin
       if (e.code == P)     pause()  // avaa pausemenun, ei toimi kunnolla
+      if (e.code == Z) EnemySpawner.spawn("AlienShip")
 
      // if (e.code.isDigitKey) player.speed = e.code.name.toInt
       }
@@ -144,7 +156,6 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
         val enemy = new Asteroid(width.value.toInt, random.nextInt(height.value.toInt))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
         content += enemy
         enemies += enemy
-      println("vihollinen")
       }
       if (enemyType == "star") {
         val star = new Star(width.value.toInt, random.nextInt(height.value.toInt))
@@ -162,6 +173,13 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
         }
       }
       
+      if (enemyType == "AlienShip") {
+        val enemy: ShootingEnemy = new AlienShip(width.value.toInt, random.nextInt(height.value.toInt))
+        content += enemy
+        enemies += enemy
+        shootingEnemies += enemy
+      }
+      
     }
   }
   EnemySpawner.spawn("initStars")
@@ -170,13 +188,13 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
        // 1e9 = 1000000000 ns = 1 s
     val timePerShot = 0.25
     var oldTime: Long = 0L
-    var lastShot: Long = 0L
     var lastAsteroid: Double = 3
     var scoreTime = 0.0
     val mainTimer = AnimationTimer(t =>{
       if (oldTime > 0) {
+        val playerLastShot: Long = player.lastShot
         val delta = (t - oldTime)/1e9
-        val shotDelta = (t-lastShot)/1e9
+        val shotDelta = (t-playerLastShot)/1e9
         val asteroidDelta = (t-lastAsteroid)/1e9
         checkForActions(delta, "move")
         checkCollisions
@@ -205,14 +223,25 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
           else lastAsteroid -= 0.1
         }
         
-        if (lastShot == 0 || shotDelta >= timePerShot) {
-        if(checkForActions(delta,"shoot")) lastShot = t
+        shootingEnemies.foreach{enemy: ShootingEnemy =>
+          val lastShot = enemy.lastShot
+          val delta = (t-lastShot)/1e9
+          if (lastShot == 0 || delta >= enemy.timePerShot) {
+            enemy.shoot
+            enemy.lastShot = t
+          }
+        }
+        
+        if (playerLastShot == 0 || shotDelta >= timePerShot) {
+        if (checkForActions(delta,"shoot")) player.lastShot = t
+        }
+        
         
         // Tämän tässä on tarkoitus poistaa Buffereista kaikki kuvan ulkopuolelle siirtyneet asiat:
         // enemies, playerBullets, enemyBullets, stars
         removeOutOfBoundsObjects
         
-        }
+        
         
         scoreText.text = "Score: " + score
       }
@@ -270,5 +299,60 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
 //            stars -= star
 //          }
     //println("Detected threats: " + enemies.size)  // asteroidien tulkintaa varten
+    
+   /* def outOfBounds(thing: SpaceObject): Boolean = {
+      if (content.contains(thing)) {
+        thing.x.value <= 10 || thing.y.value <= 110 || thing.x.value >= this.width.value-10 || thing.y.value >= this.height.value-10
+      } else true
+    }*/
+    /*def removeOutOfBounds[T: ClassTag](b:Buffer[T]) = {
+      b.foreach{(thing: T) =>
+        if (thing.isInstanceOf[SpaceObject]) {thing1: SpaceObject =>
+          if (outOfBounds(thing1)){
+          content -= thing1  
+          b -= thing
+          }
+        } 
+      }
+    }
+    removeOutOfBounds[PlayerBullet](playerBullets)
+    println("bullets: " + playerBullets.size +" content: "+ content.size)
+    */
+    
+   /* enemyBullets.foreach{(a: EnemyBullet) =>
+      if (outOfBounds(a)) {
+       a.destroy
+       enemyBullets -= a
+      }
+    }
+    playerBullets.foreach{(a: PlayerBullet) =>
+      if (outOfBounds(a)) {
+       try {
+         content -= a
+       } finally playerBullets -= a
+      }
+    }
+    stars.foreach{(a: Star) =>
+      if (outOfBounds(a)) {
+       try {
+         content -= a
+       } finally stars -= a
+      }
+    }
+    enemies.foreach{(a: EnemyShip) =>
+      if (outOfBounds(a)) {
+       try {
+         content -= a
+       } finally enemies -= a
+      }
+    }
+    shootingEnemies.foreach{(a: ShootingEnemy) =>
+      if (outOfBounds(a)) {
+       try {
+         content -= a
+       } finally shootingEnemies -= a
+      }
+    }*/
+    
       }
 }

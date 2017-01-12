@@ -22,11 +22,22 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   x = 25
   y = 310
   
+  var lastShot: Long = 0L
+  
+  
+  
   var health = 1 //player health
   
   def playDeathAnimation = {
     gameArea.GameTimer.stop
     new DeathMenu()
+  }
+  
+  def shoot = {
+    var bullet = new PlayerBullet(x.value, y.value)
+      ProjectAsteroid.GameArea.content += bullet
+      ProjectAsteroid.GameArea.playerBullets += bullet
+      true
   }
   
   def move(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta

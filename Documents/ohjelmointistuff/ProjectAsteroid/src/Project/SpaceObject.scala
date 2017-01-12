@@ -52,4 +52,8 @@ abstract class EnemyShip(img: Image) extends SpaceShip(img) {
   def move(delta: Double): Unit
   
 }
-
+abstract class ShootingEnemy(img: Image) extends EnemyShip(img) {
+  def shoot: Boolean
+  var lastShot: Long = 0L
+  var timePerShot: Double
+}
