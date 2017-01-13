@@ -137,6 +137,8 @@ class HighScoreMenu() {
   
   
   val tableEasy = new TableView(data0)
+  tableEasy.maxHeight(300)
+  tableEasy.resize(400, 400)
   val col1easy = new TableColumn[HighScore, String]("Name") {
     cellValueFactory = cdf => StringProperty(cdf.value.name)
   }
@@ -244,21 +246,24 @@ class DifficultyMenu() {
   
   //Events:
   easy.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 1)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
+    Difficulty.easy()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
     ProjectAsteroid.menuSound()
   }
   normal.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 2)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
+    Difficulty.normal()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
     ProjectAsteroid.menuSound()
   }
   hard.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 3)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
+    Difficulty.hard()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
@@ -416,7 +421,7 @@ class DeathMenu() {
   }
   restart.onAction = (e: ActionEvent) => {
     //TODO: varmista että toimii, lähinnäs saako haettua edellisen gamearena difficulty arvon
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, ProjectAsteroid.GameArea.difficulty)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     ProjectAsteroid.menuSound()

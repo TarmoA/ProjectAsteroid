@@ -19,7 +19,7 @@ import scalafx.stage._
 import scalafx.geometry.Pos
 import scala.reflect._
 
-class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720) {
+class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
   val player = new PlayerShip(this)
   content = player
   var enemies = Buffer[EnemyShip]()
@@ -28,7 +28,7 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
   var enemyBullets = Buffer[EnemyBullet]()
   var stars = Buffer[Star]()
   var score = 0
-  val difficulty = initDifficulty
+  //val difficuty =
   
   fill = BLACK //asettaa taustan värin mustaksi
   
@@ -41,7 +41,7 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
   
   val lifeText = new Label{
     font = new Font("Arial", 15)
-    textFill = WHITE
+    textFill = (WHITE)
     text = "Life: " + player.health
   }
   val textBox = new VBox {
