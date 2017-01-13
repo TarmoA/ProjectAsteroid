@@ -151,11 +151,17 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
   }
   
   object EnemySpawner {
-    val random = new Random(100)
+    val random = new Random()
+    val speedRandom = new Random()
     
     def spawn(enemyType: String) = {
       if (enemyType == "asteroid") {
-        val enemy = new Asteroid(width.value.toInt, random.nextInt(height.value.toInt))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
+        val enemy = new SmallAsteroid(width.value.toInt, random.nextInt(height.value.toInt), speedRandom.nextInt(100))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
+        content += enemy
+        enemies += enemy
+      }
+      if (enemyType == "bigasteroid") {
+        val enemy = new BigAsteroid(width.value.toInt, random.nextInt(height.value.toInt), speedRandom.nextInt(100))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
         content += enemy
         enemies += enemy
       }
@@ -190,14 +196,15 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
        // 1e9 = 1000000000 ns = 1 s
     val timePerShot = 0.25
     var oldTime: Long = 0L
-    var lastAsteroid: Double = 3
+    var lastSmallAsteroid: Double = 3
+    var lastBigAsteroid: Double = 10
     var scoreTime = 0.0
     val mainTimer = AnimationTimer(t =>{
       if (oldTime > 0) {
         val playerLastShot: Long = player.lastShot
         val delta = (t - oldTime)/1e9
         val shotDelta = (t-playerLastShot)/1e9
-        val asteroidDelta = (t-lastAsteroid)/1e9
+        //val asteroidDelta = (t-lastSmallAsteroid)/1e9
         checkForActions(delta, "move")
         checkCollisions
         enemies.foreach(_.move(delta))
@@ -217,12 +224,19 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
         spawnAsteroids(Difficulty.setDifficulty)
         
         def spawnAsteroids(difficulty: Int) = {
-          val timePerAsteroid: Double = 5.0 / difficulty
-          if (lastAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
+          val timePerSmallAsteroid: Double = 5.0 / difficulty
+          val timePerBigAsteroid: Double = 25.0 / difficulty
+          if (lastSmallAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
             EnemySpawner.spawn("asteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
-            lastAsteroid = timePerAsteroid
+            lastSmallAsteroid = timePerSmallAsteroid
           }
-          else lastAsteroid -= 0.1
+          else lastSmallAsteroid -= 0.1
+          
+          if (lastBigAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
+            EnemySpawner.spawn("bigasteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
+            lastBigAsteroid = timePerBigAsteroid
+          }
+          else lastBigAsteroid -= 0.1
         }
         
         shootingEnemies.foreach{enemy: ShootingEnemy =>

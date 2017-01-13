@@ -12,11 +12,26 @@ import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 
-class Asteroid(x0:Double, y0:Double) extends EnemyShip(new Image("file:Images/asteroid.png", 50, 50, false, false)) {
-  val speed = 100.0 // pixels per second
+class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/asteroid.png", 50, 50, true, false)) {
+  val speed = 100.0 + movingSpeed // pixels per second
   x = x0
   y = y0
   var health = 1
+  def playDeathAnimation {
+    if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
+  }
+  
+  def move(delta: Double) = {
+    x = x.value - speed*delta
+  }
+  
+}
+
+class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/asteroid.png", 100, 100, true, false)) {
+  val speed = 150.0 + movingSpeed // pixels per second
+  x = x0
+  y = y0
+  var health = 5
   def playDeathAnimation {
     if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
   }

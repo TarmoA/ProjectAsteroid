@@ -1,20 +1,20 @@
 package Project
 
 import scalafx.application.JFXApp
-import scalafx.stage.WindowEvent
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.stage.Stage
-import scalafx.scene.media._
+import scalafx.scene.media.AudioClip
 
 object ProjectAsteroid extends JFXApp {
   //pistetään tänne kaikki muuttujat niin ei tarvitse sitten metsästää niitä myöhemmin.
   var isSoundOn: Boolean = true
-  val menuSound = new AudioClip("file:audio/menu.wav")
+  val menuSoundFile = new AudioClip("file:audio/menu.wav")
   val shootSound = new AudioClip("file:audio/bullet1.wav")
   val explSound = new AudioClip("file:audio/explosion.wav")
   
   var GameArea: GameArea = _
   
+  def menuSound() {
+    if (isSoundOn) menuSoundFile.play
+  }
   stage = new JFXApp.PrimaryStage {
     resizable = false
     centerOnScreen()

@@ -1,30 +1,48 @@
 package Project
+
+import scala.collection.mutable.Buffer
+import scala.io.Source
+
 /**
  * Ylläpitää hichScore tilastoa teksti tiedostossa.
  */
-class HighScore {
-  private val file = "highscore.txt" //tiedosto johon tulokset tallennetaan ja jota myös käsitellään.
+object HighScore {
+  private val fileName = "highscore.txt" //tiedosto johon tulokset tallennetaan ja jota myös käsitellään.
   
-  /**
-   * write metodia käytetään uuden tuloksen lisäämiseen tiedostoon
-   * Vaikeustasojen myötä voi olla että ne lisätään huomioitavaksi tilastoon.
-   */
   def write(name: String, points: Int) = {
     
   }
-  /**
-   * read palauttaa HighScoret suuruusjärjestyksessä (suurin -> pienin) tiedostosta.
-   */
-  def read(): Array[String] = {
-    val testi = Array[String]("ekanimi|ekanpisteet", "tokanimi|tokanpisteet", "kolmasnimi|kolmannenpisteet")
-    putInOrder(testi)
+  
+  def read() = {
+    val hardness0 = Buffer[String]()
+    val hardness1 = Buffer[String]()
+    val hardness2 = Buffer[String]()
+    val file = Source.fromFile(fileName)
+    try {
+      val fileVector = file.getLines.toVector
+      var testi2: Int = 0
+      for (i <- fileVector.tail) {
+        if (i(0) == '0') hardness0 += i
+        if (i(0) == '1') hardness1 += i
+        if (i(0) == '2') hardness2 += i
+      }
+      //println()
+      Buffer(hardness0, hardness1, hardness2)
+      //fileVector.tail
+    }
+      finally {
+        file.close()
+    }
+    
   }
-  /**
-   * read metodin apumetodi jolla järjestetään tulokset pienimmästä suurimpaan.
-   */
-  private def putInOrder(scores: Array[String]): Array[String] = {
+  
+  private def putInOrder(scores: Buffer[String]): Buffer[String] = {
     
     scores
+  }
+  
+  def reset() {
+    println("Reset")
   }
   
 }

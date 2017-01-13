@@ -17,7 +17,7 @@ import scalafx.scene.media._
 /**
  * Player ship
  */
-class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 50, 50, false, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
+class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 50, 48, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
   val speed = 250.0 // pixels per second
   //TODO: Alustukseen sellainen kohta mikä asettaa aluksen y koordinaateiksi noin ruudun puolivälin
   x = 25

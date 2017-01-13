@@ -1,20 +1,13 @@
 package Project
 
 import scalafx.Includes._
-import scalafx.application.JFXApp
 import scalafx.scene.Scene
-import scalafx.scene.text._
+import scalafx.scene.text.Font
 import scalafx.scene.control._
 import scalafx.scene.layout._
-import scalafx.scene.paint.Color._
+import scalafx.scene.paint.Color.{BLACK, WHITE}
 import scalafx.event.ActionEvent
 import scalafx.geometry.Pos
-import scalafx.stage.Modality
-import scalafx.geometry.Insets
-import scalafx.stage.Modality
-import scalafx.geometry.Insets
-import scalafx.stage._
-import scalafx.scene.media._
 
 /*
  * Mainmenu, which is opened at the beginning and at the end if player hasn't closed the program
@@ -33,7 +26,7 @@ object Menu extends Scene(1280, 720) {
     minWidth = 100
   }
       
-  val hiScore = new Button("HighScore, rikki") {
+  val hiScore = new Button("HighScore") {
     style = "-fx-background-color: white"
     textFill = BLACK
     maxWidth = 200
@@ -50,10 +43,11 @@ object Menu extends Scene(1280, 720) {
   }
   val soundLabel = new Label("Sound: " + soundString) {
     textFill =WHITE
+    font = new Font("Arial", 15)
   }
   
   //content:
-  val soundContent = new HBox(22) {
+  val soundContent = new HBox(20) {
     content = List(sound, soundLabel)
     alignment = (Pos.CENTER_LEFT)
     minWidth = (200); maxWidth = (200); prefWidth = (200)
@@ -72,7 +66,7 @@ object Menu extends Scene(1280, 720) {
   
   start.onAction = (e: ActionEvent) => {
     new DifficultyMenu() //opens new menu where player chooses level of difficulty or returns to mainmenu
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
   }
   
   sound.onAction = (e: ActionEvent) => {
@@ -86,14 +80,57 @@ object Menu extends Scene(1280, 720) {
       soundString = "On"
       soundLabel.setText("Sound: " + soundString)
     }
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
   }
   
   hiScore.onAction = (e: ActionEvent) => {
     //TODO:
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    new HighScoreMenu()
+    ProjectAsteroid.menuSound()
   }
   exit.onAction = (e: ActionEvent) => sys.exit(0)
+}
+
+class HighScoreMenu() {
+  val back = new Button("Return") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
+  val reset = new Button("Reset") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
+  val test = new Button("Test") { //TODO: when done remove
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
+  val buttonsContent = new HBox(20) {
+    content = List(back, reset, test)
+    alignment = (Pos.CENTER)
+    minWidth = (200); maxWidth = (200); prefWidth = (200)
+  }
+  val HiScMenuContent = new VBox(20) {
+    content = List(buttonsContent)
+    alignment = Pos.CENTER
+    style = "-fx-background-color: black"
+  }
+  Menu.root = HiScMenuContent
+  
+  //Events:
+  back.onAction = (e: ActionEvent) => {
+    Menu.root = Menu.menuContent
+    ProjectAsteroid.menuSound()
+  }
+  reset.onAction = (e: ActionEvent) => {
+    HighScore.reset
+    ProjectAsteroid.menuSound()
+  }
+  test.onAction = (e: ActionEvent) => {
+    println(HighScore.read())
+  }
 }
 
 /*
@@ -131,6 +168,7 @@ class DifficultyMenu() {
   
   //Label:
   val hardnesLabel = new Label("Choose level of difficulty") {
+    font = new Font("Arial", 20)
     textFill = WHITE
   }
   
@@ -145,25 +183,25 @@ class DifficultyMenu() {
   
   //Events:
   easy.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 0)
-    ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
-    ProjectAsteroid.stage.centerOnScreen
-    Menu.root = Menu.menuContent
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
-  }
-  normal.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 1)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
   }
-  hard.onAction = (e: ActionEvent) => {
+  normal.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 2)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
+  }
+  hard.onAction = (e: ActionEvent) => {
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 3)
+    ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
+    ProjectAsteroid.stage.centerOnScreen
+    Menu.root = Menu.menuContent
+    ProjectAsteroid.menuSound()
   }
   impossible.onAction = (e: ActionEvent) => {
     //TODO: jos aikaa niin voi tehdä
@@ -175,7 +213,7 @@ class DifficultyMenu() {
   }
   backMenu.onAction = (e: ActionEvent) => {
     Menu.root = Menu.menuContent
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
   }
 }
 
@@ -184,18 +222,24 @@ class DifficultyMenu() {
  */
 class PauseMenu() {
   ProjectAsteroid.GameArea.GameTimer.stop
-  if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+  ProjectAsteroid.menuSound()
   //buttons:
   val continue = new Button("Continue") {
-    style = ("-fx-background-color: white")
-    textFill = (BLACK)
-    prefWidth = (200)
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    prefWidth = 200
   }
   val soundButton = new Button("Sound") {
     style = "-fx-background-color: white"
     textFill = BLACK
     prefWidth = 100
   }
+  val returnMenu = new Button("Return Menu") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    prefWidth = 200
+  }
+  
   val exit = new Button("Exit") {
     style = "-fx-background-color: white"
     textFill = BLACK
@@ -203,19 +247,27 @@ class PauseMenu() {
   }
   
   //Labels:
+  val pauseLabel = new Label("Pause Menu") {
+    textFill = WHITE
+    font = new Font("Arial", 20)
+    style = "-fx-background-color: black"
+  }
+  
   val soundLabel = new Label("Sound: " + Menu.soundString) {
     textFill = WHITE
+    style = "-fx-background-color: black"
+    font = new Font("Arial", 15)
   }
   
   //Content:
-  val soundContent = new HBox(22) {
+  val soundContent = new HBox(20) {
     content = List(soundButton, soundLabel)
     alignment = Pos.CENTER_LEFT
     minWidth = 200; prefWidth = 200; maxWidth = 200
   }
   val pauseMenuContent = new VBox(20) {
     alignment = Pos.CENTER
-    content = List(continue, soundContent, exit)
+    content = List(pauseLabel, continue, soundContent, returnMenu, exit)
     //style = "-fx-background-color: black"
     layoutX = ProjectAsteroid.GameArea.width.toDouble / 2 - 100
     layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 - 100
@@ -229,7 +281,7 @@ class PauseMenu() {
     ProjectAsteroid.GameArea.GameTimer.oldTime = 0L
     ProjectAsteroid.GameArea.GameTimer.start
     ProjectAsteroid.GameArea.paused = false
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
   }
   soundButton.onAction = (e: ActionEvent) => {
     if (ProjectAsteroid.isSoundOn) {
@@ -242,7 +294,12 @@ class PauseMenu() {
       Menu.soundString = "On"
       soundLabel.setText("Sound: " + Menu.soundString)
     }
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
+  }
+  returnMenu.onAction = (e: ActionEvent) => {
+    ProjectAsteroid.stage.scene = Menu
+    ProjectAsteroid.stage.centerOnScreen()
+    ProjectAsteroid.menuSound()
   }
   exit.onAction = (e: ActionEvent) => sys.exit(0) //TODO: palaako päämenuun vai sulkeeko koko ohjelman?
 }
@@ -276,6 +333,8 @@ class DeathMenu() {
   //Label:
   val deathLabel = new Label("Mission failure\nYour score: " + ProjectAsteroid.GameArea.score) {
     textFill = WHITE
+    font = new Font("Arial", 20)
+    style = "-fx-background-color: black"
   }
   
   //Content:
@@ -292,19 +351,19 @@ class DeathMenu() {
   //Events:
   saveScore.onAction = (e: ActionEvent) => {
     //TODO: asks name and saves highscore, then open mainmenu
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
   }
   restart.onAction = (e: ActionEvent) => {
     //TODO: varmista että toimii, lähinnäs saako haettua edellisen gamearena difficulty arvon
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, ProjectAsteroid.GameArea.difficulty)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
   }
   returnMenu.onAction = (e: ActionEvent) => {
     ProjectAsteroid.stage.scene = Menu
     ProjectAsteroid.stage.centerOnScreen()
-    if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
+    ProjectAsteroid.menuSound()
   }
   
   exit.onAction = (e: ActionEvent) => sys.exit(0) //TODO: riittääkö että on palaa päämenuun nappi vai tarviiko tämänkin?
