@@ -12,11 +12,11 @@ import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 
-class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/asteroid.png", 50, 50, true, false)) {
-  val speed = 100.0 + movingSpeed // pixels per second
+class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/uusin_asteroidi.png", 50, 50, true, false)) {  // Alkuperäinen koko 20x20
+  val speed = 120.0 + movingSpeed * 1.2 // pixels per second
   x = x0
   y = y0
-  var health = 1
+  var health = 2
   def playDeathAnimation {
     if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
   }
@@ -27,11 +27,11 @@ class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip
   
 }
 
-class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/asteroid.png", 100, 100, true, false)) {
-  val speed = 150.0 + movingSpeed // pixels per second
+class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/uusin_iso_asteroidi.png", 110, 110, true, false)) {  // Alkuperäinen koko 30x30
+  val speed = 80.0 + movingSpeed * 2 // pixels per second
   x = x0
   y = y0
-  var health = 5
+  var health = 6
   def playDeathAnimation {
     if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
   }
@@ -42,7 +42,7 @@ class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(n
   
 }
 
-class AlienShip (x0:Double, y0:Double) extends ShootingEnemy(new Image("file:Images/asteroid.png", 80, 80, false, false)) {
+class AlienShip (x0:Double, y0:Double) extends ShootingEnemy(new Image("file:Images/uusin_asteroidi.png", 80, 80, false, false)) {
   val speed = 100.0 // pixels per second
   x = x0
   y = y0

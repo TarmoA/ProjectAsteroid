@@ -34,14 +34,14 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
   
   
   val scoreText = new Label{
-    font = new Font("Arial", 15)
-    textFill = (RED)
+    font = new Font("Arial", 19)
+    textFill = (WHITE)
     text = "Score: " + score
   }
   
   val lifeText = new Label{
-    font = new Font("Arial", 15)
-    textFill = (RED)
+    font = new Font("Arial", 20)
+    textFill = (WHITE)
     text = "Life: " + player.health
   }
   val textBox = new VBox {
@@ -140,6 +140,11 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
       if (e.code == DOWN)  pressed("down") = false
       if (e.code == UP)    pressed("up") = false
       if (e.code == X)     pressed("shoot") = false
+      // Toggle auto-fire
+      if (e.code == A)     if (pressed("shoot") == false)
+                             pressed("shoot") = true
+                           else
+                             pressed("shoot") = false
     }
   }
   

@@ -17,7 +17,7 @@ import scalafx.scene.media._
 /**
  * Player ship
  */
-class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 50, 48, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
+class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 56, 53, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
   val speed = 250.0 // pixels per second
   //TODO: Alustukseen sellainen kohta mikä asettaa aluksen y koordinaateiksi noin ruudun puolivälin
   x = 25
@@ -28,7 +28,17 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   
   val shootSound = ProjectAsteroid.shootSound
   
-  var health = 1 //player health
+  var health = 3
+  
+  // Tässä oma ratkaisuni healthin määrittämisen suhteen, vaatii muutoksia difficultyyn
+  // tai toisenlaisen ratkaisun jos difficulty määritetään eri lailla
+//  // Player health
+//  var health = {
+//    if      (difficulty = "easy")   10
+//    else if (difficulty = "normal") 5
+//    else if (difficulty = "hard")   1
+//    else                            0  // Kirjaimellisesti mahdoton vaikeusaste
+//  }
   
   def playDeathAnimation = {
     gameArea.GameTimer.stop
