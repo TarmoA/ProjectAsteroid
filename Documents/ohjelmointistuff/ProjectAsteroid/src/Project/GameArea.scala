@@ -226,7 +226,7 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
         EnemySpawner.spawn("star")
         
         // Spawnaa asteroideja vaikeusasteen mukaan
-        spawnAsteroids(Difficulty.setDifficulty)
+        spawnAsteroids(Difficulty.factor)
         
         def spawnAsteroids(difficulty: Int) = {
           val timePerSmallAsteroid: Double = 5.0 / difficulty

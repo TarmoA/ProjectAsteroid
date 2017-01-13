@@ -28,17 +28,13 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   
   val shootSound = ProjectAsteroid.shootSound
   
-  var health = 3
-  
-  // Tässä oma ratkaisuni healthin määrittämisen suhteen, vaatii muutoksia difficultyyn
-  // tai toisenlaisen ratkaisun jos difficulty määritetään eri lailla
-//  // Player health
-//  var health = {
-//    if      (difficulty = "easy")   10
-//    else if (difficulty = "normal") 5
-//    else if (difficulty = "hard")   1
-//    else                            0  // Kirjaimellisesti mahdoton vaikeusaste
-//  }
+  // Player health is defined by the level of difficulty
+  var health = {
+    if      (Difficulty.definition == "easy")   9
+    else if (Difficulty.definition == "normal") 5
+    else if (Difficulty.definition == "hard")   2
+    else                                        0  // Kirjaimellisesti mahdoton vaikeusaste
+  }
   
   def playDeathAnimation = {
     gameArea.GameTimer.stop

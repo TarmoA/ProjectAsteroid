@@ -1,31 +1,23 @@
 package Project
 
-/**
- * Asettaa pelin vaikeustason halutulle tasolle
- * testaus tällä hetkellä, paluattaa vain Int arvon
- */
 object Difficulty {
   
-  var gameDifficulty: String = ""
+  var definition: String = ""
+  var factor: Int = 2
   
-  def easy() = {
-//    gameDifficulty = "easy"
+  def easy(): Int = {
+    definition = "easy"
+    factor = 1
     1
   }
-  def normal() = {
-//    gameDifficulty = "normal"
+  def normal(): Int = {
+    definition = "normal"
+    factor = 2
     2
   }
-  def hard() = {
-//    gameDifficulty = "hard"
+  def hard(): Int = {
+    definition = "hard"
+    factor = 3
     3
-  }
-  /**
-   * käytetään valitsemaan haluttu vaikeus
-   * alustava tapa, keksikää fiksumpi
-   */
-  
-  def setDifficulty() = {
-    this.normal() //testaus
   }
 }

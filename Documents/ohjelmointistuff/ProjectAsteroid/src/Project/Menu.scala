@@ -183,21 +183,21 @@ class DifficultyMenu() {
   
   //Events:
   easy.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 1)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.easy())
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
     ProjectAsteroid.menuSound()
   }
   normal.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 2)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.normal())
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
     ProjectAsteroid.menuSound()
   }
   hard.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 3)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.hard())
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
