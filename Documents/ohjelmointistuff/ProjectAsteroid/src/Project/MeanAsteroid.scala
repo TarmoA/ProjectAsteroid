@@ -1,4 +1,5 @@
-package Project
+
+  package Project
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene._
@@ -10,16 +11,22 @@ import scalafx.scene.input.KeyCode._
 import scalafx.event.ActionEvent._
 import scalafx.scene.control._
 import scalafx.Includes._
+import scala.util.Random
+
 import scalafx.animation.AnimationTimer
 
-class Star(x0: Double, y0: Double) extends SpaceObject(new Image("file:Images/star_2.png", 2, 1, true, false)) { //tähden kuvan alk. koko 2*1
-  var speed: Double = 50  // Pixels per second
+class MeanAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/asteroid.png", 100, 100, false, false)) {
+  var speed = 150.0  + movingSpeed// pixels per second
   x = x0
   y = y0
-  
-  def move(delta: Double) = {
-    x = x.value - this.speed * delta
+  var health = 5
+  def playDeathAnimation {
+    
   }
   
-  override def destroy = Unit
+  def move(delta: Double) = {
+    x = x.value - speed*delta
+  }
+  
+
 }

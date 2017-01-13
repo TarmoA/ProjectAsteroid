@@ -16,7 +16,7 @@ import scalafx.animation.AnimationTimer
 
 abstract class SpaceObject(img: Image) extends ImageView(img){
   
-  val speed: Double
+  var speed: Double
   
   def collidesWith(another: SpaceObject) = {
      this.intersects(another.boundsInLocal.value)

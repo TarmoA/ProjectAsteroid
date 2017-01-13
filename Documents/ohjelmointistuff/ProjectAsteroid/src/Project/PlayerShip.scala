@@ -13,12 +13,17 @@ import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 import scalafx.scene.media._
+import scala.math._
 
 /**
  * Player ship
  */
 class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 50, 48, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
-  val speed = 250.0 // pixels per second
+  var speed = 250.0 // pixels per second
+  var xSpeed = 0
+  var ySpeed = 0
+  val acceleration = 15
+  val slowingSpeed = 5
   //TODO: Alustukseen sellainen kohta mikä asettaa aluksen y koordinaateiksi noin ruudun puolivälin
   x = 25
   y = 310
@@ -28,7 +33,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   
   val shootSound = ProjectAsteroid.shootSound
   
-  var health = 1 //player health
+  var health = 1000 //player health
   
   def playDeathAnimation = {
     gameArea.GameTimer.stop
@@ -43,26 +48,82 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
       true
   }
   
+
+  
   def move(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
     
     if (dir =="right") {
-      if (x.value + speed*delta <= scene.value.width.toInt - 50) x = x.value + speed*delta
+      if (x.value + xSpeed*delta <= scene.value.width.toInt - 50) x = x.value + xSpeed*delta
       else x = scene.value.width.toInt - 50
     }
     
     if (dir =="left") {
-      if (x.value - speed*delta >= 0) x = x.value - speed*delta
+      if (x.value - xSpeed*delta >= 0) x = x.value + xSpeed*delta
       else x = 0
     }
     
     if (dir =="down") {
-      if (y.value + speed*delta <= scene.value.height.toInt - 50) y = y.value + speed*delta
+      if (y.value + ySpeed*delta <= scene.value.height.toInt - 50) y = y.value + ySpeed*delta
       else y = scene.height.toInt - 50
     }
     
     if (dir =="up") {
-      if (y.value - speed*delta >= 0) y = y.value - speed*delta
+      if (y.value + speed*delta >= 0) y = y.value + ySpeed*delta
       else y = 0
     }
   }
+  
+  
+  def move(delta: Double) = { //method moves the ship into given direction and distance depends on delta
+    if (xSpeed > 0) {
+      if (x.value + xSpeed*delta <= scene.value.width.toInt - 50) x = x.value + xSpeed*delta
+      else x = scene.value.width.toInt - 50
+    }
+    
+    if (xSpeed < 0) {
+      if (x.value - xSpeed*delta >= 0) x = x.value + xSpeed*delta
+      else x = 0
+    }
+    
+    if (ySpeed >0) {
+      if (y.value + ySpeed*delta <= scene.value.height.toInt - 50) y = y.value + ySpeed*delta
+      else y = scene.height.toInt - 50
+    }
+    
+    if (ySpeed <0) {
+      if (y.value + speed*delta >= 0) y = y.value + ySpeed*delta
+      else y = 0
+    }
+  }
+  
+  def slowDownVertical(delta: Double)={
+    if (ySpeed < 0) ySpeed += slowingSpeed
+    if(ySpeed > 0) ySpeed -= slowingSpeed
+  }
+  
+  def slowDownHorizontal(delta: Double)={
+    if (xSpeed < 0) xSpeed += slowingSpeed
+    if(xSpeed > 0) xSpeed -= slowingSpeed
+  }
+  
+  def accelerate(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
+    
+    if (dir =="right") {
+      if(xSpeed < 250) xSpeed += acceleration
+
+    }
+    
+    if (dir =="left") {
+      if(xSpeed > -250) xSpeed -= acceleration
+    }
+    
+    if (dir =="down") {
+      if(ySpeed < 250) ySpeed += acceleration
+    }
+    
+    if (dir =="up") {
+      if(ySpeed > -250) ySpeed -= acceleration
+    }
+  }
+  
 }

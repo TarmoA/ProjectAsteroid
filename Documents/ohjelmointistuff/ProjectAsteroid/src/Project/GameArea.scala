@@ -19,7 +19,7 @@ import scalafx.stage._
 import scalafx.geometry.Pos
 import scala.reflect._
 
-class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720) {
+class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(720, 480) {
   val player = new PlayerShip(this)
   content = player
   var enemies = Buffer[EnemyShip]()
@@ -29,6 +29,8 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
   var stars = Buffer[Star]()
   var score = 0
   val difficulty = initDifficulty
+  var speed=0
+  val acceleration = 25
   
   fill = BLACK //asettaa taustan värin mustaksi
   
@@ -101,12 +103,20 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
   
   def checkForActions(delta: Double, action: String): Boolean = {
   
-    if (action == "move") {
+//    if (action == "move") {
+//    
+//    if (Keys.pressed("right")) player.move("right", delta)
+//    if (Keys.pressed("left")) player.move("left", delta)
+//    if (Keys.pressed("down")) player.move("down", delta)
+//    if (Keys.pressed("up")) player.move("up", delta)
+//    true
+//    }
+    if (action == "accelerate") {
+    if (Keys.pressed("right")) player.accelerate("right", delta)
+    if (Keys.pressed("left")) player.accelerate("left", delta)
     
-    if (Keys.pressed("right")) player.move("right", delta)
-    if (Keys.pressed("left")) player.move("left", delta)
-    if (Keys.pressed("down")) player.move("down", delta)
-    if (Keys.pressed("up")) player.move("up", delta)
+    if (Keys.pressed("down")) player.accelerate("down", delta)
+    if (Keys.pressed("up")) player.accelerate("up", delta)
     true
     }
     
@@ -206,7 +216,16 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
         val shotDelta = (t-playerLastShot)/1e9
         //val asteroidDelta = (t-lastSmallAsteroid)/1e9
         checkForActions(delta, "move")
+        checkForActions(delta, "accelerate")
         checkCollisions
+        player.move(delta)
+        if(!Keys.pressed("right") && !Keys.pressed("left")){
+          player.slowDownHorizontal(delta)
+        }
+         if(!Keys.pressed("up") && !Keys.pressed("down")){
+          player.slowDownVertical(delta)
+        }
+        
         enemies.foreach(_.move(delta))
         playerBullets.foreach(_.move(delta))
         enemyBullets.foreach(_.move(delta))
