@@ -5,13 +5,19 @@ package Project
  * testaus tällä hetkellä, paluattaa vain Int arvon
  */
 object Difficulty {
+  
+  var gameDifficulty: String = ""
+  
   def easy() = {
+//    gameDifficulty = "easy"
     1
   }
   def normal() = {
+//    gameDifficulty = "normal"
     2
   }
-  def hard(): Int = {
+  def hard() = {
+//    gameDifficulty = "hard"
     3
   }
   /**

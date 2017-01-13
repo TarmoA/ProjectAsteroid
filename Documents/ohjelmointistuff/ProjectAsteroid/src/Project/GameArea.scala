@@ -161,12 +161,12 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
     
     def spawn(enemyType: String) = {
       if (enemyType == "asteroid") {
-        val enemy = new SmallAsteroid(width.value.toInt, random.nextInt(height.value.toInt), speedRandom.nextInt(100))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
+        val enemy = new SmallAsteroid(width.value.toInt, (player.image.value.height.toDouble / 2) + random.nextInt(height.value.toInt) - player.image.value.height.toDouble, speedRandom.nextInt(100))  // Jotta asteroidit eivät spawnaa niin reunalle, ettei niitä pysty ampumaan, asteroidien spawnaukselle annetaan korkeussuunnassa rajat.
         content += enemy
         enemies += enemy
       }
       if (enemyType == "bigasteroid") {
-        val enemy = new BigAsteroid(width.value.toInt, random.nextInt(height.value.toInt), speedRandom.nextInt(100))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
+        val enemy = new BigAsteroid(width.value.toInt, (player.image.value.height.toDouble / 2) + random.nextInt(height.value.toInt) - player.image.value.height.toDouble, speedRandom.nextInt(100))
         content += enemy
         enemies += enemy
       }
