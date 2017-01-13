@@ -6,7 +6,7 @@ import scala.io.Source
 /**
  * Ylläpitää hichScore tilastoa teksti tiedostossa.
  */
-object HighScore {
+case class HighScore(hardness: Int, val name: String, val score: Int) {
   private val fileName = "highscore.txt" //tiedosto johon tulokset tallennetaan ja jota myös käsitellään.
   
   def write(name: String, points: Int) = {

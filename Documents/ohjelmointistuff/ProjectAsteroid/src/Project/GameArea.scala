@@ -35,13 +35,13 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
   
   val scoreText = new Label{
     font = new Font("Arial", 15)
-    textFill = (RED)
+    textFill = (WHITE)
     text = "Score: " + score
   }
   
   val lifeText = new Label{
     font = new Font("Arial", 15)
-    textFill = (RED)
+    textFill = WHITE
     text = "Life: " + player.health
   }
   val textBox = new VBox {

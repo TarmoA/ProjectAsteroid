@@ -8,6 +8,9 @@ import scalafx.scene.layout._
 import scalafx.scene.paint.Color.{BLACK, WHITE}
 import scalafx.event.ActionEvent
 import scalafx.geometry.Pos
+import scalafx.collections.ObservableBuffer
+import scala.collection.mutable.Buffer
+import scalafx.beans.property.{StringProperty, ObjectProperty}
 
 /*
  * Mainmenu, which is opened at the beginning and at the end if player hasn't closed the program
@@ -46,7 +49,16 @@ object Menu extends Scene(1280, 720) {
     font = new Font("Arial", 15)
   }
   
+  //Labels:
+  val help = new Label("Shoot: X\nMove: Arrow keys") {
+    font = new Font("Arial", 15)
+    textFill =WHITE
+    layoutX = 50
+    layoutY = 50
+  }
+  
   //content:
+
   val soundContent = new HBox(20) {
     content = List(sound, soundLabel)
     alignment = (Pos.CENTER_LEFT)
@@ -54,7 +66,7 @@ object Menu extends Scene(1280, 720) {
   }
   
   val menuContent = new VBox(20) {
-    content = List(name, start, soundContent, hiScore, exit)
+    content = List(name, start, soundContent, hiScore, exit, help)
     alignment = Pos.CENTER
     style = "-fx-background-color: black"
   }
@@ -92,6 +104,7 @@ object Menu extends Scene(1280, 720) {
 }
 
 class HighScoreMenu() {
+  //Buttons:
   val back = new Button("Return") {
     style = "-fx-background-color: white"
     textFill = BLACK
@@ -107,13 +120,61 @@ class HighScoreMenu() {
     textFill = BLACK
     maxWidth = 200
   }
+  
+  //Array:
+  val data0 = ObservableBuffer (
+    HighScore(0, "nasm", 157),
+    HighScore(0, "sdf", 90)
+  )
+  val data1 = ObservableBuffer (
+    HighScore(0, "fg", 147),
+    HighScore(0, "sfdgf", 954)
+  )
+  val data2 = ObservableBuffer (
+    HighScore(0, "nfgds", 1535),
+    HighScore(0, "sdgs", 680)
+  )
+  
+  
+  val tableEasy = new TableView(data0)
+  val col1easy = new TableColumn[HighScore, String]("Name") {
+    cellValueFactory = cdf => StringProperty(cdf.value.name)
+  }
+  val col2easy = new TableColumn[HighScore, Int]("Score") {
+    cellValueFactory = cdf => ObjectProperty(cdf.value.score)
+  }
+  tableEasy.columns ++= List(col1easy, col2easy)
+  
+  
+  
+  val tableNormal = new TableView(data1)
+  val col1Normal = new TableColumn[HighScore, String]("Name") {
+    cellValueFactory = cdf => StringProperty(cdf.value.name)
+  }
+  val col2Normal = new TableColumn[HighScore, Int]("Score") {
+    cellValueFactory = cdf => ObjectProperty(cdf.value.score)
+  }
+  tableNormal.columns ++= List(col1Normal, col2Normal)
+  val tableHard = new TableView(data2)
+  val col1Hard = new TableColumn[HighScore, String]("Name") {
+    cellValueFactory = cdf => StringProperty(cdf.value.name)
+  }
+  
+  
+  
+  val col2Hard = new TableColumn[HighScore, Int]("Score") {
+    cellValueFactory = cdf => ObjectProperty(cdf.value.score)
+  }
+  tableHard.columns ++= List(col1Hard, col2Hard)
+  
+  //Content:
   val buttonsContent = new HBox(20) {
     content = List(back, reset, test)
     alignment = (Pos.CENTER)
     minWidth = (200); maxWidth = (200); prefWidth = (200)
   }
   val HiScMenuContent = new VBox(20) {
-    content = List(buttonsContent)
+    content = List(tableEasy, tableNormal, tableHard, buttonsContent)
     alignment = Pos.CENTER
     style = "-fx-background-color: black"
   }
@@ -125,11 +186,11 @@ class HighScoreMenu() {
     ProjectAsteroid.menuSound()
   }
   reset.onAction = (e: ActionEvent) => {
-    HighScore.reset
+    //HighScore.reset
     ProjectAsteroid.menuSound()
   }
   test.onAction = (e: ActionEvent) => {
-    println(HighScore.read())
+    //println(HighScore.read())
   }
 }
 
