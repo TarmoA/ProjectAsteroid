@@ -23,6 +23,7 @@ class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip
   
   def move(delta: Double) = {
     x = x.value - speed*delta
+		checkOutOfBounds
   }
   
 }
@@ -38,6 +39,7 @@ class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(n
   
   def move(delta: Double) = {
     x = x.value - speed*delta
+    checkOutOfBounds
   }
   
 }
@@ -55,6 +57,7 @@ class AlienShip (x0:Double, y0:Double) extends ShootingEnemy(new Image("file:Ima
   
   def move(delta: Double) = {
     x = x.value - speed*delta
+    checkOutOfBounds
   }
   
    def shoot = {

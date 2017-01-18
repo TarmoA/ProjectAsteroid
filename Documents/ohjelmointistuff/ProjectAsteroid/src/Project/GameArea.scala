@@ -279,6 +279,35 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
   // enemies, playerBullets, enemyBullets, stars
   def removeOutOfBoundsObjects: Unit = {
     
+    val enemiesToRemove = enemies.filter(!_.isAlive)
+    val starsToRemove = stars.filter(!_.isAlive)
+    val enemyBulletsToRemove = enemyBullets.filter(!_.isAlive)
+    val playerBulletsToRemove = playerBullets.filter(!_.isAlive)
+    
+    enemies.foreach((e: EnemyShip) => if (enemiesToRemove.contains(e)) {
+      enemies.remove(enemies.indexOf(e))
+      if (content.contains(e)) content.remove(content.indexOf(e))
+    })
+    
+    stars.foreach((e: Star) => if (starsToRemove.contains(e)) {
+      stars.remove(stars.indexOf(e))
+      if (content.contains(e)) {
+        content.remove(content.indexOf(e))
+      }
+    })
+    
+    enemyBullets.foreach((e: EnemyBullet) => if (enemyBulletsToRemove.contains(e)) {
+      enemyBullets.remove(enemyBullets.indexOf(e))
+      if (content.contains(e)) content.remove(content.indexOf(e))
+    })
+    
+    playerBullets.foreach((e: PlayerBullet) => if (playerBulletsToRemove.contains(e)) {
+      playerBullets.remove(playerBullets.indexOf(e))
+      if (content.contains(e)) content.remove(content.indexOf(e))
+    })
+    
+    //println("content: "+content.size)
+    
 //        for (enemy <- enemies)
 //          if ((enemy.x.toInt > scene.value.width.toInt * 1.2) ||  // Elementtien poistolle asetetut rajat ovat nähtävän alueen ulkopuolella, nähtävän alueen koon mukaan suhteutettuna
 //              (enemy.x.toInt < -scene.value.width.toInt * 0.2) ||
@@ -315,7 +344,7 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
 //          }
     //println("Detected threats: " + enemies.size)  // asteroidien tulkintaa varten
     
-   /* def outOfBounds(thing: SpaceObject): Boolean = {
+    /*def outOfBounds(thing: SpaceObject): Boolean = {
       if (content.contains(thing)) {
         thing.x.value <= 10 || thing.y.value <= 110 || thing.x.value >= this.width.value-10 || thing.y.value >= this.height.value-10
       } else true
@@ -333,8 +362,8 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
     removeOutOfBounds[PlayerBullet](playerBullets)
     println("bullets: " + playerBullets.size +" content: "+ content.size)
     */
-    
-   /* enemyBullets.foreach{(a: EnemyBullet) =>
+    /*
+    enemyBullets.foreach{(a: EnemyBullet) =>
       if (outOfBounds(a)) {
        a.destroy
        enemyBullets -= a

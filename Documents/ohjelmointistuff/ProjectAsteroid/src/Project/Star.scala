@@ -17,8 +17,10 @@ class Star(x0: Double, y0: Double) extends SpaceObject(new Image("file:Images/st
   x = x0
   y = y0
   
+ 
   def move(delta: Double) = {
     x = x.value - this.speed * delta
+    checkOutOfBounds
   }
   
   override def destroy = Unit
