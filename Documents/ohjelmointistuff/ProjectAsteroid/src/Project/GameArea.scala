@@ -28,7 +28,7 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
   var enemyBullets = Buffer[EnemyBullet]()
   var stars = Buffer[Star]()
   var score = 0
-  var speed=0
+  var speed = 0
   val acceleration = 25
   
   fill = BLACK //asettaa taustan värin mustaksi
@@ -48,6 +48,7 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
   val textBox = new VBox {
     spacing = 2
     content = List(scoreText,lifeText)
+    toFront
   }
   content += textBox
   
@@ -200,6 +201,11 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
   
   object GameTimer {
        // 1e9 = 1000000000 ns = 1 s
+    var secondTimer: Double = 0
+    val timePerSpeedIncrease = 3
+    //var timePerAsteroidMinus = 0.0
+    var timePerSmallAsteroid: Double = 5.0 / difficulty
+    var timePerBigAsteroid: Double = 25.0 / difficulty
     val timePerShot = 0.25
     var oldTime: Long = 0L
     var lastSmallAsteroid: Double = 3
@@ -235,12 +241,21 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
         // Spawnaa tähtiä
         EnemySpawner.spawn("star")
         
+        
+        secondTimer += delta
+        if (secondTimer >= timePerSpeedIncrease) {
+          secondTimer -= timePerSpeedIncrease
+          timePerSmallAsteroid = timePerSmallAsteroid *0.95
+          timePerBigAsteroid = timePerBigAsteroid*0.95
+        }
+        
+        
         // Spawnaa asteroideja vaikeusasteen mukaan
         spawnAsteroids(Difficulty.factor) //TODO:
         
         def spawnAsteroids(difficulty: Int) = {
-          val timePerSmallAsteroid: Double = 5.0 / difficulty
-          val timePerBigAsteroid: Double = 25.0 / difficulty
+          //val timePerSmallAsteroid: Double = 5.0 / difficulty - timePerAsteroidMinus
+          //val timePerBigAsteroid: Double = 25.0 / difficulty - timePerAsteroidMinus
           if (lastSmallAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
             EnemySpawner.spawn("asteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
             lastSmallAsteroid = timePerSmallAsteroid
@@ -275,6 +290,8 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
         
         
         scoreText.text = "Score: " + score
+
+        textBox.toFront
       }
       oldTime = t
     })

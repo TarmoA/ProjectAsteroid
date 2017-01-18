@@ -27,11 +27,6 @@ object ProjectAsteroid extends JFXApp {
   
 }
 
-/*TODO:
- * Asteroidien läpinäkyvyys pois, tähdet näkyy läpi välillä
- * asteroidien sivuttais liike
- * highscore osio
- */
 
 
 
