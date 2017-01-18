@@ -13,7 +13,7 @@ import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 
 class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/uusin_asteroidi.png", 50, 50, true, false)) {  // Alkuperäinen koko 20x20
-  val speed = 120.0 + movingSpeed * 1.2 // pixels per second
+  var speed = 120.0 + movingSpeed * 1.2 // pixels per second
   x = x0
   y = y0
   var health = 2
@@ -29,7 +29,7 @@ class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip
 }
 
 class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(new Image("file:Images/uusin_iso_asteroidi.png", 110, 110, true, false)) {  // Alkuperäinen koko 30x30
-  val speed = 80.0 + movingSpeed * 2 // pixels per second
+  var speed = 80.0 + movingSpeed * 2 // pixels per second
   x = x0
   y = y0
   var health = 6

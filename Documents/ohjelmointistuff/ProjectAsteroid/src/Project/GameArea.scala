@@ -213,7 +213,6 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
         //val asteroidDelta = (t-lastSmallAsteroid)/1e9
         checkForActions(delta, "move")
         checkForActions(delta, "accelerate")
-        checkCollisions
         player.move(delta)
         if(!Keys.pressed("right") && !Keys.pressed("left")){
           player.slowDownHorizontal(delta)
@@ -226,6 +225,7 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
         playerBullets.foreach(_.move(delta))
         enemyBullets.foreach(_.move(delta))
         stars.foreach(_.move(delta))
+        checkCollisions
         scoreTime += delta
         if (scoreTime >= 1) {
           score += 1 
