@@ -10,6 +10,7 @@ object ProjectAsteroid extends JFXApp {
   val shootSound = new AudioClip("file:audio/bullet1.wav")
   val explSound = new AudioClip("file:audio/explosion.wav")
   
+  HighScoreFile.read() //reads highscore file and saves its results in buffers
   var GameArea: GameArea = _
   
   def menuSound() {
@@ -27,12 +28,9 @@ object ProjectAsteroid extends JFXApp {
 }
 
 /*TODO:
- * jos avaa jonkun pop-up ikkunan ja sulkee pääikkunan niin ohjelma ei sulkeudu, fiksaa niin että sulkeutuu
  * Asteroidien läpinäkyvyys pois, tähdet näkyy läpi välillä
- * tyhjeneekö bufferit oikein kun tuhoutuu ja menee pois alueelta?
  * asteroidien sivuttais liike
  * highscore osio
- * seed arvo kun generoi asteroideja randomiksi, tulee ihan samalla tavalla aina nytten.
  */
 
 

@@ -19,7 +19,7 @@ import scalafx.stage._
 import scalafx.geometry.Pos
 import scala.reflect._
 
-class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
+class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720) {
   val player = new PlayerShip(this)
   content = player
   var enemies = Buffer[EnemyShip]()
@@ -28,7 +28,6 @@ class GameArea(isSoundOn: Boolean) extends Scene(1280, 720) {
   var enemyBullets = Buffer[EnemyBullet]()
   var stars = Buffer[Star]()
   var score = 0
-  //val difficuty =
   
   fill = BLACK //asettaa taustan värin mustaksi
   

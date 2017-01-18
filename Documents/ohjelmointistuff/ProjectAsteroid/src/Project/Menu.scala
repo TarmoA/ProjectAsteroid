@@ -97,6 +97,7 @@ object Menu extends Scene(1280, 720) {
   
   hiScore.onAction = (e: ActionEvent) => {
     //TODO:
+    HighScoreFile.read()
     new HighScoreMenu()
     ProjectAsteroid.menuSound()
   }
@@ -115,68 +116,102 @@ class HighScoreMenu() {
     textFill = BLACK
     maxWidth = 200
   }
-  val test = new Button("Test") { //TODO: when done remove
-    style = "-fx-background-color: white"
-    textFill = BLACK
-    maxWidth = 200
+  
+  //Labels:
+  val easyLabel = new Label("Easy:") {
+    textFill =WHITE
+    font = new Font("Arial", 15)
+  }
+  val normalLabel = new Label("Normal:") {
+    textFill =WHITE
+    font = new Font("Arial", 15)
+  }
+  val hardLabel = new Label("Hard:") {
+    textFill =WHITE
+    font = new Font("Arial", 15)
   }
   
-  //Array:
-  val data0 = ObservableBuffer (
-    HighScore(0, "nasm", 157),
-    HighScore(0, "sdf", 90)
-  )
-  val data1 = ObservableBuffer (
-    HighScore(0, "fg", 147),
-    HighScore(0, "sfdgf", 954)
-  )
-  val data2 = ObservableBuffer (
-    HighScore(0, "nfgds", 1535),
-    HighScore(0, "sdgs", 680)
-  )
-  
-  
-  val tableEasy = new TableView(data0)
-  tableEasy.maxHeight(300)
-  tableEasy.resize(400, 400)
-  val col1easy = new TableColumn[HighScore, String]("Name") {
+  //TableViews:
+  //Easy:
+  val tableEasy = new TableView(HighScoreFile.easy) {
+    minHeight = 146; prefHeight = 146; maxHeight = 146
+    prefWidth = 525; maxWidth = 525
+    alignmentInParent = Pos.CENTER
+    autosize()
+  }
+  val indexCEasy = new TableColumn[HighScore, Int] ("#") {
+    sortable = false
+    cellValueFactory = cdf => ObjectProperty(HighScoreFile.easy.indexOf(cdf.getValue) + 1)
+    prefWidth = 25
+  }
+  val nameCEasy = new TableColumn[HighScore, String]("Name") {
     cellValueFactory = cdf => StringProperty(cdf.value.name)
+    sortable = false
+    prefWidth = 249
   }
-  val col2easy = new TableColumn[HighScore, Int]("Score") {
+  val scoreCEasy = new TableColumn[HighScore, Int]("Score") {
     cellValueFactory = cdf => ObjectProperty(cdf.value.score)
+    sortable = false
+    prefWidth = 249
   }
-  tableEasy.columns ++= List(col1easy, col2easy)
+  tableEasy.columns ++= List(indexCEasy, nameCEasy, scoreCEasy)
   
-  
-  
-  val tableNormal = new TableView(data1)
-  val col1Normal = new TableColumn[HighScore, String]("Name") {
+  //Normal:
+  val tableNormal = new TableView(HighScoreFile.normal) {
+    minHeight = 146; prefHeight = 146; maxHeight = 146
+    prefWidth = 525; maxWidth = 525
+    alignmentInParent = Pos.CENTER
+    autosize()
+  }
+  val indexCNormal = new TableColumn[HighScore, Int] ("#") {
+    sortable = false
+    cellValueFactory = cdf => ObjectProperty(HighScoreFile.normal.indexOf(cdf.getValue) + 1)
+    prefWidth = 25
+  }
+  val nameCNormal = new TableColumn[HighScore, String]("Name") {
     cellValueFactory = cdf => StringProperty(cdf.value.name)
+    sortable = false
+    prefWidth = 249
   }
-  val col2Normal = new TableColumn[HighScore, Int]("Score") {
+  val scoreCNormal = new TableColumn[HighScore, Int]("Score") {
     cellValueFactory = cdf => ObjectProperty(cdf.value.score)
+    sortable = false
+    prefWidth = 249
   }
-  tableNormal.columns ++= List(col1Normal, col2Normal)
-  val tableHard = new TableView(data2)
-  val col1Hard = new TableColumn[HighScore, String]("Name") {
+  tableNormal.columns ++= List(indexCNormal, nameCNormal, scoreCNormal)
+  
+  //Hard:
+  val tableHard = new TableView(HighScoreFile.hard) {
+    minHeight = 146; prefHeight = 146; maxHeight = 146
+    prefWidth = 525; maxWidth = 525
+    alignmentInParent = Pos.CENTER
+    autosize()
+  }
+  val indexCHard = new TableColumn[HighScore, Int] ("#") {
+    sortable = false
+    cellValueFactory = cdf => ObjectProperty(HighScoreFile.hard.indexOf(cdf.getValue) + 1)
+    prefWidth = 25
+  }
+  val nameCHard = new TableColumn[HighScore, String]("Name") {
     cellValueFactory = cdf => StringProperty(cdf.value.name)
+    sortable = false
+    prefWidth = 249
   }
-  
-  
-  
-  val col2Hard = new TableColumn[HighScore, Int]("Score") {
+  val scoreCHard = new TableColumn[HighScore, Int]("Score") {
     cellValueFactory = cdf => ObjectProperty(cdf.value.score)
+    sortable = false
+    prefWidth = 249
   }
-  tableHard.columns ++= List(col1Hard, col2Hard)
+  tableHard.columns ++= List(indexCHard, nameCHard, scoreCHard)
   
   //Content:
   val buttonsContent = new HBox(20) {
-    content = List(back, reset, test)
+    content = List(back, reset)
     alignment = (Pos.CENTER)
     minWidth = (200); maxWidth = (200); prefWidth = (200)
   }
   val HiScMenuContent = new VBox(20) {
-    content = List(tableEasy, tableNormal, tableHard, buttonsContent)
+    content = List(easyLabel, tableEasy, normalLabel, tableNormal, hardLabel, tableHard, buttonsContent)
     alignment = Pos.CENTER
     style = "-fx-background-color: black"
   }
@@ -188,11 +223,8 @@ class HighScoreMenu() {
     ProjectAsteroid.menuSound()
   }
   reset.onAction = (e: ActionEvent) => {
-    //HighScore.reset
+    HighScoreFile.reset()
     ProjectAsteroid.menuSound()
-  }
-  test.onAction = (e: ActionEvent) => {
-    //println(HighScore.read())
   }
 }
 
@@ -213,12 +245,6 @@ class DifficultyMenu() {
     maxWidth = 200
   }
   val hard = new Button("Hard") {
-    style = "-fx-background-color: white"
-    textFill = BLACK
-    maxWidth = 200
-  }
-  val impossible = new Button("Impossible") {
-    //TODO: jos jää aikaa niin tämä, muuten poista nämä ja action tälle
     style = "-fx-background-color: white"
     textFill = BLACK
     maxWidth = 200
@@ -246,7 +272,7 @@ class DifficultyMenu() {
   
   //Events:
   easy.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 1)
     Difficulty.easy()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
@@ -254,7 +280,7 @@ class DifficultyMenu() {
     ProjectAsteroid.menuSound()
   }
   normal.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 2)
     Difficulty.normal()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
@@ -262,20 +288,12 @@ class DifficultyMenu() {
     ProjectAsteroid.menuSound()
   }
   hard.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, 3)
     Difficulty.hard()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
     ProjectAsteroid.menuSound()
-  }
-  impossible.onAction = (e: ActionEvent) => {
-    //TODO: jos aikaa niin voi tehdä
-    //ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
-    //ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
-    //ProjectAsteroid.stage.centerOnScreen
-    //Menu.root = Menu.menuContent
-    //if (ProjectAsteroid.isSoundOn) ProjectAsteroid.menuSound.play
   }
   backMenu.onAction = (e: ActionEvent) => {
     Menu.root = Menu.menuContent
@@ -395,12 +413,28 @@ class DeathMenu() {
     textFill = BLACK
     maxWidth = 200
   }
+  val save = new Button("Save") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
   
   //Label:
   val deathLabel = new Label("Mission failure\nYour score: " + ProjectAsteroid.GameArea.score) {
     textFill = WHITE
     font = new Font("Arial", 20)
     style = "-fx-background-color: black"
+  }
+  val nameLabel = new Label("Your name:") {
+    alignment = Pos.CENTER
+    textFill = WHITE
+    font = new Font("Arial", 15)
+    style = "-fx-background-color: black"
+  }
+  
+  //TextField:
+  val textField = new TextField() {
+    alignment = Pos.CENTER
   }
   
   //Content:
@@ -411,17 +445,36 @@ class DeathMenu() {
     layoutX = ProjectAsteroid.GameArea.width.toDouble / 2 - 50
     layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 - 125
   }
+  val nameAreaContent= new HBox(20) {
+    content = List(nameLabel, textField)
+  }
+  val saveHighScoreContent = new VBox(20) {
+    content = List(nameAreaContent, save, returnMenu)
+    alignment = Pos.CENTER
+    //style = "-fx-background-color: black"
+    layoutX = ProjectAsteroid.GameArea.width.toDouble / 2
+    layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 //TODO: layout
+  }
   
   ProjectAsteroid.GameArea.content += deathMenuContent //adds DeathMenu to gamearea's content
   
   //Events:
+  save.onAction = (e: ActionEvent) => {
+    //TODO: reads textfield and saves highscore
+    HighScoreFile.saveHighScore(ProjectAsteroid.GameArea.difficulty, "testi", ProjectAsteroid.GameArea.score)
+    ProjectAsteroid.stage.scene = Menu
+    ProjectAsteroid.stage.centerOnScreen()
+    ProjectAsteroid.menuSound()
+  }
   saveScore.onAction = (e: ActionEvent) => {
     //TODO: asks name and saves highscore, then open mainmenu
+    ProjectAsteroid.GameArea.content -= deathMenuContent
+    ProjectAsteroid.GameArea.content += saveHighScoreContent
     ProjectAsteroid.menuSound()
   }
   restart.onAction = (e: ActionEvent) => {
     //TODO: varmista että toimii, lähinnäs saako haettua edellisen gamearena difficulty arvon
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, ProjectAsteroid.GameArea.difficulty)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     ProjectAsteroid.menuSound()

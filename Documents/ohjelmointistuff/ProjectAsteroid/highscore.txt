@@ -1,5 +1,9 @@
-//Don't change the file
-2|testi2v|157
-1|testi1v|90
-2|testi2v2|82
-2|testi2v3|160
+//Don't change this file, hardnessLevel|name|score
+1|dfsdf|434
+1|sdfsdf|45
+1|testi|42
+1|hgrth|2
+2|testi|105
+2|df|34
+2|testi|24
+3|sfads|676
