@@ -1,38 +1,24 @@
 package Project
-import scala.collection.mutable.Map
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.scene._
-import scalafx.scene.paint.Color._
+
 import scalafx.scene.image.Image
-import scalafx.scene.input._
-import scalafx.scene.input.KeyEvent
-import scalafx.scene.input.KeyCode._
-import scalafx.event.ActionEvent._
-import scalafx.scene.control._
 import scalafx.Includes._
-import scalafx.animation.AnimationTimer
-import scalafx.scene.media._
-import scala.math._
 
 /**
- * Player ship
+ * Player ship extends SpaceShip, original picture size is 42*40 pixels
  */
-class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/PlayerShip.png", 56, 53, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
-  var speed = 250.0 // pixels per second
+class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/PlayerShip.png", 56, 53, true, false)) {
+  //Pixels per second
+  var speed = 250.0
   var xSpeed = 0
   var ySpeed = 0
   val acceleration = 15
   val slowingSpeed = 5
   x = 25
-  y = 304 // GameArea.height.value.toInt / 2 - PlayerShip.height.value
+  y = 304
   
   var lastShot: Long = 0L
   
-  
-  //val shootSound = ProjectAsteroid.shootSound
-  
-  // Player health is defined by the level of difficulty
+  //Player health is defined by the level of difficulty
   var health = {
     if      (Difficulty.definition == "easy")   9
     else if (Difficulty.definition == "normal") 5
@@ -40,6 +26,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/Pl
     else                                        0
   }
   
+  //When player dies timer stops and deathmenu opens
   def playDeathAnimation = {
     gameArea.GameTimer.stop
     new DeathMenu()
@@ -47,13 +34,13 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/Pl
   
   def shoot = {
     var bullet = new PlayerBullet(x.value, y.value)
-      ProjectAsteroid.GameArea.content += bullet
-      ProjectAsteroid.GameArea.playerBullets += bullet
-      Sound.shootSound()
-      true
+    ProjectAsteroid.GameArea.content += bullet
+    ProjectAsteroid.GameArea.playerBullets += bullet
+    Sound.shootSound()
+    true
   }
   
-  def move(delta: Double) = { //method moves the ship into given direction and distance depends on delta
+  def move(delta: Double) = {
     if (xSpeed > 0) {
       if (x.value + xSpeed*delta <= scene.value.width.toInt - this.image.value.width.toInt) x = x.value + xSpeed*delta
       else x = scene.value.width.toInt - this.image.value.width.toInt
@@ -85,11 +72,10 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/Pl
     if(xSpeed > 0) xSpeed -= slowingSpeed
   }
   
-  def accelerate(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
+  def accelerate(dir: String, delta: Double) = {
     
     if (dir =="right") {
       if(xSpeed < 250) xSpeed += acceleration
-
     }
     
     if (dir =="left") {

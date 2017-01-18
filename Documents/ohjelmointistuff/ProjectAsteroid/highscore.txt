@@ -1,10 +1,2 @@
 //Don't change this file, hardnessLevel|name|score
-1|dfsdf|434
-1|sdfsdf|45
-1|testi|42
-1|hgrth|2
-2|testi|105
-2|testi|60
-2|df|34
-2|testi|24
-3|sfads|676
+3|sffx|17

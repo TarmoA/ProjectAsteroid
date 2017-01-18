@@ -2,19 +2,22 @@ package Project
 
 import scalafx.application.JFXApp
 
-
+/**
+ * Main object where program is started.
+ */
 object ProjectAsteroid extends JFXApp {
-  
-  HighScoreFile.read() //reads highscore file and saves its results in buffers
+  //Reads highscore file and saves its results in buffers
+  HighScoreFile.read()
+  //variable used to acces GameArea from outside
   var GameArea: GameArea = _
   
+  //Defines new PrimaryStage
   stage = new JFXApp.PrimaryStage {
     resizable = false
     centerOnScreen()
     title = "ProjectAsteroid"
     
+    //Defines scene
     scene = Menu
-    
   }
-  
 }

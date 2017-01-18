@@ -9,21 +9,21 @@ case class HighScore(hardness: Int, val name: String, val score: Int)
 
 //Reads and modifies highscore file's data and passes it elsewhere.
 object HighScoreFile {
-  //filename of the file where all highscores are saved
-  private val fileName = "highscore.txt" //tiedosto johon tulokset tallennetaan ja jota myös käsitellään.
+  //Filename of the file where all highscores are saved
+  private val fileName = "highscore.txt"
   
   //Buffers where HighScore classes are stored and which HighScoreMenu reads
   var easy = ObservableBuffer[HighScore] ()
   var normal = ObservableBuffer[HighScore] ()
   var hard = ObservableBuffer[HighScore] ()
   
-  //overrides old file and writes whats on buffers there.
+  //Overrides old file and writes whats on buffers there.
   def write() = {
     val file = new PrintWriter(fileName)
     try {
       putInOrder()
-      println("kirjoitetaaan")
       file.println("//Don't change this file, hardnessLevel|name|score")
+      //goes through all buffers and prints them to the file
       for (i <- this.easy) {
         file.println(1 + "|" + i.name + "|" + i.score)
       }
@@ -46,24 +46,22 @@ object HighScoreFile {
       val fileVector = file.getLines.toVector
       
       resetBuffer()
-      
+      //Goes through all but first line in the file and extracts data from line and greates highscore class and adds it to correct buffer
       for (i <- fileVector.tail) {
         val array = i.split('|')
-        println(array(0) +" "+ array(1) +" "+ array(2))
-        if (array(0) == "1") this.easy += HighScore(1, array(1), array(2).toInt)
-        if (array(0) == "2") this.normal += HighScore(2, array(1), array(2).toInt)
-        if (array(0) == "3") this.hard += HighScore(3, array(1), array(2).toInt)
+        if (array(0) == Difficulty.easyValue.toString()) this.easy += HighScore(1, array(1), array(2).toInt)
+        if (array(0) == Difficulty.normalValue.toString()) this.normal += HighScore(2, array(1), array(2).toInt)
+        if (array(0) == Difficulty.hardValue.toString()) this.hard += HighScore(3, array(1), array(2).toInt)
       }
       putInOrder()
     }
     catch {
-      //incase of file error, resets file and all highscore buffers
+      //Incase of file error, resets file and all highscore buffers
       case ioException: Throwable => reset(); println("FileError, file resetted")
     }
     finally {
       file.close()
     }
-    
   }
   
   //Private method which puts all buffers in order from largest score to smallest score
@@ -78,7 +76,7 @@ object HighScoreFile {
     this.hard = this.hard.reverse
   }
   
-  //resets buffers and file
+  //Resets buffers and file
   def reset() {
     resetBuffer()
     val file = new PrintWriter(fileName)
@@ -97,11 +95,11 @@ object HighScoreFile {
     this.hard.clear()
   }
   
-  //Saves player's result
+  //Method is used to add new highscore to buffers and file
   def saveHighScore(hardness: Int, name: String, score: Int) = {
-    if (hardness == 1) this.easy += HighScore(1, name, score)
-    if (hardness == 2) this.normal += HighScore(2, name, score)
-    if (hardness == 3) this.hard += HighScore(3, name, score)
+    if (hardness == Difficulty.easyValue) this.easy += HighScore(1, name, score)
+    if (hardness == Difficulty.normalValue) this.normal += HighScore(2, name, score)
+    if (hardness == Difficulty.hardValue) this.hard += HighScore(3, name, score)
     write()
   }
 }

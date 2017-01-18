@@ -1,17 +1,11 @@
 package Project
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.scene._
-import scalafx.scene.paint.Color._
-import scalafx.scene.image.Image
-import scalafx.scene.input._
-import scalafx.scene.input.KeyEvent
-import scalafx.scene.input.KeyCode._
-import scalafx.event.ActionEvent._
-import scalafx.scene.control._
-import scalafx.Includes._
-import scalafx.animation.AnimationTimer
 
+import scalafx.scene.image.Image
+import scalafx.Includes._
+
+/**
+ * TODO: kuvaus
+ */
 abstract class Bullet(img: Image) extends SpaceObject(img) {
   def destroy = {
      try {
@@ -20,24 +14,26 @@ abstract class Bullet(img: Image) extends SpaceObject(img) {
   }
   
   def move(delta: Double): Unit
-  
-  
 }
 
-class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/Bullet.png", 50, 25, true, false)) {  // blast_1.png:n alkuperäinen koko on 20 x 10 pikseliä
-  var speed = 300.0 // pixels per second
+/**
+ * TODO: kuvaus
+ * Images original size is 20*10 pixels
+ */
+class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/Bullet.png", 50, 25, true, false)) {
+  //speed is pixels per second
+  var speed = 300.0
   x = x0 + 35
-  y = y0 + 12.5 //TODO: tarmo kato toi ja säädä se niin että luodit lähtee keskeltä alusta jotenkin nätimmin x ja y koordinaatit
+  y = y0 + 12.5
   
-  var oldTime: Long = 0L
+  //var oldTime: Long = 0L TODO: poista
   
   def move(delta: Double) = {
     x = x.value + speed * delta
     checkOutOfBounds
   }
- 
-
 }
+//TODO: poista?
 class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/blast_1.png", 25, 25, false, false)) {
   var speed = 300.0 // pixels per second
   x = x0
@@ -47,5 +43,4 @@ class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/bl
     x = x.value - speed * delta
     checkOutOfBounds
   }
-
 }

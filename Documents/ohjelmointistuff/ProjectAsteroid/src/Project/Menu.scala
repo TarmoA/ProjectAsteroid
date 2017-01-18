@@ -112,26 +112,26 @@ class HighScoreMenu() {
   val back = new Button("Return") {
     style = "-fx-background-color: white"
     textFill = BLACK
-    minWidth = (125); maxWidth = (125); prefWidth = (125)
+    minWidth = (200); maxWidth = (200); prefWidth = (200)
   }
   val reset = new Button("Reset All") {
     style = "-fx-background-color: white"
     textFill = BLACK
-    minWidth = (125); maxWidth = (125); prefWidth = (125)
+    minWidth = (200); maxWidth = (200); prefWidth = (200)
   }
   
   //Labels:
   val easyLabel = new Label("Easy:") {
     textFill =WHITE
-    font = new Font("Arial", 15)
+    font = new Font("Arial", 20)
   }
   val normalLabel = new Label("Normal:") {
     textFill =WHITE
-    font = new Font("Arial", 15)
+    font = new Font("Arial", 20)
   }
   val hardLabel = new Label("Hard:") {
     textFill =WHITE
-    font = new Font("Arial", 15)
+    font = new Font("Arial", 20)
   }
   
   //TableViews:
@@ -211,7 +211,7 @@ class HighScoreMenu() {
   val buttonsContent = new HBox(50) {
     content = List(back, reset)
     alignment = (Pos.CENTER)
-    minWidth = (300); maxWidth = (300); prefWidth = (300)
+    minWidth = (450); maxWidth = (450); prefWidth = (450)
   }
   val HiScMenuContent = new VBox(20) {
     content = List(easyLabel, tableEasy, normalLabel, tableNormal, hardLabel, tableHard, buttonsContent)
@@ -301,9 +301,9 @@ class DifficultyMenu() {
   }
 }
 
-/*
+/**
  * PauseMenu activates when p is pressed during game, and pauses game and opens pausemenu which gives player options to do
- */
+ **/
 class PauseMenu() {
   ProjectAsteroid.GameArea.GameTimer.stop
   Sound.menuSound()
@@ -352,7 +352,6 @@ class PauseMenu() {
   val pauseMenuContent = new VBox(20) {
     alignment = Pos.CENTER
     content = List(pauseLabel, continue, soundContent, returnMenu, exit)
-    //style = "-fx-background-color: black"
     layoutX = ProjectAsteroid.GameArea.width.toDouble / 2 - 100
     layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 - 100
   }
@@ -396,7 +395,7 @@ class PauseMenu() {
  */
 class DeathMenu() {
   //Buttons:
-  val saveScore = new Button("Save score") {
+  val saveMenu = new Button("Save score") {
     style = "-fx-background-color: white"
     textFill = BLACK
     maxWidth = 200
@@ -406,17 +405,27 @@ class DeathMenu() {
     textFill = BLACK
     maxWidth = 200
   }
-  val returnMenu = new Button("Retun Menu") {
+  val returnMenu1 = new Button("Retun Menu") {
     style = "-fx-background-color: white"
     textFill = BLACK
     maxWidth = 200
   }
-  val exit = new Button("Exit") {
+  val returnMenu2 = new Button("Retun Menu") {
     style = "-fx-background-color: white"
     textFill = BLACK
     maxWidth = 200
   }
-  val save = new Button("Save") {
+  val exit1 = new Button("Exit") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
+  val exit2 = new Button("Exit") {
+    style = "-fx-background-color: white"
+    textFill = BLACK
+    maxWidth = 200
+  }
+  val saveScore = new Button("Save") {
     style = "-fx-background-color: white"
     textFill = BLACK
     maxWidth = 200
@@ -431,7 +440,7 @@ class DeathMenu() {
   val nameLabel = new Label("Your name:") {
     alignment = Pos.CENTER
     textFill = WHITE
-    font = new Font("Arial", 15)
+    font = new Font("Arial", 20)
     style = "-fx-background-color: black"
   }
   
@@ -441,38 +450,44 @@ class DeathMenu() {
   }
   
   //Content:
+  //Deathmenu content:
   val deathMenuContent = new VBox(20) {
     alignment = Pos.CENTER
-    content = List(deathLabel, saveScore, restart, returnMenu, exit)
-    //style = "-fx-background-color: black"
-    layoutX = ProjectAsteroid.GameArea.width.toDouble / 2 - 50
-    layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 - 125
+    content = List(deathLabel, saveMenu, restart, returnMenu1, exit1)
+    minWidth = (200); maxWidth = (200); prefWidth = (200)
+    layoutX = ProjectAsteroid.GameArea.width.toDouble / 2 - 100
+    layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 - 115
   }
+  //deathmenu's scoremenu content:
   val nameAreaContent= new HBox(20) {
     content = List(nameLabel, textField)
   }
   val saveHighScoreContent = new VBox(20) {
-    content = List(nameAreaContent, save, returnMenu)
+    content = List(nameAreaContent, saveScore, returnMenu2, exit2)
     alignment = Pos.CENTER
-    //style = "-fx-background-color: black"
-    layoutX = ProjectAsteroid.GameArea.width.toDouble / 2
-    layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 //TODO: layout
+    layoutX = ProjectAsteroid.GameArea.width.toDouble / 2 - 130
+    layoutY = ProjectAsteroid.GameArea.height.toDouble / 2 - 80//TODO: layout
   }
   
   ProjectAsteroid.GameArea.content += deathMenuContent //adds DeathMenu to gamearea's content
   
   //Events:
-  save.onAction = (e: ActionEvent) => {
+  saveScore.onAction = (e: ActionEvent) => {
     //TODO: reads textfield and saves highscore
-    HighScoreFile.saveHighScore(ProjectAsteroid.GameArea.difficultyFactor, "testi", ProjectAsteroid.GameArea.score)
-    ProjectAsteroid.stage.scene = Menu
-    ProjectAsteroid.stage.centerOnScreen()
+    if (!textField.getText().isEmpty()) {
+      HighScoreFile.saveHighScore(ProjectAsteroid.GameArea.difficultyFactor,
+          textField.getText(),
+          ProjectAsteroid.GameArea.score)
+      ProjectAsteroid.stage.scene = Menu
+      ProjectAsteroid.stage.centerOnScreen()
+    }
     Sound.menuSound()
   }
-  saveScore.onAction = (e: ActionEvent) => {
+  saveMenu.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea.content -= deathMenuContent
     ProjectAsteroid.GameArea.content += saveHighScoreContent
     Sound.menuSound()
+    
   }
   restart.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.GameArea.difficultyFactor)
@@ -480,13 +495,21 @@ class DeathMenu() {
     ProjectAsteroid.stage.centerOnScreen
     Sound.menuSound()
   }
-  returnMenu.onAction = (e: ActionEvent) => {
+  returnMenu1.onAction = (e: ActionEvent) => {
     ProjectAsteroid.stage.scene = Menu
     ProjectAsteroid.stage.centerOnScreen()
     Sound.menuSound()
   }
-  
-  exit.onAction = (e: ActionEvent) => {
+  returnMenu2.onAction = (e: ActionEvent) => {
+    ProjectAsteroid.stage.scene = Menu
+    ProjectAsteroid.stage.centerOnScreen()
+    Sound.menuSound()
+  }
+  exit1.onAction = (e: ActionEvent) => {
+    Sound.menuSound()
+    sys.exit(0)
+  }
+  exit2.onAction = (e: ActionEvent) => {
     Sound.menuSound()
     sys.exit(0)
   }
