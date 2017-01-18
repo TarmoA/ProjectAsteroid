@@ -4,10 +4,10 @@ import scala.io.Source
 import java.io.PrintWriter
 import scalafx.collections.ObservableBuffer
 
-//saves players' results as HighScore-class
+//Saves players' results as HighScore-class
 case class HighScore(hardness: Int, val name: String, val score: Int)
 
-//reads and modifies highscore file's data and passes it elsewhere.
+//Reads and modifies highscore file's data and passes it elsewhere.
 object HighScoreFile {
   //filename of the file where all highscores are saved
   private val fileName = "highscore.txt" //tiedosto johon tulokset tallennetaan ja jota myös käsitellään.
@@ -39,7 +39,7 @@ object HighScoreFile {
     }
   }
   
-  //method which reads file and creates and add all highscore classes to buffers
+  //Method which reads file and creates and add all highscore classes to buffers
   def read() = {
     val file = Source.fromFile(fileName)
     try {
@@ -90,14 +90,14 @@ object HighScoreFile {
     }
   }
   
-  //resets only buffers
+  //Resets only buffers
   private def resetBuffer() {
     this.easy.clear()
     this.normal.clear()
     this.hard.clear()
   }
   
-  //saves player's result
+  //Saves player's result
   def saveHighScore(hardness: Int, name: String, score: Int) = {
     if (hardness == 1) this.easy += HighScore(1, name, score)
     if (hardness == 2) this.normal += HighScore(2, name, score)

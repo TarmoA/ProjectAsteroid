@@ -45,7 +45,6 @@ class GameArea(isSoundOn: Boolean, val difficultyFactor: Int) extends Scene(1280
     font = new Font("Arial", 20)
     textFill = (WHITE)
     text = "Life: " + player.health
-    toFront()
   }
   val textBox = new VBox {
     spacing = 2
