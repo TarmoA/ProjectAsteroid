@@ -26,10 +26,3 @@ object ProjectAsteroid extends JFXApp {
   }
   
 }
-
-
-
-
-
-
-

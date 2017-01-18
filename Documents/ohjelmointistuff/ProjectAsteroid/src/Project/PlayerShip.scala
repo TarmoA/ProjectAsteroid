@@ -18,7 +18,7 @@ import scala.math._
 /**
  * Player ship
  */
-class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 56, 53, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
+class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/PlayerShip.png", 56, 53, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
   var speed = 250.0 // pixels per second
   var xSpeed = 0
   var ySpeed = 0

@@ -50,7 +50,7 @@ object Menu extends Scene(1280, 720) {
   }
   
   //Labels:
-  val help = new Label("Shoot: X\nMove: Arrow keys") {
+  val help = new Label("Shoot: X\nToggle Autofire: A\nPause: P\nMove: Arrow keys") {
     font = new Font("Arial", 15)
     textFill =WHITE
     layoutX = 50
@@ -109,12 +109,12 @@ class HighScoreMenu() {
   val back = new Button("Return") {
     style = "-fx-background-color: white"
     textFill = BLACK
-    maxWidth = 200
+    minWidth = (125); maxWidth = (125); prefWidth = (125)
   }
-  val reset = new Button("Reset") {
+  val reset = new Button("Reset All") {
     style = "-fx-background-color: white"
     textFill = BLACK
-    maxWidth = 200
+    minWidth = (125); maxWidth = (125); prefWidth = (125)
   }
   
   //Labels:
@@ -205,10 +205,10 @@ class HighScoreMenu() {
   tableHard.columns ++= List(indexCHard, nameCHard, scoreCHard)
   
   //Content:
-  val buttonsContent = new HBox(20) {
+  val buttonsContent = new HBox(50) {
     content = List(back, reset)
     alignment = (Pos.CENTER)
-    minWidth = (200); maxWidth = (200); prefWidth = (200)
+    minWidth = (300); maxWidth = (300); prefWidth = (300)
   }
   val HiScMenuContent = new VBox(20) {
     content = List(easyLabel, tableEasy, normalLabel, tableNormal, hardLabel, tableHard, buttonsContent)
