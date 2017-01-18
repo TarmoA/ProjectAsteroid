@@ -18,7 +18,10 @@ import scala.math._
 /**
  * Player ship
  */
-class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 50, 48, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
+
+// PLAYERSHIP KULKEE NYT RUUDUN ALAREUNAN OHITSE
+
+class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 56, 53, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
   var speed = 250.0 // pixels per second
   var xSpeed = 0
   var ySpeed = 0
@@ -26,14 +29,20 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   val slowingSpeed = 5
   //TODO: Alustukseen sellainen kohta mikä asettaa aluksen y koordinaateiksi noin ruudun puolivälin
   x = 25
-  y = 310
+  y = 304 // GameArea.height.value.toInt / 2 - PlayerShip.height.value
   
   var lastShot: Long = 0L
   
   
   val shootSound = ProjectAsteroid.shootSound
   
-  var health = 100000 //player health
+  // Player health is defined by the level of difficulty
+  var health = {
+    if      (Difficulty.definition == "easy")   9
+    else if (Difficulty.definition == "normal") 5
+    else if (Difficulty.definition == "hard")   2
+    else                                        0  // Kirjaimellisesti mahdoton vaikeusaste
+  }
   
   def playDeathAnimation = {
     gameArea.GameTimer.stop

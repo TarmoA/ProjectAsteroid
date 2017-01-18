@@ -12,7 +12,7 @@ import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 
-class Star(x0: Double, y0: Double) extends SpaceObject(new Image("file:Images/star_2.png", 2, 1, true, false)) { //tähden kuvan alk. koko 2*1
+class Star(x0: Double, y0: Double) extends SpaceObject(new Image("file:Images/star_2.png", 4, 2, true, false)) { //tähden kuvan alk. koko 2*1
   var speed: Double = 50  // Pixels per second
   x = x0
   y = y0

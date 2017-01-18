@@ -35,13 +35,13 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
   
   
   val scoreText = new Label{
-    font = new Font("Arial", 15)
+    font = new Font("Arial", 19)
     textFill = (WHITE)
     text = "Score: " + score
   }
   
   val lifeText = new Label{
-    font = new Font("Arial", 15)
+    font = new Font("Arial", 20)
     textFill = (WHITE)
     text = "Life: " + player.health
   }
@@ -141,6 +141,11 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
       if (e.code == DOWN)  pressed("down") = false
       if (e.code == UP)    pressed("up") = false
       if (e.code == X)     pressed("shoot") = false
+      // Toggle auto-fire
+      if (e.code == A)     if (pressed("shoot") == false)
+                             pressed("shoot") = true
+                           else
+                             pressed("shoot") = false
     }
   }
   
@@ -157,12 +162,12 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
     
     def spawn(enemyType: String) = {
       if (enemyType == "asteroid") {
-        val enemy = new SmallAsteroid(width.value.toInt, random.nextInt(height.value.toInt), speedRandom.nextInt(100))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
+        val enemy = new SmallAsteroid(width.value.toInt, (player.image.value.height.toDouble / 2) + random.nextInt(height.value.toInt) - player.image.value.height.toDouble, speedRandom.nextInt(100))  // Jotta asteroidit eivät spawnaa niin reunalle, ettei niitä pysty ampumaan, asteroidien spawnaukselle annetaan korkeussuunnassa rajat.
         content += enemy
         enemies += enemy
       }
       if (enemyType == "bigasteroid") {
-        val enemy = new BigAsteroid(width.value.toInt, random.nextInt(height.value.toInt), speedRandom.nextInt(100))  // Tässä parametreissä oli alunperin myös - 50, jotta asteroidit eivät spawnaisi kuvan reunalla
+        val enemy = new BigAsteroid(width.value.toInt, (player.image.value.height.toDouble / 2) + random.nextInt(height.value.toInt) - player.image.value.height.toDouble, speedRandom.nextInt(100))
         content += enemy
         enemies += enemy
       }
@@ -174,7 +179,7 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
       }
       
       if (enemyType == "initStars") {
-        for (n <- 1 to 1000) {
+        for (n <- 1 to 1536) {  // Ruudulla on kerrallaan tähtiä määrä: (ruudun leveys / tähtien liikkumisnopeus pikseleinä sekunneissa * ruudun päivitysnopeus) eli (width.value.toDouble / 50.0 * 60).toInt)
           val star = new Star(random.nextInt(width.value.toInt), random.nextInt(height.value.toInt))
           content += star
           stars += star
@@ -231,7 +236,7 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
         EnemySpawner.spawn("star")
         
         // Spawnaa asteroideja vaikeusasteen mukaan
-        spawnAsteroids(Difficulty.setDifficulty)
+        spawnAsteroids(Difficulty.factor) //TODO:
         
         def spawnAsteroids(difficulty: Int) = {
           val timePerSmallAsteroid: Double = 5.0 / difficulty
