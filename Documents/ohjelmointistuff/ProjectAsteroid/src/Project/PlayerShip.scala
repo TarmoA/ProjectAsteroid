@@ -24,7 +24,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   val speed = 250.0 // pixels per second
   //TODO: Alustukseen sellainen kohta mikä asettaa aluksen y koordinaateiksi noin ruudun puolivälin
   x = 25
-  y = 304 // GameArea.height.value.toInt / 2 - PlayerShip.height.value
+  y = 304 // GameArea.height.value.toInt / 2 - this.image.value.height.toInt
   
   var lastShot: Long = 0L
   
@@ -55,8 +55,8 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   def move(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
     
     if (dir =="right") {
-      if (x.value + speed*delta <= scene.value.width.toInt - 50) x = x.value + speed*delta
-      else x = scene.value.width.toInt - 50
+      if (x.value + speed*delta <= scene.value.width.toInt - this.image.value.width.toInt) x = x.value + speed*delta
+      else x = scene.value.width.toInt - this.image.value.width.toInt
     }
     
     if (dir =="left") {
@@ -65,8 +65,8 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
     }
     
     if (dir =="down") {
-      if (y.value + speed*delta <= scene.value.height.toInt - 50) y = y.value + speed*delta
-      else y = scene.height.toInt - 50
+      if (y.value + speed*delta <= scene.value.height.toInt - this.image.value.height.toInt) y = y.value + speed*delta
+      else y = scene.height.toInt - this.image.value.height.toInt
     }
     
     if (dir =="up") {
