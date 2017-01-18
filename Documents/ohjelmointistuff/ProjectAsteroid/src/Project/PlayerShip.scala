@@ -30,7 +30,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/Pl
   var lastShot: Long = 0L
   
   
-  val shootSound = ProjectAsteroid.shootSound
+  //val shootSound = ProjectAsteroid.shootSound
   
   // Player health is defined by the level of difficulty
   var health = {
@@ -49,7 +49,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/Pl
     var bullet = new PlayerBullet(x.value, y.value)
       ProjectAsteroid.GameArea.content += bullet
       ProjectAsteroid.GameArea.playerBullets += bullet
-      if (ProjectAsteroid.isSoundOn)shootSound.play
+      Sound.shootSound()
       true
   }
   

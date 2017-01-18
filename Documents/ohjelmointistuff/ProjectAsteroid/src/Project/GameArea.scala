@@ -19,7 +19,7 @@ import scalafx.stage._
 import scalafx.geometry.Pos
 import scala.reflect._
 
-class GameArea(isSoundOn: Boolean, val difficultyFactor: Int) extends Scene(1280, 720) {
+class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   val player = new PlayerShip(this)
   content = player
   var enemies = Buffer[EnemyShip]()

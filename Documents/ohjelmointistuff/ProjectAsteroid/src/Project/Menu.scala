@@ -78,30 +78,33 @@ object Menu extends Scene(1280, 720) {
   
   start.onAction = (e: ActionEvent) => {
     new DifficultyMenu() //opens new menu where player chooses level of difficulty or returns to mainmenu
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   
   sound.onAction = (e: ActionEvent) => {
-    if (ProjectAsteroid.isSoundOn) {
-      ProjectAsteroid.isSoundOn = false
+    if (Sound.isSoundOn) {
+      Sound.isSoundOn = false
       soundString = "Off"
       soundLabel.setText("Sound: " + soundString)
     }
     else {
-      ProjectAsteroid.isSoundOn = true
+      Sound.isSoundOn = true
       soundString = "On"
       soundLabel.setText("Sound: " + soundString)
     }
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   
   hiScore.onAction = (e: ActionEvent) => {
     //TODO:
     HighScoreFile.read()
     new HighScoreMenu()
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
-  exit.onAction = (e: ActionEvent) => sys.exit(0)
+  exit.onAction = (e: ActionEvent) => {
+    Sound.menuSound()
+    sys.exit(0)
+  }
 }
 
 class HighScoreMenu() {
@@ -220,11 +223,11 @@ class HighScoreMenu() {
   //Events:
   back.onAction = (e: ActionEvent) => {
     Menu.root = Menu.menuContent
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   reset.onAction = (e: ActionEvent) => {
     HighScoreFile.reset()
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
 }
 
@@ -272,29 +275,29 @@ class DifficultyMenu() {
   
   //Events:
   easy.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.easy())
+    ProjectAsteroid.GameArea = new GameArea(Difficulty.easy())
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   normal.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.normal())
+    ProjectAsteroid.GameArea = new GameArea(Difficulty.normal())
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   hard.onAction = (e: ActionEvent) => {
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.hard())
+    ProjectAsteroid.GameArea = new GameArea(Difficulty.hard())
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   backMenu.onAction = (e: ActionEvent) => {
     Menu.root = Menu.menuContent
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
 }
 
@@ -303,7 +306,7 @@ class DifficultyMenu() {
  */
 class PauseMenu() {
   ProjectAsteroid.GameArea.GameTimer.stop
-  ProjectAsteroid.menuSound()
+  Sound.menuSound()
   //buttons:
   val continue = new Button("Continue") {
     style = "-fx-background-color: white"
@@ -362,27 +365,30 @@ class PauseMenu() {
     ProjectAsteroid.GameArea.GameTimer.oldTime = 0L
     ProjectAsteroid.GameArea.GameTimer.start
     ProjectAsteroid.GameArea.paused = false
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   soundButton.onAction = (e: ActionEvent) => {
-    if (ProjectAsteroid.isSoundOn) {
-      ProjectAsteroid.isSoundOn = false
+    if (Sound.isSoundOn) {
+      Sound.isSoundOn = false
       Menu.soundString = "Off"
       soundLabel.setText("Sound: " + Menu.soundString)
     }
     else {
-      ProjectAsteroid.isSoundOn = true
+      Sound.isSoundOn = true
       Menu.soundString = "On"
       soundLabel.setText("Sound: " + Menu.soundString)
     }
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   returnMenu.onAction = (e: ActionEvent) => {
     ProjectAsteroid.stage.scene = Menu
     ProjectAsteroid.stage.centerOnScreen()
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
-  exit.onAction = (e: ActionEvent) => sys.exit(0) //TODO: palaako päämenuun vai sulkeeko koko ohjelman?
+  exit.onAction = (e: ActionEvent) => {
+    Sound.menuSound()
+    sys.exit(0)
+  }
 }
 
 /*
@@ -461,26 +467,27 @@ class DeathMenu() {
     HighScoreFile.saveHighScore(ProjectAsteroid.GameArea.difficultyFactor, "testi", ProjectAsteroid.GameArea.score)
     ProjectAsteroid.stage.scene = Menu
     ProjectAsteroid.stage.centerOnScreen()
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   saveScore.onAction = (e: ActionEvent) => {
-    //TODO: asks name and saves highscore, then open mainmenu
     ProjectAsteroid.GameArea.content -= deathMenuContent
     ProjectAsteroid.GameArea.content += saveHighScoreContent
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   restart.onAction = (e: ActionEvent) => {
-    //TODO: varmista että toimii, lähinnäs saako haettua edellisen gamearena difficulty arvon
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, ProjectAsteroid.GameArea.difficultyFactor)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.GameArea.difficultyFactor)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   returnMenu.onAction = (e: ActionEvent) => {
     ProjectAsteroid.stage.scene = Menu
     ProjectAsteroid.stage.centerOnScreen()
-    ProjectAsteroid.menuSound()
+    Sound.menuSound()
   }
   
-  exit.onAction = (e: ActionEvent) => sys.exit(0) //TODO: riittääkö että on palaa päämenuun nappi vai tarviiko tämänkin?
+  exit.onAction = (e: ActionEvent) => {
+    Sound.menuSound()
+    sys.exit(0)
+  }
 }

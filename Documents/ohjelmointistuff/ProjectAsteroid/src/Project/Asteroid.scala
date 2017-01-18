@@ -19,7 +19,7 @@ class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip
   var health = 2
   def playDeathAnimation {
     ProjectAsteroid.GameArea.score += 1
-    if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
+    Sound.explosionSound()
   }
   
   def move(delta: Double) = {
@@ -36,7 +36,7 @@ class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(n
   var health = 6
   def playDeathAnimation {
     ProjectAsteroid.GameArea.score += 3
-    if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
+    Sound.explosionSound()
   }
   
   def move(delta: Double) = {
@@ -54,7 +54,7 @@ class AlienShip (x0:Double, y0:Double) extends ShootingEnemy(new Image("file:Ima
   var timePerShot = 2.0
   
   def playDeathAnimation {
-     if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
+     Sound.explosionSound()
   }
   
   def move(delta: Double) = {
