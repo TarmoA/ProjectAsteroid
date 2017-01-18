@@ -178,7 +178,7 @@ class GameArea(isSoundOn: Boolean, initDifficulty: Int) extends Scene(1280, 720)
       }
       
       if (enemyType == "initStars") {
-        for (n <- 1 to 1000) {
+        for (n <- 1 to 1536) {  // Ruudulla on kerrallaan tähtiä määrä: (ruudun leveys / tähtien liikkumisnopeus pikseleinä sekunneissa * ruudun päivitysnopeus) eli (width.value.toDouble / 50.0 * 60).toInt)
           val star = new Star(random.nextInt(width.value.toInt), random.nextInt(height.value.toInt))
           content += star
           stars += star

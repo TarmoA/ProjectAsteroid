@@ -17,11 +17,14 @@ import scalafx.scene.media._
 /**
  * Player ship
  */
+
+// PLAYERSHIP KULKEE NYT RUUDUN ALAREUNAN OHITSE
+
 class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/alus_1.png", 56, 53, true, false)) {  // alus_1.png:n alkuperäinen koko on 42 x 40 pikseliä
   val speed = 250.0 // pixels per second
   //TODO: Alustukseen sellainen kohta mikä asettaa aluksen y koordinaateiksi noin ruudun puolivälin
   x = 25
-  y = 310
+  y = 304 // GameArea.height.value.toInt / 2 - PlayerShip.height.value
   
   var lastShot: Long = 0L
   
