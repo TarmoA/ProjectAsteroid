@@ -28,6 +28,8 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
   var enemyBullets = Buffer[EnemyBullet]()
   var stars = Buffer[Star]()
   var score = 0
+  var speed=0
+  val acceleration = 25
   
   fill = BLACK //asettaa taustan värin mustaksi
   
@@ -100,12 +102,12 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
   
   def checkForActions(delta: Double, action: String): Boolean = {
   
-    if (action == "move") {
+    if (action == "accelerate") {
+    if (Keys.pressed("right")) player.accelerate("right", delta)
+    if (Keys.pressed("left")) player.accelerate("left", delta)
     
-    if (Keys.pressed("right")) player.move("right", delta)
-    if (Keys.pressed("left")) player.move("left", delta)
-    if (Keys.pressed("down")) player.move("down", delta)
-    if (Keys.pressed("up")) player.move("up", delta)
+    if (Keys.pressed("down")) player.accelerate("down", delta)
+    if (Keys.pressed("up")) player.accelerate("up", delta)
     true
     }
     
@@ -205,7 +207,16 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
         val shotDelta = (t-playerLastShot)/1e9
         //val asteroidDelta = (t-lastSmallAsteroid)/1e9
         checkForActions(delta, "move")
+        checkForActions(delta, "accelerate")
         checkCollisions
+        player.move(delta)
+        if(!Keys.pressed("right") && !Keys.pressed("left")){
+          player.slowDownHorizontal(delta)
+        }
+         if(!Keys.pressed("up") && !Keys.pressed("down")){
+          player.slowDownVertical(delta)
+        }
+        
         enemies.foreach(_.move(delta))
         playerBullets.foreach(_.move(delta))
         enemyBullets.foreach(_.move(delta))
@@ -305,98 +316,5 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
       playerBullets.remove(playerBullets.indexOf(e))
       if (content.contains(e)) content.remove(content.indexOf(e))
     })
-    
-    //println("content: "+content.size)
-    
-//        for (enemy <- enemies)
-//          if ((enemy.x.toInt > scene.value.width.toInt * 1.2) ||  // Elementtien poistolle asetetut rajat ovat nähtävän alueen ulkopuolella, nähtävän alueen koon mukaan suhteutettuna
-//              (enemy.x.toInt < -scene.value.width.toInt * 0.2) ||
-//              (enemy.y.toInt > scene.value.height.toInt * 1.2) ||
-//              (enemy.y.toInt < -scene.value.height.toInt * 0.2)) {
-//            content -= enemy
-//            enemies -= enemy
-//          }
-    
-//        for (playerBullet <- playerBullets)                        // Tämä kohta jäänyt kesken, sitä voi jatkaa kun ylempi osuus toimii oikein
-//          if ((playerBullet.x.toInt > scene.value.width.toInt) ||
-//              (playerBullet.x.toInt < 0) ||
-//              (playerBullet.y.toInt > scene.value.height.toInt) ||
-//              (playerBullet.y.toInt < 0)) {
-//            content -= playerBullet
-//            playerBullets -= playerBullet
-//          }
-//            
-//        for (enemyBullet <- enemyBullets)
-//          if ((enemyBullet.x.toInt > scene.value.width.toInt) ||
-//              (enemyBullet.x.toInt < 0) ||
-//              (enemyBullet.y.toInt > scene.value.height.toInt) ||
-//              (enemyBullet.y.toInt < 0)) {
-//            content -= enemyBullet
-//            enemyBullets -= enemyBullet
-//          }
-//        for (star <- stars)
-//          if ((star.x.toInt > scene.value.width.toInt) ||
-//              (star.x.toInt < 0) ||
-//              (star.y.toInt > scene.value.height.toInt) ||
-//              (star.y.toInt < 0)) {
-//            content -= star
-//            stars -= star
-//          }
-    //println("Detected threats: " + enemies.size)  // asteroidien tulkintaa varten
-    
-    /*def outOfBounds(thing: SpaceObject): Boolean = {
-      if (content.contains(thing)) {
-        thing.x.value <= 10 || thing.y.value <= 110 || thing.x.value >= this.width.value-10 || thing.y.value >= this.height.value-10
-      } else true
-    }*/
-    /*def removeOutOfBounds[T: ClassTag](b:Buffer[T]) = {
-      b.foreach{(thing: T) =>
-        if (thing.isInstanceOf[SpaceObject]) {thing1: SpaceObject =>
-          if (outOfBounds(thing1)){
-          content -= thing1  
-          b -= thing
-          }
-        } 
-      }
-    }
-    removeOutOfBounds[PlayerBullet](playerBullets)
-    println("bullets: " + playerBullets.size +" content: "+ content.size)
-    */
-    /*
-    enemyBullets.foreach{(a: EnemyBullet) =>
-      if (outOfBounds(a)) {
-       a.destroy
-       enemyBullets -= a
-      }
-    }
-    playerBullets.foreach{(a: PlayerBullet) =>
-      if (outOfBounds(a)) {
-       try {
-         content -= a
-       } finally playerBullets -= a
-      }
-    }
-    stars.foreach{(a: Star) =>
-      if (outOfBounds(a)) {
-       try {
-         content -= a
-       } finally stars -= a
-      }
-    }
-    enemies.foreach{(a: EnemyShip) =>
-      if (outOfBounds(a)) {
-       try {
-         content -= a
-       } finally enemies -= a
-      }
-    }
-    shootingEnemies.foreach{(a: ShootingEnemy) =>
-      if (outOfBounds(a)) {
-       try {
-         content -= a
-       } finally shootingEnemies -= a
-      }
-    }*/
-    
       }
 }

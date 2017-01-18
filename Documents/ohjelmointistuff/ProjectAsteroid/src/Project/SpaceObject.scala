@@ -24,7 +24,7 @@ abstract class SpaceObject(img: Image) extends ImageView(img){
   
 
   
-  val speed: Double
+  var speed: Double
   
   def collidesWith(another: SpaceObject) = {
      this.intersects(another.boundsInLocal.value)
@@ -55,15 +55,6 @@ abstract class SpaceShip(img: Image) extends SpaceObject(img) {
   def playDeathAnimation: Unit
 }
 abstract class EnemyShip(img: Image) extends SpaceShip(img) {
-  
- /* def removeFromBuffers = {
-	  try {
-		  ProjectAsteroid.GameArea.enemiesToBeRemoved += this
-	  } finally try {
-       scene.value.getChildren.remove(this)
-     } finally isAlive = false
-		println("deleted")
-  }*/
   
   def move(delta: Double): Unit
   

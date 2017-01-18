@@ -25,7 +25,7 @@ abstract class Bullet(img: Image) extends SpaceObject(img) {
 }
 
 class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/blast_1.png", 30, 15, true, false)) {  // blast_1.png:n alkuperäinen koko on 20 x 10 pikseliä
-  val speed = 300.0 // pixels per second
+  var speed = 300.0 // pixels per second
   x = x0 + 35
   y = y0 + 12.5 //TODO: tarmo kato toi ja säädä se niin että luodit lähtee keskeltä alusta jotenkin nätimmin x ja y koordinaatit
   
@@ -39,7 +39,7 @@ class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/b
 
 }
 class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/blast_1.png", 25, 25, false, false)) {
-  val speed = 300.0 // pixels per second
+  var speed = 300.0 // pixels per second
   x = x0
   y = y0
    
