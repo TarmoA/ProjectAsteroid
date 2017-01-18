@@ -19,7 +19,7 @@ import scalafx.stage._
 import scalafx.geometry.Pos
 import scala.reflect._
 
-class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720) {
+class GameArea(isSoundOn: Boolean, val difficultyFactor: Int) extends Scene(1280, 720) {
   val player = new PlayerShip(this)
   content = player
   var enemies = Buffer[EnemyShip]()
@@ -38,12 +38,14 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
     font = new Font("Arial", 19)
     textFill = (WHITE)
     text = "Score: " + score
+    toFront()
   }
   
   val lifeText = new Label{
     font = new Font("Arial", 20)
     textFill = (WHITE)
     text = "Life: " + player.health
+    toFront()
   }
   val textBox = new VBox {
     spacing = 2
@@ -94,7 +96,6 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
     enemies.foreach((a: SpaceShip) => {
       if (deadEnemies.contains(a)){
         enemies.remove(enemies.indexOf(a))
-        score += 1
       }
     })
   }
@@ -228,7 +229,7 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
         checkCollisions
         scoreTime += delta
         if (scoreTime >= 1) {
-          score += 1 
+          score += 1
           println("score: " + score)
           scoreTime = 0
         }
@@ -236,11 +237,11 @@ class GameArea(isSoundOn: Boolean, val difficulty: Int) extends Scene(1280, 720)
         EnemySpawner.spawn("star")
         
         // Spawnaa asteroideja vaikeusasteen mukaan
-        spawnAsteroids(Difficulty.factor) //TODO:
+        spawnAsteroids() //TODO:
         
-        def spawnAsteroids(difficulty: Int) = {
-          val timePerSmallAsteroid: Double = 5.0 / difficulty
-          val timePerBigAsteroid: Double = 25.0 / difficulty
+        def spawnAsteroids() = {
+          val timePerSmallAsteroid: Double = 5.0 / (difficultyFactor * difficultyFactor)
+          val timePerBigAsteroid: Double = 25.0 / (difficultyFactor * difficultyFactor)
           if (lastSmallAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
             EnemySpawner.spawn("asteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
             lastSmallAsteroid = timePerSmallAsteroid

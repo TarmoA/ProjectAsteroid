@@ -273,7 +273,6 @@ class DifficultyMenu() {
   //Events:
   easy.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.easy())
-    Difficulty.easy()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
@@ -281,7 +280,6 @@ class DifficultyMenu() {
   }
   normal.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.normal())
-    Difficulty.normal()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
@@ -289,7 +287,6 @@ class DifficultyMenu() {
   }
   hard.onAction = (e: ActionEvent) => {
     ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, Difficulty.hard())
-    Difficulty.hard()
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     Menu.root = Menu.menuContent
@@ -461,7 +458,7 @@ class DeathMenu() {
   //Events:
   save.onAction = (e: ActionEvent) => {
     //TODO: reads textfield and saves highscore
-    HighScoreFile.saveHighScore(ProjectAsteroid.GameArea.difficulty, "testi", ProjectAsteroid.GameArea.score)
+    HighScoreFile.saveHighScore(ProjectAsteroid.GameArea.difficultyFactor, "testi", ProjectAsteroid.GameArea.score)
     ProjectAsteroid.stage.scene = Menu
     ProjectAsteroid.stage.centerOnScreen()
     ProjectAsteroid.menuSound()
@@ -474,7 +471,7 @@ class DeathMenu() {
   }
   restart.onAction = (e: ActionEvent) => {
     //TODO: varmista että toimii, lähinnäs saako haettua edellisen gamearena difficulty arvon
-    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, ProjectAsteroid.GameArea.difficulty)
+    ProjectAsteroid.GameArea = new GameArea(ProjectAsteroid.isSoundOn, ProjectAsteroid.GameArea.difficultyFactor)
     ProjectAsteroid.stage.scene = ProjectAsteroid.GameArea
     ProjectAsteroid.stage.centerOnScreen
     ProjectAsteroid.menuSound()

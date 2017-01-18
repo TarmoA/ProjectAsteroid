@@ -18,6 +18,7 @@ class SmallAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip
   y = y0
   var health = 2
   def playDeathAnimation {
+    ProjectAsteroid.GameArea.score += 1
     if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
   }
   
@@ -34,6 +35,7 @@ class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(n
   y = y0
   var health = 6
   def playDeathAnimation {
+    ProjectAsteroid.GameArea.score += 3
     if (ProjectAsteroid.isSoundOn)ProjectAsteroid.explSound.play
   }
   

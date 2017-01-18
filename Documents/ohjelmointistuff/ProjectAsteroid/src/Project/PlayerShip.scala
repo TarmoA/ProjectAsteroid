@@ -24,7 +24,6 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   var ySpeed = 0
   val acceleration = 15
   val slowingSpeed = 5
-  //TODO: Alustukseen sellainen kohta mikä asettaa aluksen y koordinaateiksi noin ruudun puolivälin
   x = 25
   y = 304 // GameArea.height.value.toInt / 2 - PlayerShip.height.value
   
@@ -38,7 +37,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
     if      (Difficulty.definition == "easy")   9
     else if (Difficulty.definition == "normal") 5
     else if (Difficulty.definition == "hard")   2
-    else                                        0  // Kirjaimellisesti mahdoton vaikeusaste
+    else                                        0
   }
   
   def playDeathAnimation = {
@@ -54,31 +53,6 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
       true
   }
   
-  
-  def move(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
-    
-    if (dir =="right") {
-      if (x.value + speed*delta <= scene.value.width.toInt - this.image.value.width.toInt) x = x.value + speed*delta
-      else x = scene.value.width.toInt - this.image.value.width.toInt
-    }
-    
-    if (dir =="left") {
-      if (x.value - xSpeed*delta >= 0) x = x.value + xSpeed*delta
-      else x = 0
-    }
-    
-    if (dir =="down") {
-      if (y.value + speed*delta <= scene.value.height.toInt - this.image.value.height.toInt) y = y.value + speed*delta
-      else y = scene.height.toInt - this.image.value.height.toInt
-    }
-    
-    if (dir =="up") {
-      if (y.value + speed*delta >= 0) y = y.value + ySpeed*delta
-      else y = 0
-    }
-  }
-  
-  
   def move(delta: Double) = { //method moves the ship into given direction and distance depends on delta
     if (xSpeed > 0) {
       if (x.value + xSpeed*delta <= scene.value.width.toInt - this.image.value.width.toInt) x = x.value + xSpeed*delta
@@ -86,7 +60,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
     }
     
     if (xSpeed < 0) {
-      if (x.value - xSpeed*delta >= 0) x = x.value + xSpeed*delta
+      if (x.value + xSpeed*delta >= 0) x = x.value + xSpeed*delta
       else x = 0
     }
     
@@ -96,7 +70,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
     }
     
     if (ySpeed <0) {
-      if (y.value + speed*delta >= 0) y = y.value + ySpeed*delta
+      if (y.value + ySpeed*delta >= 0) y = y.value + ySpeed*delta
       else y = 0
     }
   }
