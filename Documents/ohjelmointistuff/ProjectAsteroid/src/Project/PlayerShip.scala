@@ -28,7 +28,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
   
   val shootSound = ProjectAsteroid.shootSound
   
-  var health = 1 //player health
+  var health = 100000 //player health
   
   def playDeathAnimation = {
     gameArea.GameTimer.stop
@@ -42,6 +42,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
       if (ProjectAsteroid.isSoundOn)shootSound.play
       true
   }
+  
   
   def move(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
     

@@ -16,6 +16,14 @@ import scalafx.animation.AnimationTimer
 
 abstract class SpaceObject(img: Image) extends ImageView(img){
   
+  def checkOutOfBounds = {
+    if (x.value <= 0 -image.value.width.value || x.value >= ProjectAsteroid.GameArea.width.value + image.value.width.value) {
+      isAlive = false
+    }
+  }
+  
+
+  
   val speed: Double
   
   def collidesWith(another: SpaceObject) = {
@@ -35,7 +43,6 @@ abstract class SpaceShip(img: Image) extends SpaceObject(img) {
   def damage(amount: Int) = {
     this.health -= amount
     if (health <= 0) this.destroy
-    println(this.health)
   }
   
   def destroy = {
@@ -48,6 +55,15 @@ abstract class SpaceShip(img: Image) extends SpaceObject(img) {
   def playDeathAnimation: Unit
 }
 abstract class EnemyShip(img: Image) extends SpaceShip(img) {
+  
+ /* def removeFromBuffers = {
+	  try {
+		  ProjectAsteroid.GameArea.enemiesToBeRemoved += this
+	  } finally try {
+       scene.value.getChildren.remove(this)
+     } finally isAlive = false
+		println("deleted")
+  }*/
   
   def move(delta: Double): Unit
   

@@ -21,6 +21,7 @@ abstract class Bullet(img: Image) extends SpaceObject(img) {
   
   def move(delta: Double): Unit
   
+  
 }
 
 class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/blast_1.png", 30, 15, true, false)) {  // blast_1.png:n alkuperäinen koko on 20 x 10 pikseliä
@@ -32,6 +33,7 @@ class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/b
   
   def move(delta: Double) = {
     x = x.value + speed * delta
+    checkOutOfBounds
   }
  
 
@@ -43,6 +45,7 @@ class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/bl
    
   def move(delta: Double) = {
     x = x.value - speed * delta
+    checkOutOfBounds
   }
 
 }
