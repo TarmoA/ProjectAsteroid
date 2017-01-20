@@ -432,7 +432,7 @@ class DeathMenu() {
   }
   
   //Label:
-  val deathLabel = new Label("Mission failure\nYour score: " + ProjectAsteroid.GameArea.score) {
+  val deathLabel = new Label("Game over\nYour score: " + ProjectAsteroid.GameArea.score) {
     textFill = WHITE
     font = new Font("Arial", 20)
     style = "-fx-background-color: black"
