@@ -131,7 +131,7 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
       if (e.code == X)     pressed("shoot") = true
       if (e.code == ESCAPE) sys.exit(0)  // sulkee koko pelin
       if (e.code == P)     pause()  // avaa pausemenun
-      if (e.code == Z) EnemySpawner.spawn("AlienShip")
+      if (e.code == Z) Spawner.spawn("AlienShip")
 
      // if (e.code.isDigitKey) player.speed = e.code.name.toInt
       }
@@ -156,7 +156,7 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     paused = true
   }
   
-  object EnemySpawner {
+  object Spawner {
     val random = new Random()
     val speedRandom = new Random()
     
@@ -196,7 +196,7 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
       
     }
   }
-  EnemySpawner.spawn("initStars")
+  Spawner.spawn("initStars")
   
   object GameTimer {
        // 1e9 = 1000000000 ns = 1 s
@@ -215,11 +215,11 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
         val playerLastShot: Long = player.lastShot
         val delta = (t - oldTime)/1e9
         val shotDelta = (t-playerLastShot)/1e9
-        //val asteroidDelta = (t-lastSmallAsteroid)/1e9
         checkForActions(delta, "move")
         checkForActions(delta, "accelerate")
         player.move(delta)
-        if(!Keys.pressed("right") && !Keys.pressed("left")){
+        
+        if(!Keys.pressed("right") && !Keys.pressed("left")){ //slows down only when no keys are pressed
           player.slowDownHorizontal(delta)
         }
          if(!Keys.pressed("up") && !Keys.pressed("down")){
@@ -234,11 +234,10 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
         scoreTime += delta
         if (scoreTime >= 1) {
           score += 1
-          println("score: " + score)
           scoreTime = 0
         }
-        // Spawnaa tähtiä
-        EnemySpawner.spawn("star")
+        // Spawns stars
+        Spawner.spawn("star")
         
         
         secondTimer += delta
@@ -256,13 +255,13 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
           //val timePerSmallAsteroid: Double = 5.0 / (difficultyFactor * difficultyFactor)
           //val timePerBigAsteroid: Double = 25.0 / (difficultyFactor * difficultyFactor)
           if (lastSmallAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
-            EnemySpawner.spawn("asteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
+            Spawner.spawn("asteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
             lastSmallAsteroid = timePerSmallAsteroid
           }
           else lastSmallAsteroid -= 0.1
           
           if (lastBigAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
-            EnemySpawner.spawn("bigasteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
+            Spawner.spawn("bigasteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
             lastBigAsteroid = timePerBigAsteroid
           }
           else lastBigAsteroid -= 0.1
