@@ -74,8 +74,8 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
       else y = 0
     }
   }
-  
-  def slowDownVertical(delta: Double)={ // method slows down the ships movement when no keys are pressed
+  // method slows down the ships movement when no keys are pressed
+  def slowDownVertical(delta: Double)={ 
     if (ySpeed < 0) ySpeed += slowingSpeed
     if(ySpeed > 0) ySpeed -= slowingSpeed
   }
