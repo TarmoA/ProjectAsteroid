@@ -247,7 +247,6 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
         val delta = (t - oldTime)/1e9
         val shotDelta = (t-playerLastShot)/1e9
         
-        //checkForActions(delta, "move")//TODO:
         checkForActions(delta, "accelerate")
         player.move(delta)
         
