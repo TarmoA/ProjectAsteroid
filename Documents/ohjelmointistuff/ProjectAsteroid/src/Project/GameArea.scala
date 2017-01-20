@@ -19,19 +19,27 @@ import scalafx.stage._
 import scalafx.geometry.Pos
 import scala.reflect._
 
+/* This is the main view where the game happens. This Scene is set as the content of the main stage when the game begins.
+ *  Setting the size here also ssets the size for the game window.
+ */
 class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   val player = new PlayerShip(this)
+  
+  // Every Node-object (such as all SpaceObjects) needs to be added to content to be visible and considered to be in the scene.
   content = player
+  
+  // Buffers for storing different types of SpaceObjects for purposes such as collisionchecking.
   var enemies = Buffer[EnemyShip]()
-  var shootingEnemies = Buffer[ShootingEnemy]()
+  //var shootingEnemies = Buffer[ShootingEnemy]()
   var playerBullets = Buffer[PlayerBullet]()
   var enemyBullets = Buffer[EnemyBullet]()
   var stars = Buffer[Star]()
+  
   var score = 0
   var speed = 0
-  val acceleration = 25
   
-  fill = BLACK //asettaa taustan värin mustaksi
+  //Sets backgroundcolor
+  fill = BLACK
   
   
   val scoreText = new Label{
@@ -39,7 +47,6 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     textFill = (WHITE)
     text = "Score: " + score
   }
-  
   val lifeText = new Label{
     font = new Font("Arial", 20)
     textFill = (WHITE)
@@ -52,8 +59,13 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   }
   content += textBox
   
+  /* This checks for any collisions between SpaceObjects. Any colliding objects will either take damage or be destroyed.
+   * This is called on every tick of the GameTimer
+   */
   def checkCollisions = {
-   // enemy-player collision
+    
+   // Enemy-player collision
+    
     val enemiesCollidingWithPlayer = enemies.filter(_.collidesWith(player))
     if (!enemiesCollidingWithPlayer.isEmpty) {
       player.damage(1)
@@ -83,13 +95,14 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
           if (content.contains(bullet)) {
             bullet.destroy 
             collidingBullets -= bullet
-            bulletsToDestroy += bullet// playerBullets.remove(playerBullets.indexOf(bullet))
+            bulletsToDestroy += bullet
           }
         })
         enemy.damage(1)
       }
     })
     bulletsToDestroy.foreach((bullet: Bullet) => playerBullets.remove(playerBullets.indexOf(bullet)))
+    
     
     val deadEnemies = enemies.filter(!_.isAlive)
     enemies.foreach((a: SpaceShip) => {
@@ -119,7 +132,9 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     else false
   }
   
-  
+  /* This listens to events from the keyboard and reacts when the correct keys are pressed and released
+   * 
+   */
   object Keys {
     val pressed = Map[String,Boolean]( "right" -> false, "left" -> false, "up" -> false, "down" -> false, "shoot" -> false)
                             
@@ -129,11 +144,10 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
       if (e.code == DOWN)  pressed("down") = true
       if (e.code == UP)    pressed("up") = true
       if (e.code == X)     pressed("shoot") = true
-      if (e.code == ESCAPE) sys.exit(0)  // sulkee koko pelin
       if (e.code == P)     pause()  // avaa pausemenun
-      if (e.code == Z) Spawner.spawn("AlienShip")
+      //if (e.code == Z) Spawner.spawn("AlienShip")//TODO:
 
-     // if (e.code.isDigitKey) player.speed = e.code.name.toInt
+    
       }
     onKeyReleased = (e: KeyEvent) => {
       if (e.code == RIGHT) pressed("right") = false
@@ -160,6 +174,9 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     val random = new Random()
     val speedRandom = new Random()
     
+    /* This spawns an enemy torandom coordinates newa the right edge of the screen, with the enemyType given as parameter.
+     * Adds the spawned enemy to the Scenes content and the relevant enemytype-buffer.
+     */
     def spawn(enemyType: String) = {
       if (enemyType == "asteroid") {
         val enemy = new SmallAsteroid(width.value.toInt, (player.image.value.height.toDouble / 2) + random.nextInt(height.value.toInt) - player.image.value.height.toDouble, speedRandom.nextInt(100))  // Jotta asteroidit eivät spawnaa niin reunalle, ettei niitä pysty ampumaan, asteroidien spawnaukselle annetaan korkeussuunnassa rajat.
@@ -187,22 +204,27 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
         }
       }
       
-      if (enemyType == "AlienShip") {
+     /* Not used
+      * if (enemyType == "AlienShip") {
         val enemy: ShootingEnemy = new AlienShip(width.value.toInt, random.nextInt(height.value.toInt))
         content += enemy
         enemies += enemy
         shootingEnemies += enemy
-      }
+      }*/
       
     }
   }
   Spawner.spawn("initStars")
   
+  
+  /* The mainTimer(scalafx AnimationTimer) in this object ticks at a non-regular rate and returns the current system time in nanoseconds wheneer it does.
+   * This can be used to calculate all the movement and other timer related tasks independent of the rate of ticks.
+   * All the game-updating methods are called on every tick of the timer.
+   */
   object GameTimer {
        // 1e9 = 1000000000 ns = 1 s
     var secondTimer: Double = 0
     val timePerSpeedIncrease = 3
-    //var timePerAsteroidMinus = 0.0
     var timePerSmallAsteroid: Double = 5.0 / difficultyFactor
     var timePerBigAsteroid: Double = 25.0 / difficultyFactor
     val timePerShot = 0.25
@@ -210,16 +232,19 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     var lastSmallAsteroid: Double = 3
     var lastBigAsteroid: Double = 10
     var scoreTime = 0.0
+    
     val mainTimer = AnimationTimer(t =>{
       if (oldTime > 0) {
         val playerLastShot: Long = player.lastShot
         val delta = (t - oldTime)/1e9
         val shotDelta = (t-playerLastShot)/1e9
+        
         checkForActions(delta, "move")
         checkForActions(delta, "accelerate")
         player.move(delta)
         
-        if(!Keys.pressed("right") && !Keys.pressed("left")){ //slows down only when no keys are pressed
+        //slows down only when no keys are pressed
+        if(!Keys.pressed("right") && !Keys.pressed("left")){
           player.slowDownHorizontal(delta)
         }
          if(!Keys.pressed("up") && !Keys.pressed("down")){
@@ -236,8 +261,6 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
           score += 1
           scoreTime = 0
         }
-        // Spawns stars
-        Spawner.spawn("star")
         
         
         secondTimer += delta
@@ -247,13 +270,12 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
           timePerBigAsteroid = timePerBigAsteroid*0.95
         }
         
+        // Spawns stars
+        Spawner.spawn("star")
         
-        // Spawnaa asteroideja vaikeusasteen mukaan
-        spawnAsteroids() //TODO:
+        spawnAsteroids()
         
         def spawnAsteroids() = {
-          //val timePerSmallAsteroid: Double = 5.0 / (difficultyFactor * difficultyFactor)
-          //val timePerBigAsteroid: Double = 25.0 / (difficultyFactor * difficultyFactor)
           if (lastSmallAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
             Spawner.spawn("asteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
             lastSmallAsteroid = timePerSmallAsteroid
@@ -267,28 +289,20 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
           else lastBigAsteroid -= 0.1
         }
         
-        shootingEnemies.foreach{enemy: ShootingEnemy =>
+        /*shootingEnemies.foreach{enemy: ShootingEnemy =>
           val lastShot = enemy.lastShot
           val delta = (t-lastShot)/1e9
           if (lastShot == 0 || delta >= enemy.timePerShot) {
             enemy.shoot
             enemy.lastShot = t
           }
-        }
+        }*/
         
         if (playerLastShot == 0 || shotDelta >= timePerShot) {
         if (checkForActions(delta,"shoot")) player.lastShot = t
         }
-        
-        
-        // Tämän tässä on tarkoitus poistaa Buffereista kaikki kuvan ulkopuolelle siirtyneet asiat:
-        // enemies, playerBullets, enemyBullets, stars
         removeOutOfBoundsObjects
-        
-        
-        
         scoreText.text = "Score: " + score
-
         textBox.toFront
       }
       oldTime = t
@@ -305,9 +319,10 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   
   GameTimer.start
   
-  
-  // Tämän tässä on tarkoitus poistaa Buffereista kaikki kuvan ulkopuolelle siirtyneet asiat:
-  // enemies, playerBullets, enemyBullets, stars
+ 
+  /* This removes all out-oof-bounds objects from the GameAreas content-buffer as well as each object-types own buffer.
+   * This is called on each tick of the GameTimer.
+   */
   def removeOutOfBoundsObjects: Unit = {
     
     val enemiesToRemove = enemies.filter(!_.isAlive)

@@ -46,8 +46,8 @@ class BigAsteroid(x0:Double, y0:Double, movingSpeed: Double) extends EnemyShip(n
   
 }
 
-//TODO: poistetaanko?
-class AlienShip (x0:Double, y0:Double) extends ShootingEnemy(new Image("file:Images/uusin_asteroidi.png", 80, 80, false, false)) {
+/*Not used
+ * class AlienShip (x0:Double, y0:Double) extends ShootingEnemy(new Image("file:Images/uusin_asteroidi.png", 80, 80, false, false)) {
   var speed = 100.0 // pixels per second
   x = x0
   y = y0
@@ -69,4 +69,4 @@ class AlienShip (x0:Double, y0:Double) extends ShootingEnemy(new Image("file:Ima
     ProjectAsteroid.GameArea.enemyBullets += bullet
     true
   }
-}
+}*/

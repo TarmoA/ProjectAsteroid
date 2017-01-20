@@ -39,8 +39,38 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/Pl
     Sound.shootSound()
     true
   }
+<<<<<<< HEAD
   //method moves the ship into given direction and distance depends on delta
   def move(delta: Double) = {
+=======
+  
+  /*
+  def move(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
+    
+    if (dir =="right") {
+      if (x.value + speed*delta <= scene.value.width.toInt - this.image.value.width.toInt) x = x.value + speed*delta
+      else x = scene.value.width.toInt - this.image.value.width.toInt
+    }
+    
+    if (dir =="left") {
+      if (x.value - xSpeed*delta >= 0) x = x.value + xSpeed*delta
+      else x = 0
+    }
+    
+    if (dir =="down") {
+      if (y.value + speed*delta <= scene.value.height.toInt - this.image.value.height.toInt) y = y.value + speed*delta
+      else y = scene.height.toInt - this.image.value.height.toInt
+    }
+    
+    if (dir =="up") {
+      if (y.value + speed*delta >= 0) y = y.value + ySpeed*delta
+      else y = 0
+    }
+  }
+  */
+  
+  def move(delta: Double) = { //method moves the ship into given direction and distance depends on delta
+>>>>>>> refs/remotes/origin/tarmonkommentit
     if (xSpeed > 0) {
       if (x.value + xSpeed*delta <= scene.value.width.toInt - this.image.value.width.toInt) x = x.value + xSpeed*delta
       else x = scene.value.width.toInt - this.image.value.width.toInt
