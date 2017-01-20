@@ -107,7 +107,10 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     })
   }
   
-  
+  /*
+   * Checks the Keys.pressed-Map for any keys that are pressed and calls the players methods for movement and shooting.
+   * Called on every tick of the GameTimer
+   */
   def checkForActions(delta: Double, action: String): Boolean = {
   
     if (action == "accelerate") {
@@ -155,6 +158,9 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     }
   }
   
+  /*
+   * This is called when P is pressed. Creates a new instance of PauseMenu which effectively pauses the game
+   */
   var paused = false
   def pause() = {
     Keys.pressed.transform((a:String,b:Boolean) => false)
@@ -162,6 +168,9 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     paused = true
   }
   
+  /*
+   * This object handles the spawning of enemies
+   */
   object Spawner {
     val random = new Random()
     val speedRandom = new Random()
@@ -187,6 +196,9 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
         star.toBack
       }
       
+      /*
+       * Fills the background with stars at the start of the game. 1536 is the number of stars per screen created with the regular star-spawning method
+       */
       if (enemyType == "initStars") {
         //There is a certain amount of stars on-screen, the amount is determined by the following:
         //(screen width / stars' movement speed in pixels per second * screen refresh rate)
@@ -230,10 +242,12 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
     val mainTimer = AnimationTimer(t =>{
       if (oldTime > 0) {
         val playerLastShot: Long = player.lastShot
+        
+        //this is the time in seconds since the last tick of the timer. Used to calculate movement since the tick-rate of the timer is iregular
         val delta = (t - oldTime)/1e9
         val shotDelta = (t-playerLastShot)/1e9
         
-        checkForActions(delta, "move")
+        //checkForActions(delta, "move")//TODO:
         checkForActions(delta, "accelerate")
         player.move(delta)
         
@@ -250,18 +264,24 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
         enemyBullets.foreach(_.move(delta))
         stars.foreach(_.move(delta))
         checkCollisions
+       
         scoreTime += delta
+        //Adds one score every second
         if (scoreTime >= 1) {
           score += 1
           scoreTime = 0
         }
         
-        
+        /*
+         * This speeds up the rate at which asteroids spawn every second
+         */
         secondTimer += delta
         if (secondTimer >= timePerSpeedIncrease) {
           secondTimer -= timePerSpeedIncrease
-          timePerSmallAsteroid = timePerSmallAsteroid *0.95
-          timePerBigAsteroid = timePerBigAsteroid*0.95
+          if (timePerSmallAsteroid > 0.68) {
+          	timePerSmallAsteroid = timePerSmallAsteroid *0.97
+          	timePerBigAsteroid = timePerBigAsteroid*0.97
+          }
         }
         
         // Spawns stars
@@ -294,19 +314,29 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
           }
         }*/
         
+        /* 
+         * This only allows the player to shoot every n seconds, n == timePerShot
+         */
         if (playerLastShot == 0 || shotDelta >= timePerShot) {
         if (checkForActions(delta,"shoot")) player.lastShot = t
         }
+        
         removeOutOfBoundsObjects
+        
+        //updates the score-text on the UI
         scoreText.text = "Score: " + score
         textBox.toFront
       }
+      //used later for calculating the new delta
       oldTime = t
     })
     
+    // starts the MainTimer
     def start = {
       mainTimer.start
     }
+    
+    //Stops the mainTimer. the oldTime value of the timer needs to be reset when starting the time again.
     def stop = {
       mainTimer.stop
     }
