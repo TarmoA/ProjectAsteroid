@@ -4,7 +4,7 @@ import scalafx.scene.image.Image
 import scalafx.Includes._
 
 /**
- * TODO: kuvaus
+ * Superclass of playerBullet
  */
 abstract class Bullet(img: Image) extends SpaceObject(img) {
   def destroy = {
@@ -17,7 +17,7 @@ abstract class Bullet(img: Image) extends SpaceObject(img) {
 }
 
 /**
- * TODO: kuvaus
+ * PlayerBullet moves right when created.
  * Images original size is 20*10 pixels
  */
 class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/Bullet.png", 50, 25, true, false)) {
@@ -26,15 +26,18 @@ class PlayerBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/B
   x = x0 + 35
   y = y0 + 12.5
   
-  //var oldTime: Long = 0L TODO: poista
+  var oldTime: Long = 0L
   
   def move(delta: Double) = {
     x = x.value + speed * delta
     checkOutOfBounds
   }
 }
-//TODO: poista?
-class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/blast_1.png", 25, 25, false, false)) {
+
+/*
+ * For future use when enemyships are implemented
+ */
+class EnemyBullet(x0:Double, y0:Double) extends Bullet(new Image("file:Images/Bullet.png", 25, 25, false, false)) {
   var speed = 300.0 // pixels per second
   x = x0
   y = y0

@@ -9,7 +9,6 @@ import scalafx.scene.paint.Color.{BLACK, WHITE}
 import scalafx.event.ActionEvent
 import scalafx.geometry.Pos
 import scalafx.collections.ObservableBuffer
-import scala.collection.mutable.Buffer
 import scalafx.beans.property.{StringProperty, ObjectProperty}
 
 /*
@@ -74,8 +73,6 @@ object Menu extends Scene(1280, 720) {
   root = menuContent //set scene content
   
   //events:
-  
-  
   start.onAction = (e: ActionEvent) => {
     new DifficultyMenu() //opens new menu where player chooses level of difficulty or returns to mainmenu
     Sound.menuSound()
@@ -391,7 +388,7 @@ class PauseMenu() {
 }
 
 /*
- * when player dies DeathMenu is opened, different options are available to player
+ * When player dies DeathMenu is opened, different options are available to player
  */
 class DeathMenu() {
   //Buttons:

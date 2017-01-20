@@ -18,7 +18,7 @@ object HighScoreFile {
   var hard = ObservableBuffer[HighScore] ()
   
   //Overrides old file and writes what's on buffers there.
-  def write() = {
+  private def write() = {
     val file = new PrintWriter(fileName)
     try {
       putInOrder()

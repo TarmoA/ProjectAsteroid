@@ -1,23 +1,18 @@
 package Project
+
 import scala.collection.mutable.Buffer
 import scala.collection.mutable.Map
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene._
-import scalafx.scene.paint.Color._
-import scalafx.scene.input._
+import scalafx.scene.paint.Color.{BLACK, WHITE}
 import scalafx.scene.input.KeyEvent
-import scalafx.scene.input.KeyCode._
-import scalafx.event.ActionEvent
+import scalafx.scene.input.KeyCode.{A, P, X, UP, DOWN, LEFT, RIGHT}
 import scalafx.scene.control._
 import scalafx.Includes._
 import scalafx.animation.AnimationTimer
 import scala.util.Random
-import scalafx.scene.text._
+import scalafx.scene.text.Font
 import scalafx.scene.layout._
-import scalafx.stage._
 import scalafx.geometry.Pos
-import scala.reflect._
 
 /* This is the main view where the game happens. This Scene is set as the content of the main stage when the game begins.
  *  Setting the size here also ssets the size for the game window.
@@ -28,9 +23,9 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   // Every Node-object (such as all SpaceObjects) needs to be added to content to be visible and considered to be in the scene.
   content = player
   
-  // Buffers for storing different types of SpaceObjects for purposes such as collisionchecking.
+  // Buffers for storing different types of SpaceObjects for purposes such as collision checking.
   var enemies = Buffer[EnemyShip]()
-  //var shootingEnemies = Buffer[ShootingEnemy]()
+  //var shootingEnemies = Buffer[ShootingEnemy]() //NOT IN USE
   var playerBullets = Buffer[PlayerBullet]()
   var enemyBullets = Buffer[EnemyBullet]()
   var stars = Buffer[Star]()
@@ -133,7 +128,6 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   }
   
   /* This listens to events from the keyboard and reacts when the correct keys are pressed and released
-   * 
    */
   object Keys {
     val pressed = Map[String,Boolean]( "right" -> false, "left" -> false, "up" -> false, "down" -> false, "shoot" -> false)
@@ -144,11 +138,9 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
       if (e.code == DOWN)  pressed("down") = true
       if (e.code == UP)    pressed("up") = true
       if (e.code == X)     pressed("shoot") = true
-      if (e.code == P)     pause()  // avaa pausemenun
-      //if (e.code == Z) Spawner.spawn("AlienShip")//TODO:
-
-    
+      if (e.code == P)     pause()  //opens PauseMenu
       }
+    
     onKeyReleased = (e: KeyEvent) => {
       if (e.code == RIGHT) pressed("right") = false
       if (e.code == LEFT)  pressed("left") = false
@@ -196,7 +188,10 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
       }
       
       if (enemyType == "initStars") {
-        for (n <- 1 to 1536) {  // Ruudulla on kerrallaan tähtiä määrä: (ruudun leveys / tähtien liikkumisnopeus pikseleinä sekunneissa * ruudun päivitysnopeus) eli (width.value.toDouble / 50.0 * 60).toInt)
+        //There is a certain amount of stars on-screen, the amount is determined by the following:
+        //(screen width / stars' movement speed in pixels per second * screen refresh rate)
+        //meaning (width.value.toDouble / 50.0 * 60).toInt)
+        for (n <- 1 to 1536) {  
           val star = new Star(random.nextInt(width.value.toInt), random.nextInt(height.value.toInt))
           content += star
           stars += star
@@ -216,13 +211,12 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   }
   Spawner.spawn("initStars")
   
-  
-  /* The mainTimer(scalafx AnimationTimer) in this object ticks at a non-regular rate and returns the current system time in nanoseconds wheneer it does.
+  /* The mainTimer(scalafx AnimationTimer) in this object ticks at a non-regular rate and returns the current system time in nanoseconds whenever it does.
    * This can be used to calculate all the movement and other timer related tasks independent of the rate of ticks.
    * All the game-updating methods are called on every tick of the timer.
    */
   object GameTimer {
-       // 1e9 = 1000000000 ns = 1 s
+    // 1e9 = 1000000000 ns = 1 s
     var secondTimer: Double = 0
     val timePerSpeedIncrease = 3
     var timePerSmallAsteroid: Double = 5.0 / difficultyFactor
@@ -275,15 +269,17 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
         
         spawnAsteroids()
         
+        // Basically keeps count on the time when the next asteroid is to be spawned
+        // The next asteroid is spawned the moment the time set by the previous asteroid reaches zero
         def spawnAsteroids() = {
-          if (lastSmallAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
-            Spawner.spawn("asteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
+          if (lastSmallAsteroid <= 0) {
+            Spawner.spawn("asteroid")
             lastSmallAsteroid = timePerSmallAsteroid
           }
           else lastSmallAsteroid -= 0.1
           
-          if (lastBigAsteroid <= 0) {              // Periaatteessa pitää väkisin kirjaa siitä ajasta, milloin seuraava asteroidi laitetaan liikkeelle
-            Spawner.spawn("bigasteroid")      // Seuraava asteroidi laitetaan liikkeelle, kun asteroidin asettama aika saavuttaa nollan
+          if (lastBigAsteroid <= 0) {
+            Spawner.spawn("bigasteroid")
             lastBigAsteroid = timePerBigAsteroid
           }
           else lastBigAsteroid -= 0.1
@@ -351,5 +347,5 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
       playerBullets.remove(playerBullets.indexOf(e))
       if (content.contains(e)) content.remove(content.indexOf(e))
     })
-      }
+  }
 }

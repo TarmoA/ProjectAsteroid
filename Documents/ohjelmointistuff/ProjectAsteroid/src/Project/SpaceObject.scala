@@ -28,6 +28,7 @@ abstract class SpaceObject(img: Image) extends ImageView(img){
   
   def destroy: Unit
 }
+
 /*
  * Parent class for player-controlled ships and enemies(asteroids)
  */
@@ -35,7 +36,6 @@ abstract class SpaceShip(img: Image) extends SpaceObject(img) {
   
   var health: Int
   
-
   /*
    * This is called on collisions with bullets or other Spaceships
    */

@@ -1,3 +1,11 @@
+/***
+ * Authors:
+ * Alex Savia 579023
+ * Atte Haarakangas 591467
+ * Tarmo Asikainen 543596
+ * Antti Kumpumäki 587293
+ */
+
 package Project
 
 import scalafx.application.JFXApp
@@ -13,8 +21,7 @@ object ProjectAsteroid extends JFXApp {
   
   //Defines new PrimaryStage
   
-  /* The game window in scalaFX is called a stage. Initially sets the Stage's Scene as the singleton object Menu
-   */
+  //The game window in scalaFX is called a stage. Initially sets the Stage's Scene as the singleton object Menu
   stage = new JFXApp.PrimaryStage {
     resizable = false
     centerOnScreen()
