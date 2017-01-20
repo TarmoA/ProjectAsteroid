@@ -1,2 +1,1 @@
 //Don't change this file, hardnessLevel|name|score
-3|sffx|17

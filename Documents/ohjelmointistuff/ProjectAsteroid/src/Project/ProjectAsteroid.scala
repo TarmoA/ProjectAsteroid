@@ -8,7 +8,7 @@ import scalafx.application.JFXApp
 object ProjectAsteroid extends JFXApp {
   //Reads highscore file and saves its results in buffers
   HighScoreFile.read()
-  //variable used to acces GameArea from outside
+  //variable used to acces GameArea class from outside
   var GameArea: GameArea = _
   
   //Defines new PrimaryStage

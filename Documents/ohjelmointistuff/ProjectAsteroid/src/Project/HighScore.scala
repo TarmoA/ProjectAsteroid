@@ -7,9 +7,9 @@ import scalafx.collections.ObservableBuffer
 //Saves players' results as HighScore-class
 case class HighScore(hardness: Int, val name: String, val score: Int)
 
-//Reads and modifies highscore file's data and passes it elsewhere.
+//Reads and modifies HighScore file's data and passes it elsewhere.
 object HighScoreFile {
-  //Filename of the file where all highscores are saved
+  //Filename of the file where all HighScores are saved
   private val fileName = "highscore.txt"
   
   //Buffers where HighScore classes are stored and which HighScoreMenu reads
@@ -17,7 +17,7 @@ object HighScoreFile {
   var normal = ObservableBuffer[HighScore] ()
   var hard = ObservableBuffer[HighScore] ()
   
-  //Overrides old file and writes whats on buffers there.
+  //Overrides old file and writes what's on buffers there.
   def write() = {
     val file = new PrintWriter(fileName)
     try {
@@ -39,14 +39,14 @@ object HighScoreFile {
     }
   }
   
-  //Method which reads file and creates and add all highscore classes to buffers
+  //Method which reads file and creates and add all HighScore classes to buffers
   def read() = {
     val file = Source.fromFile(fileName)
     try {
       val fileVector = file.getLines.toVector
       
       resetBuffer()
-      //Goes through all but first line in the file and extracts data from line and greates highscore class and adds it to correct buffer
+      //Goes through every line except the first line in the file and extracts data from lines and creates HighScore class and adds it to correct buffer
       for (i <- fileVector.tail) {
         val array = i.split('|')
         if (array(0) == Difficulty.easyValue.toString()) this.easy += HighScore(1, array(1), array(2).toInt)
@@ -56,8 +56,8 @@ object HighScoreFile {
       putInOrder()
     }
     catch {
-      //Incase of file error, resets file and all highscore buffers
-      case ioException: Throwable => reset(); println("FileError, file resetted")
+      //In case of file error, resets file and all HighScore buffers
+      case ioException: Throwable => reset(); println("FileError, file reset")
     }
     finally {
       file.close()
