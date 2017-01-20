@@ -54,7 +54,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
       true
   }
   
-  
+  /*
   def move(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
     
     if (dir =="right") {
@@ -77,7 +77,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
       else y = 0
     }
   }
-  
+  */
   
   def move(delta: Double) = { //method moves the ship into given direction and distance depends on delta
     if (xSpeed > 0) {
