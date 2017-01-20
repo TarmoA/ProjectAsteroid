@@ -75,7 +75,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
     }
   }
   
-  def slowDownVertical(delta: Double)={
+  def slowDownVertical(delta: Double)={ // method slows down the ships movement when no keys are pressed
     if (ySpeed < 0) ySpeed += slowingSpeed
     if(ySpeed > 0) ySpeed -= slowingSpeed
   }
@@ -85,7 +85,8 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
     if(xSpeed > 0) xSpeed -= slowingSpeed
   }
   
-  def accelerate(dir: String, delta: Double) = { //method moves the ship into given direction and distance depends on delta
+   //method accelerates the ship into given direction and distance depends on delta, but no more than
+  def accelerate(dir: String, delta: Double) = {
     
     if (dir =="right") {
       if(xSpeed < 250) xSpeed += acceleration
@@ -103,5 +104,7 @@ class PlayerShip(gameArea: GameArea) extends SpaceShip(new Image("file:Images/al
     if (dir =="up") {
       if(ySpeed > -250) ySpeed -= acceleration
     }
+    
   }
+  
 }
