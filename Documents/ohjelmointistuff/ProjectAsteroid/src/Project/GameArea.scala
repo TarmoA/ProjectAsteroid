@@ -228,7 +228,7 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   Spawner.spawn("initStars")
   
   
-  /* The mainTimer(scalafx AnimationTimer) in this object ticks at a non-regular rate and returns the current system time in nanoseconds wheneer it does.
+  /* The mainTimer(scalafx AnimationTimer) in this object ticks at a non-regular rate and returns the current system time in nanoseconds whenever it does.
    * This can be used to calculate all the movement and other timer related tasks independent of the rate of ticks.
    * All the game-updating methods are called on every tick of the timer.
    */
@@ -327,6 +327,7 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
         scoreText.text = "Score: " + score
         textBox.toFront
       }
+      //used later for calculating the new delta
       oldTime = t
     })
     
@@ -345,7 +346,7 @@ class GameArea(val difficultyFactor: Int) extends Scene(1280, 720) {
   GameTimer.start
   
  
-  /* This removes all out-oof-bounds objects from the GameAreas content-buffer as well as each object-types own buffer.
+  /* This removes all out-of-bounds objects from the GameAreas content-buffer as well as each object-types own buffer.
    * This is called on each tick of the GameTimer.
    */
   def removeOutOfBoundsObjects: Unit = {
